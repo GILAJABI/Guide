@@ -26,7 +26,7 @@ class GuideApplicationTests {
 
         log.info("-----------------------------------");
         log.info(con.toString());
-        log.info("-----------------------------------");
+        log.info("----------------------------...-------");
         Assertions.assertNotNull(con);
     }
 
