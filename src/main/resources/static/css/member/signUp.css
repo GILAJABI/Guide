@@ -34,7 +34,7 @@ input[type="number"] {
     border-bottom: 1px solid rgba(54, 54, 54, 0.8);
 }
 
-.select {
+.gender {
     margin: 35px 109px;
     display: flex;
     justify-content: space-between;
@@ -49,8 +49,26 @@ input[type="number"] {
     cursor: pointer;
 }
 
+.select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 22px;
+    border-radius: 10px;
+}
+
+.selectBtn {
+    /* 버튼 */
+    width: 220px;
+    height: 50px;
+    background-color: #fafafa;
+    border-radius: 5px;
+    border: 1px solid #363636;
+}
+
 .finishBtn {
     /* 버튼 */
+    margin-top: 20px;
     width: 454px;
     height: 52px;
     background-color: #ff6392;

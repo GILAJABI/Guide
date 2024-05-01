@@ -5,99 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
     <link rel="stylesheet" th:href="@{/css/member/signUp.css}">
-
-    <!--    <style>-->
-
-<!--        * {-->
-<!--            background-color: #fafafa;-->
-<!--            color: #363636;-->
-<!--            font-family: 'Pretendard-Regular';-->
-<!--            font-size: 20px;-->
-<!--        }-->
-
-<!--        .container {-->
-<!--            position: fixed;-->
-<!--            top: 50%;-->
-<!--            left: 50%;-->
-<!--            transform: translate(-50%, -50%);-->
-<!--            max-width: 454px;-->
-<!--            margin: 0 auto;-->
-<!--        }-->
-
-<!--        header {-->
-<!--            text-align: center;-->
-<!--        }-->
-
-<!--        #title {-->
-<!--            font-family: 'BMJUA';-->
-<!--            font-size: 21px;-->
-<!--            margin-top: 36px;-->
-<!--        }-->
-
-<!--        input:focus {-->
-<!--            outline: none;-->
-<!--        }-->
-
-<!--        input[type="text"],-->
-<!--        input[type="password"],-->
-<!--        input[type="number"] {-->
-<!--            width: 454px;-->
-<!--            height: 29px;-->
-<!--            padding-top: 35px;-->
-<!--            border: none;-->
-<!--            border-bottom: 1px solid rgba(54, 54, 54, 0.8);-->
-<!--        }-->
-
-<!--        .select {-->
-<!--            margin: 35px 109px;-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            align-items: center;-->
-<!--        }-->
-
-<!--        .radio {-->
-<!--            width: 30px;-->
-<!--            height: 30px;-->
-<!--            border: 1px solid #363636;-->
-<!--            border-radius: 10px;-->
-<!--            cursor: pointer;-->
-<!--        }-->
-
-<!--        .finishBtn {-->
-<!--            /* 버튼 */-->
-<!--            width: 454px;-->
-<!--            height: 52px;-->
-<!--            background-color: #ff6392;-->
-<!--            border-radius: 5px;-->
-<!--            border: none;-->
-<!--            /* 폰트 */-->
-<!--            color: #fafafa;-->
-<!--            font-family: 'Pretendard-Regular';-->
-<!--            font-size: 20px;-->
-<!--            /* 마우스 */-->
-<!--            cursor: pointer;-->
-<!--        }-->
-
-<!--        .finishBtn:hover { background-color: #e0557d; }-->
-
-<!--        @font-face {-->
-<!--            font-family: 'Pretendard-Regular';-->
-<!--            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');-->
-<!--            font-weight: 400;-->
-<!--            font-style: normal;-->
-<!--        }-->
-
-<!--        @font-face {-->
-<!--            font-family: 'BMJUA';-->
-<!--            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');-->
-<!--            font-weight: normal;-->
-<!--            font-style: normal;-->
-<!--        }-->
-<!--    </style>-->
 </head>
 <body>
 <div th:include="/include/header.html"></div>
-<!--<iframe src="../include/header.html" style="border: none;" width="100%" height="100%"></iframe>-->
 <div class="container">
     <header>
         <img src="/image/logo.png" alt="로고">
@@ -117,6 +27,10 @@
             <input type="password" id="check" name="check" placeholder="비밀번호 확인">
         </div>
         <div>
+            <label for="name"></label>
+            <input type="text" id="name" placeholder="이름">
+        </div>
+        <div>
             <label for="phone"></label>
             <input type="text" id="phone" name="phone" placeholder="휴대폰 번호 (01012345678)">
         </div>
@@ -124,9 +38,25 @@
             <label for="year"></label>
             <input type="number" id="year" name="year" value="1999" min="1900" max="2005">
         </div>
-        <div class="select">
+        <div class="gender">
             <input type="radio" id="male" name="gender" class="radio"><label for="male">남자</label>
             <input type="radio" id="female" name="gender" class="radio"><label for="female">여자</label>
+        </div>
+        <div class="select">
+            <button class="selectBtn" id="E">사람 많은 도시파</button>
+            <button class="selectBtn" id="I">나무 많은 자연파</button>
+        </div>
+        <div class="select">
+            <button class="selectBtn" id="S">정해진 코스파</button>
+            <button class="selectBtn" id="N">상상대로 모험파</button>
+        </div>
+        <div class="select">
+            <button class="selectBtn" id="F">감성파</button>
+            <button class="selectBtn" id="T">효율파</button>
+        </div>
+        <div class="select">
+            <button class="selectBtn" id="J">꼼꼼한 계획파</button>
+            <button class="selectBtn" id="P">끌리는대로 행동파</button>
         </div>
         <button type="submit" class="finishBtn">완료</button>
     </form>
