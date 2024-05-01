@@ -15,6 +15,7 @@ body {
 #list {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     position: relative;
 }
 
@@ -27,23 +28,23 @@ body {
     color: #363636;
 }
 
-#travelmaker {
-    padding-left: 0px;
+.left-group {
+    margin-right: auto;
 }
 
-#home {
-    margin-left: 208px;
+.center-group {
+    margin: 0 auto;
 }
 
-#community,
-#chat,
-#block,
-#signUp {
-    margin-left: 35px;
+.center-group li {
+    margin-right: 50px;
 }
 
-#login {
-    margin-left: 160px;
+.right-group {
+    margin-left: auto;
+}
+.right-group li {
+    margin-right: 20px;
 }
 
 img {

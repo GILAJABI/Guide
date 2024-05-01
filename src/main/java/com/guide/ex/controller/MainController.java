@@ -9,5 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
+    @GetMapping("/include/header")
+    public void header() {
+
+    }
 
 }

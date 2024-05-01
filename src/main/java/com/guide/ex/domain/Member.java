@@ -67,4 +67,6 @@ public class Member extends BaseEntity {
     protected void onCreate() {
         this.rating = "동메달";
     }
+
+
 }
