@@ -15,4 +15,13 @@ public class MemberController {
 
     }
 
+    @GetMapping("/profile")
+    public void profile() {
+
+    }
+
+    @GetMapping("/signUp")
+    public void signUp() {
+
+    }
 }
