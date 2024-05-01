@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
