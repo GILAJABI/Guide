@@ -13,19 +13,19 @@
         <img src="/image/logo.png" alt="로고">
         <p id="title">회원가입</p>
     </header>
-    <form action="../html/home.html" method="post" onsubmit="return signUpForm()">
+    <form action="/member/signUp" method="post" onsubmit="return signUpForm()">
         <div>
             <label for="name"></label>
-            <input type="text" id="name" placeholder="이름">
+            <input type="text" id="name" name="name" placeholder="이름">
         </div>
         <div id="idForm">
             <label for="id"></label>
-            <input type="text" id="id" name="id" placeholder="아이디">
+            <input type="text" id="id" name="uid" placeholder="아이디">
             <button type="button" id="duplicate" onclick="checkDuplicateId()">중복확인</button>
         </div>
         <div>
             <label for="password"></label>
-            <input type="password" id="password" name="password" placeholder="비밀번호">
+            <input type="password" id="password" name="pwd" placeholder="비밀번호">
         </div>
         <div>
             <label for="check"></label>
@@ -40,8 +40,8 @@
             <input type="number" id="year" name="year" value="1999" min="1900" max="2005">
         </div>
         <div class="gender">
-            <input type="radio" id="male" name="gender" class="radio"><label for="male">남자</label>
-            <input type="radio" id="female" name="gender" class="radio"><label for="female">여자</label>
+            <input type="radio" id="male" name="gender" class="radio" value="male"><label for="male">남자</label>
+            <input type="radio" id="female" name="gender" class="radio" value="female"><label for="female">여자</label>
         </div>
         <div class="select">
             <button type="button" class="selectBtn" id="E">사람 많은 도시파</button>
@@ -59,6 +59,7 @@
             <button type="button" class="selectBtn" id="J">꼼꼼한 계획파</button>
             <button type="button" class="selectBtn" id="P">끌리는대로 행동파</button>
         </div>
+        <input type="hidden" id="mbtiResult" name="travelType" value="">
         <button type="submit" class="finishBtn">완료</button>
     </form>
 </div>

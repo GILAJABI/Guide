@@ -64,6 +64,14 @@ public class MemberController {
 
     }
 
+
+    @PostMapping("/signUp")
+    public String signUp(MemberDTO memberDTO) {
+        memberService.signUp(memberDTO);
+
+        return "redirect:/member/login";
+    }
+
     @GetMapping("/testLogin")
     public void testLogin(HttpSession session) {
         System.out.println("=============sesssion check================");
