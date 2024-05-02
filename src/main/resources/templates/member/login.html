@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/member/login.css}">
+    <script th:src="@{/js/member/login.js}"></script>
+</head>
+
+<body>
+<div th:include="/include/header.html"></div>
+<div class="container">
+    <header>
+        <img th:src="@{/image/logo.png}" alt="로고">
+        <p id="title">로그인을 진행하세요</p>
+    </header>
+    <form action="login" method="post" onsubmit="return validateForm()">
+        <div>
+            <label for="id"></label>
+            <input type="text" id="id" name="uid" placeholder="아이디">
+        </div>
+        <div>
+            <label for="password"></label>
+            <input type="password" id="password" name="pwd" placeholder="비밀번호">
+        </div>
+        <div class="saveLogin">
+            <input type="checkbox" id="remember-me" name="remember">
+            <label for="remember-me">로그인 저장</label>
+        </div>
+        <button type="submit" class="loginBtn">로그인</button>
+    </form>
+    <hr>
+    <div id="signUp">
+        <p>아직 계정이 없으신가요?</p>
+        <a th:href="@{/member/signUp}">회원가입</a>
+    </div>
+    <button id="kakaoBtn">
+        <img th:src="@{/image/kakao.png}" alt="카카오톡">
+    </button>
+</div>
+
+</body>
+</html>
