@@ -31,8 +31,6 @@ public class MemberDTO {
     @NotEmpty
     private String gender;
 
-
-    @NotEmpty
     private String travelType;
 
 

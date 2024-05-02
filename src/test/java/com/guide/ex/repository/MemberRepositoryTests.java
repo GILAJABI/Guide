@@ -34,7 +34,4 @@ public class MemberRepositoryTests {
             Member result = memberRepository.save(member);
         });
     }
-
-
-
 }
