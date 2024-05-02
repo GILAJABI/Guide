@@ -7,7 +7,7 @@
 
 .container {
     max-width: 454px;
-    margin: 65px auto;
+    margin: 40px auto;
 }
 
 header {
@@ -34,6 +34,28 @@ input[type="number"] {
     border-bottom: 1px solid rgba(54, 54, 54, 0.8);
 }
 
+#idForm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#idForm > input {
+    margin-right: 10px;
+}
+
+#duplicate {
+    width: 100px;
+    margin: 0px;
+    border: 1px solid #ff6392;
+    background: #ff6392;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: -30px;
+    padding: 0px;
+    color: #fafafa;
+}
+
 .gender {
     margin: 35px 109px;
     display: flex;
@@ -41,12 +63,22 @@ input[type="number"] {
     align-items: center;
 }
 
-.radio {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #363636;
-    border-radius: 10px;
+input[type='radio'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    outline: none;
     cursor: pointer;
+}
+
+input[type='radio']:checked {
+    background-color: #ff6392;
+    border: 2px solid #fafafa;
+    box-shadow: 0 0 0 1.6px #ff6392;
 }
 
 .select {
@@ -58,7 +90,6 @@ input[type="number"] {
 }
 
 .selectBtn {
-    /* 버튼 */
     width: 220px;
     height: 50px;
     background-color: #fafafa;
@@ -66,19 +97,21 @@ input[type="number"] {
     border: 1px solid #363636;
 }
 
+.selectBtn.selected {
+    background-color: #ff6392;
+    color: white;
+}
+
 .finishBtn {
-    /* 버튼 */
     margin-top: 20px;
     width: 454px;
     height: 52px;
     background-color: #ff6392;
     border-radius: 5px;
     border: none;
-    /* 폰트 */
     color: #fafafa;
-    font-family: 'Pretendard-Regular';
+    /* font-family: 'Pretendard-Regular'; */
     font-size: 20px;
-    /* 마우스 */
     cursor: pointer;
 }
 

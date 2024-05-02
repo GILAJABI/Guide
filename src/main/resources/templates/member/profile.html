@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
 <!--<iframe src="../include/header.html" style="border: none;" width="100%" height="100%"></iframe>-->
 <div class="container">
     <header>
+        <img src="../image/logo.png" alt="로고">
         <p id="title">프로필</p>
     </header>
     <form>
@@ -19,31 +20,32 @@
             <input type="text" id="name" placeholder="이름">
         </div>
         <div class="select">
-            <button class="selectBtn" id="E">사람 많은 도시파</button>
-            <button class="selectBtn" id="I">나무 많은 자연파</button>
+            <button type="button" class="selectBtn" id="E">사람 많은 도시파</button>
+            <button type="button" class="selectBtn" id="I">나무 많은 자연파</button>
         </div>
         <div class="select">
-            <button class="selectBtn" id="S">정해진 코스파</button>
-            <button class="selectBtn" id="N">상상대로 모험파</button>
+            <button type="button" class="selectBtn" id="S">정해진 코스파</button>
+            <button type="button" class="selectBtn" id="N">상상대로 모험파</button>
         </div>
         <div class="select">
-            <button class="selectBtn" id="F">감성파</button>
-            <button class="selectBtn" id="T">효율파</button>
+            <button type="button" class="selectBtn" id="F">감성파</button>
+            <button type="button" class="selectBtn" id="T">효율파</button>
         </div>
         <div class="select">
-            <button class="selectBtn" id="J">꼼꼼한 계획파</button>
-            <button class="selectBtn" id="P">끌리는대로 행동파</button>
+            <button type="button" class="selectBtn" id="J">꼼꼼한 계획파</button>
+            <button type="button" class="selectBtn" id="P">끌리는대로 행동파</button>
         </div>
         <div>
             <label for="year"></label>
-            <input type="number" id="year" name="year" value="2005" min="1900" max="2005">
+            <input type="number" id="year" name="year" value="1999" min="1900" max="2005">
         </div>
-        <div class="genderSelect">
-            <input type="radio" id="male" name="gender"><label for="male">남자</label>
-            <input type="radio" id="female" name="gender"><label for="female">여자</label>
+        <div class="gender">
+            <input type="radio" id="male" name="gender" class="radio"><label for="male">남자</label>
+            <input type="radio" id="female" name="gender" class="radio"><label for="female">여자</label>
         </div>
         <button type="submit" class="loginBtn">완료</button>
     </form>
+    <script th:src="@{/js/member/mbti.js}"></script>
 </div>
 </body>
 </html>

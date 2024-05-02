@@ -7,7 +7,11 @@
 
 .container {
     max-width: 454px;
-    margin: 143px auto;
+    margin: 40px auto;
+}
+
+header {
+    text-align: center;
 }
 
 #title {
@@ -29,19 +33,29 @@ input[type="number"] {
     border-bottom: 1px solid rgba(54, 54, 54, 0.8);
 }
 
-.radio {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #363636;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.genderSelect {
+.gender {
     margin: 35px 109px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+input[type='radio'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type='radio']:checked {
+    background-color: #ff6392;
+    border: 2px solid #fafafa;
+    box-shadow: 0 0 0 1.6px #ff6392;
 }
 
 .select {
@@ -61,6 +75,11 @@ input[type="number"] {
     border: 1px solid #363636;
 }
 
+.selectBtn.selected {
+    background-color: #ff6392;
+    color: white;
+}
+
 .loginBtn {
     /* 버튼 */
     width: 454px;
@@ -76,7 +95,9 @@ input[type="number"] {
     cursor: pointer;
 }
 
-.loginBtn:hover { background-color: #e0557d; }
+.loginBtn:hover {
+    background-color: #e0557d;
+}
 
 hr {
     width: 454px;
