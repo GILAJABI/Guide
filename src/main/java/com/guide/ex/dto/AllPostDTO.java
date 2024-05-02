@@ -33,8 +33,11 @@ public class AllPostDTO {
     @NotEmpty
     private boolean isDeleted;
 
+    @NotEmpty
     private int views;
+    @NotEmpty
     private int likeCount;
+    @NotEmpty
     private int commentCount;
 
     @NotEmpty
@@ -43,6 +46,12 @@ public class AllPostDTO {
     private long grade;
     @NotEmpty
     private int expense;
+    @NotEmpty
+    private int numPeople;
+    @NotEmpty
+    private int price;
+    @NotEmpty
+    private boolean status;
 
     private LocalDateTime startTravleDate;
     private LocalDateTime endTravleDate;
