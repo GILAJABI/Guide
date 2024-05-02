@@ -14,10 +14,6 @@ import javax.persistence.*;
 public class Carrot extends Post{
 
     @Column(nullable = false)
-    private Long grade;
-    private int expense;
-
-    @Column(nullable = false)
     private int price;
 
     @Column(nullable = false)

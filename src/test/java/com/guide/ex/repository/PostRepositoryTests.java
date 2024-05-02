@@ -6,12 +6,17 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Log4j2
@@ -28,6 +33,7 @@ public class PostRepositoryTests {
 
     @Autowired
     private CarrotRepository testCarrot;
+
 
 //    @Test
 //    public void carrotSearch1() {
@@ -63,8 +69,7 @@ public class PostRepositoryTests {
                 .modifyDate(LocalDateTime.now().plusDays(5))
                 .locationX(BigDecimal.valueOf(23.1234567))
                 .locationY(BigDecimal.valueOf(33.2268567))
-                .expense(15000)
-                .grade(25000L)
+                .price(152500)
                 .build();
 
         Carrot carrot1 = testCarrot.save(carrot);
@@ -84,12 +89,13 @@ public class PostRepositoryTests {
 
     @Test
     public void testUpdate() {
-        Long postId = 20L;
+        Long postId = 30L;
         Optional<Carrot> optional = testCarrot.findById(postId);
         if (optional.isPresent()) {
             Carrot carrot = optional.get();
             log.info("Found post: {}", carrot);
             carrot.change("update..title입니다", "내용수정함");
+            carrot.getRegisterDate();
             carrot = testCarrot.save(carrot);
         }
     }
@@ -186,4 +192,28 @@ public class PostRepositoryTests {
 
         postJoin.deleteById(bno);
     }
-}
+
+    //--------------------------
+
+
+//        // Read
+//        Optional<Carrot> foundCarrot = testCarrot.findById(savedCarrot.getPostId());
+//        assertTrue(foundCarrot.isPresent());
+//
+//        // Update
+//        foundCarrot.ifPresent(c -> {
+//            c.change("Updated title", "Updated content");
+//            testCarrot.save(c);
+//        });
+//
+//        // Check Update
+//        Optional<Carrot> updatedCarrot = testCarrot.findById(savedCarrot.getPostId());
+//        assertEquals("Updated title", updatedCarrot.orElseThrow().getTitle());
+//
+//        // Delete
+//        testCarrot.delete(updatedCarrot.get());
+//
+//        // Verify Delete
+//        Optional<Carrot> deletedCarrot = testCarrot.findById(savedCarrot.getPostId());
+//        assertFalse(deletedCarrot.isPresent());
+    }
