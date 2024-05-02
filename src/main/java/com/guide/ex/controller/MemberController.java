@@ -87,4 +87,14 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/myPage")
+    public void myPage() {
+
+    }
+
+    @GetMapping("/otherPage")
+    public void otherPage() {
+
+    }
+
 }
