@@ -58,6 +58,4 @@ public class TestRepositoryTests {
         log.info("------------test testDelete-------------");
         testRepository.deleteById(2L);
     }
-
-
 }
