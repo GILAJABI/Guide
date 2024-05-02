@@ -27,7 +27,17 @@
                 </li>
             </div>
 
-            <div class="right-group">
+            <div class="right-group" th:if="${session.member_id != null}">
+                <form id="logoutForm" method="post" action="/member/logout">
+                    <li id="mypage">
+                        <a class="a-link" href="/member/mypage" target="_parent">마이페이지</a>
+                    </li>
+                    <li id="logout" onclick="document.getElementById('logoutForm').submit();">
+                        <a class="a-link" href="#">로그아웃</a>
+                    </li>
+                </form>
+            </div>
+            <div class="right-group" th:unless="${session.member_id != null}">
                 <li id="login">
                     <a class="a-link" href="/member/login" target="_parent">로그인</a>
                 </li>

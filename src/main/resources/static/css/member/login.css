@@ -71,6 +71,7 @@ hr {
 }
 
 #signUp a {
+    text-decoration: none;
     color: #ff6392;
 }
 

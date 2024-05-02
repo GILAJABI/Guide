@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Year;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -67,6 +68,5 @@ public class Member extends BaseEntity {
     protected void onCreate() {
         this.rating = "동메달";
     }
-
 
 }
