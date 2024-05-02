@@ -7,5 +7,5 @@ public interface MemberService {
     void signUp(MemberDTO dto);
     boolean login(String uid, String pwd);
     Long setLoginSession(String uid);
-
+    boolean isIdAlreadyExists(String uid);
 }

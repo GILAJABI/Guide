@@ -4,12 +4,10 @@ import com.guide.ex.dto.MemberDTO;
 import com.guide.ex.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +62,6 @@ public class MemberController {
 
     }
 
-
     @PostMapping("/signUp")
     public String signUp(MemberDTO memberDTO) {
         memberService.signUp(memberDTO);
@@ -77,6 +74,17 @@ public class MemberController {
         System.out.println("=============sesssion check================");
         System.out.println(session.getAttribute("member_id"));
         System.out.println("===========================================");
+    }
+
+    @PostMapping("/checkDuplicateId")
+    @ResponseBody
+    public ResponseEntity<String> checkDuplicateId(@RequestParam String uid) {
+
+        if (memberService.isIdAlreadyExists(uid)) {
+            return ResponseEntity.ok("Duplicate");
+        } else {
+            return ResponseEntity.ok("Available");
+        }
     }
 
 }

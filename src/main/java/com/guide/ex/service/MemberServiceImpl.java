@@ -59,6 +59,14 @@ public class MemberServiceImpl implements MemberService {
         return member.getMemberId();
     }
 
+    @Override
+    public boolean isIdAlreadyExists(String uid) {
+        Member member = memberRepository.findByUid(uid);
+        if(member != null)
+            return true;
+        return false;
+    }
+
 
     //Salt생성
     private String generateSalt() {

@@ -1,4 +1,6 @@
 // 아이디 중복 확인
+let check_id  = false
+
 const tempInfo = ["user1", "travelmaker"]; // 임시로 아이디 만듦
 
 function checkDuplicateId() {
@@ -8,14 +10,25 @@ function checkDuplicateId() {
         return;
     }
 
-    if (tempInfo.includes(id)) {
-        alert("이미 사용 중인 아이디입니다.");
-    } else {
-        alert("사용 가능한 아이디입니다.");
-    }
+    $.ajax({
+        type: "POST",
+        url: "/member/checkDuplicateId",
+        data: { uid: id }, // Ensure 'uid' matches the parameter name expected by the controller
+        success: function(response) {
+            if (response === "Duplicate") {
+                alert("이미 사용 중인 아이디입니다.");
+            } else {
+                alert("사용 가능한 아이디입니다.");
+                check_id = true
+                console.log(check_id)
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
 }
 
-// 회원가입 제출 폼
 function signUpForm() {
     let name = document.getElementById('name').value;
     let id = document.getElementById('id').value;
@@ -50,5 +63,13 @@ function signUpForm() {
         return false;
     }
 
+    if(check_id){
+        return true;
+    }
+    else{
+        alert("이미 회원가입된 아이디 입니다.")
+        return false;
+    }
     return true;
 }
+// 회원가입 제출 폼
