@@ -17,11 +17,11 @@ public class ChatRoomRepositoryTests {
     @Autowired
     private ChatRoomRepository chatRoomRepository;
 
-    @Test
-    public void testTime(){
-        log.info("------------test time-------------");
-        chatRoomRepository.getTime();
-    }
+//    @Test
+//    public void testTime(){
+//        log.info("------------test time-------------");
+//        chatRoomRepository.getTime();
+//    }
 
     @Test
     public void testInsertChatRoom() {

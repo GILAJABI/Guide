@@ -18,11 +18,11 @@ public class ChatBlockedRepositoryTests {
     @Autowired
     private ChatBlockedRepository chatBlockedRepository;
 
-    @Test
-    public void testTime(){
-        log.info("------------test time-------------");
-        chatBlockedRepository.getTime();
-    }
+//    @Test
+//    public void testTime(){
+//        log.info("------------test time-------------");
+//        chatBlockedRepository.getTime();
+//    }
 
     @Test
     public void testInsertChatBlocked() {

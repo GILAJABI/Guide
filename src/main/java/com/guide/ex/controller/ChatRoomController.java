@@ -14,28 +14,21 @@ public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
 
-
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> room() {
-        List<ChatRoom> list = chatRoomRepository.findAllRoom();
-        return list;
+    public List<ChatRoom> getAllRooms() {
+        return chatRoomRepository.findAll();
     }
-
 
     // 채팅방 생성
     @PostMapping("/room")
-    @ResponseBody
-    public ChatRoom createRoom(@RequestParam String user1, String user2) {
-        return chatRoomRepository.createChatRoom(user1, user2);
+    public ChatRoom createRoom(@RequestParam Long roomNumber) {
+        return chatRoomRepository.save(new ChatRoom(null, null, roomNumber));
     }
-
 
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
+    public ChatRoom getRoomById(@PathVariable Long roomId) {
+        return chatRoomRepository.findById(roomId).orElse(null);
     }
 }

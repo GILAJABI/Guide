@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat WebSocket Client</title>
+    <script th:src="@{/js/chat.js}"></script>
+</head>
+<body>
+<h2>Chat WebSocket Client</h2>
+<form id="messageForm">
+    <input type="text" id="messageInput" placeholder="Enter message">
+    <button type="submit">Send</button>
+</form>
+<div id="messageArea">
+    <h4>Messages:</h4>
+    <ul id="messagesList"></ul>
+</div>
+<script src="../../static/js/chat/chatTest.js"></script>
+</body>
+</html>

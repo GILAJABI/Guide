@@ -18,11 +18,11 @@ public class ChatMessageRepositoryTests {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
-    @Test
-    public void testTime(){
-        log.info("------------test time-------------");
-        chatMessageRepository.getTime();
-    }
+//    @Test
+//    public void testTime(){
+//        log.info("------------test time-------------");
+//        chatMessageRepository.getTime();
+//    }
 
     @Test
     public void testInsertChatMessage() {
