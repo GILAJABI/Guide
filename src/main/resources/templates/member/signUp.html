@@ -13,10 +13,15 @@
         <img src="/image/logo.png" alt="로고">
         <p id="title">회원가입</p>
     </header>
-    <form action="/submit-login" method="post">
+    <form action="../html/home.html" method="post" onsubmit="return signUpForm()">
         <div>
+            <label for="name"></label>
+            <input type="text" id="name" placeholder="이름">
+        </div>
+        <div id="idForm">
             <label for="id"></label>
             <input type="text" id="id" name="id" placeholder="아이디">
+            <button type="button" id="duplicate" onclick="checkDuplicateId()">중복확인</button>
         </div>
         <div>
             <label for="password"></label>
@@ -25,10 +30,6 @@
         <div>
             <label for="check"></label>
             <input type="password" id="check" name="check" placeholder="비밀번호 확인">
-        </div>
-        <div>
-            <label for="name"></label>
-            <input type="text" id="name" placeholder="이름">
         </div>
         <div>
             <label for="phone"></label>
@@ -43,23 +44,25 @@
             <input type="radio" id="female" name="gender" class="radio"><label for="female">여자</label>
         </div>
         <div class="select">
-            <button class="selectBtn" id="E">사람 많은 도시파</button>
-            <button class="selectBtn" id="I">나무 많은 자연파</button>
+            <button type="button" class="selectBtn" id="E">사람 많은 도시파</button>
+            <button type="button" class="selectBtn" id="I">나무 많은 자연파</button>
         </div>
         <div class="select">
-            <button class="selectBtn" id="S">정해진 코스파</button>
-            <button class="selectBtn" id="N">상상대로 모험파</button>
+            <button type="button" class="selectBtn" id="S">정해진 코스파</button>
+            <button type="button" class="selectBtn" id="N">상상대로 모험파</button>
         </div>
         <div class="select">
-            <button class="selectBtn" id="F">감성파</button>
-            <button class="selectBtn" id="T">효율파</button>
+            <button type="button" class="selectBtn" id="F">감성파</button>
+            <button type="button" class="selectBtn" id="T">효율파</button>
         </div>
         <div class="select">
-            <button class="selectBtn" id="J">꼼꼼한 계획파</button>
-            <button class="selectBtn" id="P">끌리는대로 행동파</button>
+            <button type="button" class="selectBtn" id="J">꼼꼼한 계획파</button>
+            <button type="button" class="selectBtn" id="P">끌리는대로 행동파</button>
         </div>
         <button type="submit" class="finishBtn">완료</button>
     </form>
 </div>
+<script th:src="@{/js/member/mbti.js}"></script>
+<script th:src="@{/js/member/signUp.js}"></script>
 </body>
 </html>

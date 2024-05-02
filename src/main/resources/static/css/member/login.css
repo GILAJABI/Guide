@@ -7,7 +7,7 @@
 
 .container {
     max-width: 454px;
-    margin: 65px auto;
+    margin: 40px auto;
 }
 
 header {
@@ -34,9 +34,20 @@ input[type="password"] {
     border-bottom: 1px solid rgba(54, 54, 54, 0.8);
 }
 
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #ff6392;
+    cursor: pointer;
+}
+
 .saveLogin {
     margin: 31px 0px;
     cursor: pointer;
+}
+
+.saveLogin > label {
+    font-size: 18px;
 }
 
 .loginBtn {
@@ -54,7 +65,9 @@ input[type="password"] {
     cursor: pointer;
 }
 
-.loginBtn:hover { background-color: #e0557d; }
+.loginBtn:hover {
+    background-color: #e0557d;
+}
 
 hr {
     width: 454px;
@@ -71,8 +84,8 @@ hr {
 }
 
 #signUp a {
-    text-decoration: none;
     color: #ff6392;
+    text-decoration: none; /* Remove underline */
 }
 
 #kakaoBtn {
