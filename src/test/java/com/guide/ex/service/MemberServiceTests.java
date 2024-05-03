@@ -33,14 +33,13 @@ public class MemberServiceTests {
     @Test
     public void loginTest() {
         String uid = "testUser";
-//        String pwd = "testPassword";
-        String pwd = "testPassword1234";
+        String pwd = "testPassword";
+//        String pwd = "testPassword1234";
         boolean result = memberServiceTests.login(uid,pwd);
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
-
     }
 }
