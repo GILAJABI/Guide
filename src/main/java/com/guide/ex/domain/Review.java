@@ -24,11 +24,9 @@ public class Review extends Post{
     private int expense;
 
     @CreatedDate
-    @Column(updatable = false)
     private LocalDateTime startTravelDate;
 
     @LastModifiedDate
-    @Column(updatable = false)
     private LocalDateTime endTravelDate;
 
     @OneToOne(fetch = FetchType.LAZY)

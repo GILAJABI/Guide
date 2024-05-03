@@ -39,8 +39,6 @@ public class Comment{
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "member_id")
-    @Column(nullable = false)
-    private int userId;
 
     public void change(String s) {
         this.content = s;
