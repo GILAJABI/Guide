@@ -67,7 +67,9 @@ public class MemberServiceTests {
 
     @Test
     public void selectOneTest() {
+        MemberProfileDTO memberInfo = memberServiceTests.memberInfo(43L);
         MemberProfileDTO memberInfo = memberService.findByMemberId(43L);
+      
         log.info("=====================================================");
         log.info(memberInfo.toString());
         log.info("=====================================================");
