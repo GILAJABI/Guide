@@ -19,7 +19,7 @@ import java.util.List;
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public class Post {
+public abstract class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +48,12 @@ public class Post {
     private final boolean isDeleted = false;
 
     @Builder.Default
-    private int views = 1;
+    private int views = 0;
 
     @Builder.Default
-    private int commentCount = 1;
+    private int commentCount = 0;
 
-    @Builder.Default
-    private int postType = 1;
-
+    private String postType;
 
     @Builder.Default
     private int likeCount = 1;
@@ -64,14 +62,6 @@ public class Post {
     @Column(nullable = true)
     private String memberId;
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Review review;
-
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Carrot carrot;
-
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Join join;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> postImages;

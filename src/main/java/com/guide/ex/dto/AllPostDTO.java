@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @SuperBuilder
@@ -52,6 +53,9 @@ public class AllPostDTO {
     private int price;
     @NotEmpty
     private boolean status;
+
+
+    private List<CommentDTO> comments;
 
     private LocalDateTime startTravleDate;
     private LocalDateTime endTravleDate;
