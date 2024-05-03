@@ -5,6 +5,7 @@ import com.guide.ex.dto.MemberDTO;
 import com.guide.ex.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+
+//    private final ModelMapper modelMapper;
 
     @Override
     public void signUp(MemberDTO dto) {
@@ -66,7 +69,6 @@ public class MemberServiceImpl implements MemberService {
             return true;
         return false;
     }
-
 
     //Salt생성
     private String generateSalt() {

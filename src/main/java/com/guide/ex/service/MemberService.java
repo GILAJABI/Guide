@@ -8,4 +8,5 @@ public interface MemberService {
     boolean login(String uid, String pwd);
     Long setLoginSession(String uid);
     boolean isIdAlreadyExists(String uid);
+//    Long register(MemberDTO dto);
 }

@@ -18,12 +18,12 @@ public class MemberServiceTests {
     @Test
     public void signUpTest() {
         MemberDTO dto = new MemberDTO();
-        dto.setUid("testUser");
-        dto.setPwd("testPassword");
-        dto.setName("John Doe");
+        dto.setUid("456");
+        dto.setPwd("456");
+        dto.setName("kimmm");
         dto.setPhone("1234567890");
         dto.setTravelType("ISTJ");
-        dto.setYear(Year.of(1990));
+        dto.setYear(Year.of(1993));
         dto.setGender("male");
 
         memberServiceTests.signUp(dto);
@@ -32,15 +32,14 @@ public class MemberServiceTests {
 
     @Test
     public void loginTest() {
-        String uid = "testUser";
-//        String pwd = "testPassword";
-        String pwd = "testPassword1234";
+        String uid = "456";
+        String pwd = "456";
+//        String pwd = "testPassword1234";
         boolean result = memberServiceTests.login(uid,pwd);
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
         log.info("=================" + result + "=====================");
-
     }
 }
