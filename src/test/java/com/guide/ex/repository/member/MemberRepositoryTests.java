@@ -34,7 +34,6 @@ public class MemberRepositoryTests {
                     .phone("01012345678")
                     .year(Year.of(1999))
                     .gender("male")
-                    .travelType("ISTJ")
                     .build();
 
             Member result = memberRepository.save(member);

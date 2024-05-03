@@ -51,12 +51,16 @@ public class MemberServiceImpl implements MemberService {
 //    }
 
     @Override
-    public Long register(MemberDTO memberDto) {
+    public void register(MemberDTO memberDto) {
+        String salt = generateSalt();
+        String hashedPassword = hashPassword(memberDto.getPwd(), salt);
+
+        memberDto.setSalt(salt);
+        memberDto.setPwd(hashedPassword);
+
         Member member = modelMapper.map(memberDto, Member.class);
 
-        Long memberId = memberRepository.save(member).getMemberId();
-
-        return memberId;
+        memberRepository.save(member);
     }
 
     @Override
@@ -127,7 +131,6 @@ public class MemberServiceImpl implements MemberService {
         dto.setPhone(result.getMember().getPhone());
         dto.setYear(result.getMember().getYear());
         dto.setRating(result.getMember().getRating());
-        dto.setTravelType(result.getMember().getTravelType());
 
         return dto;
     }

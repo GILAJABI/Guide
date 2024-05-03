@@ -29,5 +29,7 @@ public class MemberProfile {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(length = 20, nullable = false, name = "travel_type")
+    private String travelType;
 
 }

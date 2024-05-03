@@ -1,4 +1,4 @@
-package com.guide.ex.controller.member;
+package com.guide.ex.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;

@@ -47,9 +47,6 @@ public class Member extends BaseEntity {
     @Column(length = 20, nullable = false, columnDefinition = "varchar(20) default '동메달'")
     private String rating;
 
-    @Column(length = 20, nullable = false, name = "travel_type")
-    private String travelType;
-
     @Column(length = 500, nullable = false)
     private boolean isBan;
 

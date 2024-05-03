@@ -1,4 +1,4 @@
-package com.guide.ex.controller;
+package com.guide.ex.controller.member;
 
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.service.MemberService;
