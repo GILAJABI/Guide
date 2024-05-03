@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var messageInput = document.getElementById('messageInput');
 
     function connect() {
-        ws = new WebSocket('ws://localhost:8080/chat/message');
+        ws = new WebSocket('ws://192.168.0.12:8888/ws-stomp');
 
         ws.onmessage = function(event) {
             var message = document.createElement('li');
