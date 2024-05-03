@@ -1,23 +1,20 @@
 package com.guide.ex.service;
 
-import com.guide.ex.domain.Member;
-import com.guide.ex.domain.MemberProfile;
-import com.guide.ex.dto.MemberDTO;
-import com.guide.ex.dto.MemberProfileDTO;
-import com.guide.ex.repository.MemberProfileRepository;
-import com.guide.ex.repository.MemberRepository;
+import com.guide.ex.domain.member.Member;
+import com.guide.ex.domain.member.MemberProfile;
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.member.MemberProfileDTO;
+import com.guide.ex.repository.member.MemberProfileRepository;
+import com.guide.ex.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service

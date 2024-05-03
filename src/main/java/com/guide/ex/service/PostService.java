@@ -1,6 +1,6 @@
 package com.guide.ex.service;
 
-import com.guide.ex.dto.AllPostDTO;
+import com.guide.ex.dto.post.AllPostDTO;
 
 public interface PostService {
 

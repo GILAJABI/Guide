@@ -1,9 +1,8 @@
 package com.guide.ex.repository.search;
 
-import com.guide.ex.domain.Post;
+import com.guide.ex.domain.post.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 

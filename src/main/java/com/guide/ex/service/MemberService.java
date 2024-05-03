@@ -1,9 +1,7 @@
 package com.guide.ex.service;
 
-import com.guide.ex.domain.Member;
-import com.guide.ex.domain.MemberProfile;
-import com.guide.ex.dto.MemberDTO;
-import com.guide.ex.dto.MemberProfileDTO;
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.member.MemberProfileDTO;
 
 public interface MemberService {
 //    void signUp(MemberDTO dto);

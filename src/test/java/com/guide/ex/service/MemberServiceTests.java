@@ -1,16 +1,10 @@
 package com.guide.ex.service;
 
-import com.guide.ex.domain.Member;
-import com.guide.ex.domain.MemberProfile;
-import com.guide.ex.dto.MemberDTO;
-import com.guide.ex.dto.MemberProfileDTO;
+import com.guide.ex.dto.member.MemberProfileDTO;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.Year;
 
 @SpringBootTest
 @Log4j2

@@ -1,10 +1,8 @@
 package com.guide.ex.repository.search;
 
-import com.guide.ex.domain.Post;
-import com.guide.ex.domain.QPost;
+import com.guide.ex.domain.post.Post;
+import com.guide.ex.domain.post.QPost;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,12 +11,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
-import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-
-import static com.guide.ex.domain.QPost.post;
 
 @Repository
 public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllPostSearch {
