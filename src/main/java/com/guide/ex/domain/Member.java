@@ -1,10 +1,7 @@
 package com.guide.ex.domain;
 
 import com.guide.ex.util.YearAttributeConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Year;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Member extends BaseEntity {
 
     @Id

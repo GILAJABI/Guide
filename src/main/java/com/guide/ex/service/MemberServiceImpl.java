@@ -1,15 +1,20 @@
 package com.guide.ex.service;
 
 import com.guide.ex.domain.Member;
+import com.guide.ex.domain.MemberProfile;
 import com.guide.ex.dto.MemberDTO;
+import com.guide.ex.dto.MemberProfileDTO;
+import com.guide.ex.repository.MemberProfileRepository;
 import com.guide.ex.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.time.Year;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,6 +24,7 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberProfileRepository memberProfileRepository;
 
     @Override
     public void signUp(MemberDTO dto) {
@@ -67,13 +73,55 @@ public class MemberServiceImpl implements MemberService {
         return false;
     }
 
+    @Override
+    public void fileUpload(MemberProfileDTO memberProfileDTO) {
+        Optional<Member> optionalMember = memberRepository.findById(memberProfileDTO.getMemberId());
+        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
-    //Salt생성
+        MemberProfile memberProfile = MemberProfile.builder()
+                .uuid(memberProfileDTO.getUuid())
+                .fileName(memberProfileDTO.getFileName())
+                .content(memberProfileDTO.getContent())
+                .member(member)
+                .build();
+
+        memberProfileRepository.save(memberProfile);
+    }
+
+    @Override
+    public MemberProfileDTO findByMemberId(Long member_id) {
+        Optional<Member> optionalMember = memberRepository.findById(member_id);
+        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        MemberProfile result = memberProfileRepository.findByMember(member);
+
+        MemberProfileDTO dto = new MemberProfileDTO();
+        
+        //사진 정보
+        dto.setFileName(result.getFileName());
+        dto.setUuid(result.getUuid());
+        
+        //개인 소개
+        dto.setContent(result.getContent());
+        
+        //회원 활동
+        dto.setLikeCount(result.getMember().getLikeCount());
+        dto.setPostCount(result.getMember().getPostCount());
+        dto.setCommentCount(result.getMember().getCommentCount());
+
+
+
+
+
+        return dto;
+    }
+
+
+
+
     private String generateSalt() {
         return UUID.randomUUID().toString();
     }
-
-    // (비밀번호 + Salt) -> Sha-256
     private String hashPassword(String password, String salt) {
         String saltedPassword = password + salt;
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());

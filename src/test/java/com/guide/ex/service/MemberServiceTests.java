@@ -1,6 +1,9 @@
 package com.guide.ex.service;
 
+import com.guide.ex.domain.Member;
+import com.guide.ex.domain.MemberProfile;
 import com.guide.ex.dto.MemberDTO;
+import com.guide.ex.dto.MemberProfileDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,12 @@ public class MemberServiceTests {
     @Test
     public void signUpTest() {
         MemberDTO dto = new MemberDTO();
-        dto.setUid("testUser");
-        dto.setPwd("testPassword");
-        dto.setName("John Doe");
+        dto.setUid("qwer");
+        dto.setPwd("qwer");
+        dto.setName("yurt");
         dto.setPhone("1234567890");
         dto.setTravelType("ISTJ");
-        dto.setYear(Year.of(1990));
+        dto.setYear(Year.of(1999));
         dto.setGender("male");
 
         memberServiceTests.signUp(dto);
@@ -43,4 +46,23 @@ public class MemberServiceTests {
         log.info("=================" + result + "=====================");
 
     }
+
+    @Test
+    public void fileUploadTest() {
+        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
+        memberProfileDTO.setMemberId(43L);
+        memberProfileDTO.setUuid("uuidTest asdfsdfasdds");
+        memberProfileDTO.setContent("content test asdfasdfsadfsdf");
+        memberProfileDTO.setFileName("fileNamne.test");
+        memberServiceTests.fileUpload(memberProfileDTO);
+    }
+
+    @Test
+    public void selectOneTest() {
+        MemberProfileDTO memberInfo = memberServiceTests.findByMemberId(43L);
+        log.info("=====================================================");
+        log.info(memberInfo.toString());
+        log.info("=====================================================");
+    }
+
 }

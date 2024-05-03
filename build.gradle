@@ -73,6 +73,8 @@ dependencies {
 
     //썸네일
     implementation 'net.coobird:thumbnailator:0.4.16'
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+
 
     //시큐리티
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
