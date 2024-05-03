@@ -27,8 +27,5 @@ public class ChatRoomController {
     }
 
     // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
-    public ChatRoom getRoomById(@PathVariable Long roomId) {
-        return chatRoomRepository.findById(roomId).orElse(null);
-    }
+
 }

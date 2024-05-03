@@ -8,8 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
+@RequestMapping("/chat")
 @Controller
 public class ChatController {
 
@@ -24,5 +28,9 @@ public class ChatController {
             chatMessageRepository.save(message);
             messagingTemplate.convertAndSend("/sub/chat/room/" + room.getRoomId(), message);
         }
+    }
+
+    @GetMapping("/chatList")
+    public void getRoomById() {
     }
 }
