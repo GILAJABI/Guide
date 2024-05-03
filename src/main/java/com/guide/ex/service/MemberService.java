@@ -12,6 +12,4 @@ public interface MemberService {
     boolean isIdAlreadyExists(String uid);
     void fileUpload(MemberProfileDTO dto);
     MemberProfileDTO findByMemberId(Long member_id);
-
-
 }

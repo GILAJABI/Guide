@@ -26,7 +26,7 @@ public class Member extends BaseEntity {
     @Column(length = 256, nullable = false)
     private String pwd;
 
-    @Column(length = 256, nullable = false)
+    @Column(length = 256)
     private String salt;
 
     @Column(length = 20, nullable = false)
@@ -67,4 +67,8 @@ public class Member extends BaseEntity {
         this.rating = "동메달";
     }
 
+    // change() : 닉네임(name) 변경
+    public void change(String name) {
+        this.name = name;
+    }
 }

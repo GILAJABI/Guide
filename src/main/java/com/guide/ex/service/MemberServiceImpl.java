@@ -9,6 +9,7 @@ import com.guide.ex.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -25,6 +26,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberProfileRepository memberProfileRepository;
+
+//    private final ModelMapper modelMapper;
 
     @Override
     public void signUp(MemberDTO dto) {
@@ -115,9 +118,6 @@ public class MemberServiceImpl implements MemberService {
 
         return dto;
     }
-
-
-
 
     private String generateSalt() {
         return UUID.randomUUID().toString();
