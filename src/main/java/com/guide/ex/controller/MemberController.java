@@ -64,8 +64,7 @@ public class MemberController {
 
     @PostMapping("/signUp")
     public String signUp(MemberDTO memberDTO) {
-        memberService.signUp(memberDTO);
-
+        memberService.register(memberDTO);
         return "redirect:/member/login";
     }
 
@@ -85,6 +84,16 @@ public class MemberController {
         } else {
             return ResponseEntity.ok("Available");
         }
+    }
+
+    @GetMapping("/myPage")
+    public void myPage() {
+
+    }
+
+    @GetMapping("/otherPage")
+    public void otherPage() {
+
     }
 
 }

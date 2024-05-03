@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class ImgController {
 
+    @Value("${com.guide.upload.path}")// import 시에 springframework으로 시작하는 Value
     private String uploadPath;
+
+
+
 
 }

@@ -9,12 +9,12 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class MemberProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_profile_id")
-    private Long memberProfileId;
+    private Long member_profile_id;
 
     @Column(name="uuid", length = 500)
     private String uuid;
@@ -22,8 +22,12 @@ public class MemberProfile {
     @Column(name = "file_name", length = 200)
     private String fileName;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(length = 500)
+    private String content;
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
 
 }
