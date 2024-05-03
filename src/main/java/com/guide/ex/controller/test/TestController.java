@@ -27,6 +27,14 @@ public class TestController {
         return "redirect:/test_success";
     }
 
+    @GetMapping("/test_img")
+    public void imgTest() {
 
+    }
+
+    @GetMapping("/test_out_member")
+    public void test_out_member() {
+
+    }
 
 }

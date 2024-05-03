@@ -65,7 +65,6 @@ public class MemberController {
     @PostMapping("/signUp")
     public String signUp(MemberDTO memberDTO) {
         memberService.signUp(memberDTO);
-
         return "redirect:/member/login";
     }
 
