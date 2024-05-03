@@ -6,10 +6,11 @@
 </head>
 <body>
 <h1>Member Profile</h1>
-<p>ID: <span th:text="${memberProfile.memberProfileId}"></span></p>
-<p>UUID: <span th:text="${memberProfile.uuid}"></span></p>
-<p>File Name: <span th:text="${memberProfile.fileName}"></span></p>
-<p>Content: <span th:text="${memberProfile.content}"></span></p>
-<!-- 이하 필요한 정보들을 추가로 표시할 수 있습니다. -->
+<p>UUID: <span th:text="${member_info.uuid}"></span></p>
+<p>File Name: <span th:text="${member_info.fileName}"></span></p>
+<p>Content: <span th:text="${member_info.content}"></span></p>
+
+<img th:src="'/api/photo/' + ${member_info.uuid + '_' + member_info.fileName}" alt="Member Photo">
+
 </body>
 </html>

@@ -7,14 +7,17 @@ import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +36,8 @@ public class TestRestController {
 
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private ResourceLoader resourceLoader;
 
 
     @ApiOperation(value = "파일 업로드", notes = "단일 파일을 업로드합니다.")
@@ -68,6 +73,32 @@ public class TestRestController {
         }
     }
 
+    @GetMapping("/photo/{fileName:.+}")
+    public ResponseEntity<Resource> downloadPhoto(@PathVariable String fileName) throws IOException {
+        Path filePath = Paths.get(uploadPath).resolve(fileName).normalize();
+        System.out.println("=========================================================");
+        System.out.println(filePath);
+        System.out.println("=========================================================");
+
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (!resource.exists()) {
+            throw new FileNotFoundException("File not found: " + fileName);
+        }
+
+        // Determine the content type dynamically based on the file extension
+        MediaType mediaType = MediaType.IMAGE_JPEG; // Default to JPEG
+        if (fileName.toLowerCase().endsWith(".png")) {
+            mediaType = MediaType.IMAGE_PNG;
+        } else if (fileName.toLowerCase().endsWith(".gif")) {
+            mediaType = MediaType.IMAGE_GIF;
+        }
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 
 
 }

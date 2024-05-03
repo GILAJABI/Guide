@@ -1,7 +1,10 @@
 package com.guide.ex.controller.test;
 
+import com.guide.ex.service.MemberService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpRequest;
@@ -9,6 +12,9 @@ import java.net.http.HttpRequest;
 @Controller
 @RequestMapping("/test")
 public class TestController {
+
+    @Autowired
+    private MemberService memberService;
 
 //    css, js 연결 테스트
     @GetMapping("/test")
@@ -33,8 +39,8 @@ public class TestController {
     }
 
     @GetMapping("/test_out_member")
-    public void test_out_member() {
-
+    public void test_out_member(Model model) {
+        model.addAttribute("member_info", memberService.memberInfo(44L));
     }
 
 }

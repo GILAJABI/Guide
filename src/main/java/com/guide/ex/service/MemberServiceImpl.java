@@ -8,13 +8,10 @@ import com.guide.ex.repository.MemberProfileRepository;
 import com.guide.ex.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.time.Year;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,6 +22,7 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+
     private final MemberProfileRepository memberProfileRepository;
 
 //    private final ModelMapper modelMapper;
@@ -92,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberProfileDTO findByMemberId(Long member_id) {
+    public MemberProfileDTO memberInfo(Long member_id) {
         Optional<Member> optionalMember = memberRepository.findById(member_id);
         Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
@@ -112,9 +110,13 @@ public class MemberServiceImpl implements MemberService {
         dto.setPostCount(result.getMember().getPostCount());
         dto.setCommentCount(result.getMember().getCommentCount());
 
-
-
-
+        //회원 정보
+        dto.setName(result.getMember().getName());
+        dto.setGender(result.getMember().getGender());
+        dto.setPhone(result.getMember().getPhone());
+        dto.setYear(result.getMember().getYear());
+        dto.setRating(result.getMember().getRating());
+        dto.setTravelType(result.getMember().getTravelType());
 
         return dto;
     }

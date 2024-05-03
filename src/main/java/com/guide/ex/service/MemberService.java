@@ -11,5 +11,5 @@ public interface MemberService {
     Long setLoginSession(String uid);
     boolean isIdAlreadyExists(String uid);
     void fileUpload(MemberProfileDTO dto);
-    MemberProfileDTO findByMemberId(Long member_id);
+    MemberProfileDTO memberInfo(Long member_id);
 }
