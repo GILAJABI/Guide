@@ -5,8 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.guide.ex.domain.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.Year;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -22,8 +27,8 @@ public class MemberRepositoryTests {
         IntStream.rangeClosed(1, 10).forEach(i -> {
             Member member = Member.builder()
                     .name("kim")
-                    .uid("travel")
-                    .pwd("maker")
+                    .uid("travel"+i)
+                    .pwd("maker"+i)
                     .salt("someSaltValue") // 여기에 적절한 salt 값을 추가
                     .phone("01012345678")
                     .year(Year.of(1999))
@@ -65,5 +70,21 @@ public class MemberRepositoryTests {
         Long member_id = 57L;
 
         memberRepository.deleteById(member_id);
+    }
+
+    @Test
+    public void memberPagingTest() {
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("memberId"));
+
+        Page<Member> result = memberRepository.findAll(pageable);
+
+        log.info("total count: "+result.getTotalElements());
+        log.info( "total pages:" +result.getTotalPages());
+        log.info("page number: "+result.getNumber());
+        log.info("page size: "+result.getSize());
+
+        List<Member> members = result.getContent();
+
+        members.forEach(member -> log.info(member));
     }
 }
