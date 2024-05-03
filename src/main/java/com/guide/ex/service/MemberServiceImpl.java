@@ -7,47 +7,57 @@ import com.guide.ex.dto.MemberProfileDTO;
 import com.guide.ex.repository.MemberProfileRepository;
 import com.guide.ex.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.time.Year;
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @Service
-@Slf4j
+@Log4j2
 @RequiredArgsConstructor
 @Transactional
 public class MemberServiceImpl implements MemberService {
 
+    private final ModelMapper modelMapper;
+
     private final MemberRepository memberRepository;
     private final MemberProfileRepository memberProfileRepository;
 
-//    private final ModelMapper modelMapper;
+//    @Override
+//    public void signUp(MemberDTO dto) {
+//
+//        String salt = generateSalt();
+//        String hashedPassword = hashPassword(dto.getPwd(), salt);
+//
+//        // Build Member object
+//        Member member = Member.builder()
+//                .uid(dto.getUid())
+//                .salt(salt)
+//                .pwd(hashedPassword)
+//                .name(dto.getName())
+//                .phone(dto.getPhone())
+//                .travelType(dto.getTravelType())
+//                .year(dto.getYear())
+//                .gender(dto.getGender())
+//                .build();
+//
+//        memberRepository.save(member);
+//    }
 
     @Override
-    public void signUp(MemberDTO dto) {
+    public Long register(MemberDTO memberDto) {
+        Member member = modelMapper.map(memberDto, Member.class);
 
-        String salt = generateSalt();
-        String hashedPassword = hashPassword(dto.getPwd(), salt);
+        Long memberId = memberRepository.save(member).getMemberId();
 
-        // Build Member object
-        Member member = Member.builder()
-                .uid(dto.getUid())
-                .salt(salt)
-                .pwd(hashedPassword)
-                .name(dto.getName())
-                .phone(dto.getPhone())
-                .travelType(dto.getTravelType())
-                .year(dto.getYear())
-                .gender(dto.getGender())
-                .build();
-
-        memberRepository.save(member);
+        return memberId;
     }
 
     @Override
@@ -127,5 +137,13 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
+    public MemberDTO readOne(Long memberId) {
+        Optional<Member> result = memberRepository.findById(memberId);
 
+        Member member = result.orElseThrow();
+
+        MemberDTO dto = modelMapper.map(member, MemberDTO.class);
+
+        return dto;
+    }
 }
