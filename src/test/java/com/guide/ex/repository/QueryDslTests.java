@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 @SpringBootTest
 @Log4j2
@@ -26,6 +28,8 @@ public class QueryDslTests {
         String postType = "Join";
 
         List<Post> posts = allPostSearch.searchPost(postType);
+
+        assertTrue("검색 결과가 비어 있습니다.", !posts.isEmpty());
 
         assertNotNull(posts);
 
@@ -70,4 +74,24 @@ public class QueryDslTests {
             // 필요한 다른 속성들도 출력
         });
     }
+
+    @Test
+    void testSearchPostContaining() {
+        // Given
+        String searchValue = "리뷰";
+
+        // When
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue);
+
+        // Then
+        assertNotNull(posts);
+        assertFalse(posts.isEmpty());
+        for (Post post : posts) {
+            log.info("Post title: " + post.getTitle());
+            log.info("Post content: " + post.getContent());
+            log.info("Post id: " + post.getPostId());
+//            log.info(post.getTitle().contains(postTitle) || post.getContent().contains(postContent));
+        }
+    }
+
 }

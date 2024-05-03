@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface AllPostSearch {
 
-    Page<Post> AllPostSearch(String[] types, String keyword, Pageable pageable);
-
     List<Post> searchPost(String postType);
 
     Page<Post> searchPostPaging(String postType, Pageable pageable);
+
+    List<Post> searchPostContaining(String searchValue);
+
+
 }
