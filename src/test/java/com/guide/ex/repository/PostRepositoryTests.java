@@ -3,20 +3,17 @@ package com.guide.ex.repository;
 import com.guide.ex.domain.*;
 import com.guide.ex.domain.Carrot;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Log4j2
@@ -34,6 +31,8 @@ public class PostRepositoryTests {
     @Autowired
     private CarrotRepository testCarrot;
 
+    @Autowired
+    private ReviewRepository testReview;
 
 //    @Test
 //    public void carrotSearch1() {
@@ -69,6 +68,7 @@ public class PostRepositoryTests {
                 .modifyDate(LocalDateTime.now().plusDays(5))
                 .locationX(BigDecimal.valueOf(23.1234567))
                 .locationY(BigDecimal.valueOf(33.2268567))
+                .postType("Carrot")
                 .price(152500)
                 .build();
 
@@ -77,9 +77,14 @@ public class PostRepositoryTests {
         assertNotNull(carrot1);
     }
 
+    @RepeatedTest(5)
+    public void testFindById() {
+        testInsert();
+    }
+
     @Test
     public void testSelect() {
-        Long postId = 20L;
+        Long postId = 6L;
 
         Optional<Carrot> result = testCarrot.findById(postId);
 
@@ -89,7 +94,7 @@ public class PostRepositoryTests {
 
     @Test
     public void testUpdate() {
-        Long postId = 30L;
+        Long postId = 6L;
         Optional<Carrot> optional = testCarrot.findById(postId);
         if (optional.isPresent()) {
             Carrot carrot = optional.get();
@@ -102,7 +107,7 @@ public class PostRepositoryTests {
 
     @Test
     public void testDelete() {
-        Long postId = 7L;
+        Long postId = 6L;
         Optional<Carrot> optional = testCarrot.findById(postId);
         if (optional.isPresent()) {
             Carrot carrot = optional.get();
@@ -173,8 +178,9 @@ public class PostRepositoryTests {
                 .modifyDate(LocalDateTime.now().plusDays(5))
                 .locationX(BigDecimal.valueOf(23.1234567))
                 .locationY(BigDecimal.valueOf(33.2268567))
-                .expense(15000)
-                .numPeople(35000)
+                .postType("Join")
+                .expense(530000)
+                .numPeople(3)
                 .startTravelDate(LocalDateTime.now())
                 .endTravelDate(LocalDateTime.now().plusDays(5))
                 .build();
@@ -186,34 +192,52 @@ public class PostRepositoryTests {
         assertNotNull(join1);
     }
 
+    @RepeatedTest(5)
+    public void testInsertMany() {
+        testJoinInsert();
+    }
+
     @Test
     public void testJoinDelete() {
-        Long bno = 14L;
+        Long bno = 12L;
 
         postJoin.deleteById(bno);
     }
 
-    //--------------------------
+    @Test
+    public void testReviewInsert() {
+        log.info("------------test testInsert-------------");
 
+        Review review = Review.builder()
+                .title("어린이 공원 타조농장 후기 남긴다.")
+                .content("리뷰 ) 여기 재미 없다. 가지마라.")
+                .registerDate(LocalDateTime.now())
+                .modifyDate(LocalDateTime.now().plusDays(5))
+                .locationX(BigDecimal.valueOf(23.1234567))
+                .locationY(BigDecimal.valueOf(33.2268567))
+                .postType("Review")
+                .expense(70000)
+                .grade(140000L)
+                .startTravelDate(LocalDateTime.now())
+                .endTravelDate(LocalDateTime.now().plusDays(2))
+                .build();
 
-//        // Read
-//        Optional<Carrot> foundCarrot = testCarrot.findById(savedCarrot.getPostId());
-//        assertTrue(foundCarrot.isPresent());
-//
-//        // Update
-//        foundCarrot.ifPresent(c -> {
-//            c.change("Updated title", "Updated content");
-//            testCarrot.save(c);
-//        });
-//
-//        // Check Update
-//        Optional<Carrot> updatedCarrot = testCarrot.findById(savedCarrot.getPostId());
-//        assertEquals("Updated title", updatedCarrot.orElseThrow().getTitle());
-//
-//        // Delete
-//        testCarrot.delete(updatedCarrot.get());
-//
-//        // Verify Delete
-//        Optional<Carrot> deletedCarrot = testCarrot.findById(savedCarrot.getPostId());
-//        assertFalse(deletedCarrot.isPresent());
+        Review review1 = testReview.save(review);
+
+        log.info(review1.getPostId());
+
+        assertNotNull(review1);
     }
+
+    @RepeatedTest(5)
+    public void testReviewMany() {
+        testReviewInsert();
+    }
+
+    @Test
+    public void testReviewDelete() {
+        Long bno = 18L;
+
+        testReview.deleteById(bno);
+    }
+}
