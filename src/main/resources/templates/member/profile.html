@@ -5,19 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>프로필</title>
     <link rel="stylesheet" th:href="@{/css/member/profile.css}">
+    <style>
+        #imagePreview {
+            width: 200px;
+            height: 200px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+
+    </style>
 </head>
 <body>
 <div th:include="/include/header.html"></div>
-<!--<iframe src="../include/header.html" style="border: none;" width="100%" height="100%"></iframe>-->
 <div class="container">
     <header>
-        <img src="../image/logo.png" alt="로고">
+        <!--        <img src="../image/logo.png" alt="로고">-->
         <p id="title">프로필</p>
     </header>
     <form>
+        <div id="imagePreview"></div>
+        <label class="file-label">
+            <input type="file" id="file" name="file" required>
+        </label>
+        <br>
         <div>
             <label for="name"></label>
             <input type="text" id="name" placeholder="이름">
+
+            <label for="content"></label>
+            <input type="text" id="content" placeholder="한줄소개">
         </div>
         <div class="select">
             <button type="button" class="selectBtn" id="E">사람 많은 도시파</button>
@@ -35,17 +52,32 @@
             <button type="button" class="selectBtn" id="J">꼼꼼한 계획파</button>
             <button type="button" class="selectBtn" id="P">끌리는대로 행동파</button>
         </div>
-        <div>
-            <label for="year"></label>
-            <input type="number" id="year" name="year" value="1999" min="1900" max="2005">
-        </div>
-        <div class="gender">
-            <input type="radio" id="male" name="gender" class="radio"><label for="male">남자</label>
-            <input type="radio" id="female" name="gender" class="radio"><label for="female">여자</label>
-        </div>
+
+        <br>
         <button type="submit" class="loginBtn">완료</button>
     </form>
     <script th:src="@{/js/member/mbti.js}"></script>
 </div>
+
+<script>
+    document.getElementById('file').addEventListener('change', function(event) {
+        var file = event.target.files[0]; // 선택된 파일 가져오기
+        var reader = new FileReader(); // 파일을 읽기 위한 FileReader 객체 생성
+
+        reader.readAsDataURL(file);
+
+        reader.onload = function(e) {
+            var imagePreview = document.getElementById('imagePreview'); // 이미지를 표시할 영역 가져오기
+            imagePreview.innerHTML = ''; // 이전에 표시된 이미지 제거
+
+            var imgElement = document.createElement('img'); // 이미지 요소 생성
+            imgElement.src = e.target.result; // 이미지의 경로를 설정
+            imgElement.style.maxWidth = '300px'; // 이미지의 최대 너비 지정
+            imgElement.style.maxHeight = '300px'; // 이미지의 최대 높이 지정
+
+            imagePreview.appendChild(imgElement); // 이미지를 표시할 영역에 이미지 요소 추가
+        };
+    });
+</script>
 </body>
 </html>
