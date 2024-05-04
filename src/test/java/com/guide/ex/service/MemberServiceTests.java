@@ -32,19 +32,19 @@ public class MemberServiceTests {
 //    }
 
     @Test
-    public void testRegister() {
+    public void signUpTest() {
         log.info(memberService.getClass().getName());
 
         MemberDTO memberDTO = MemberDTO.builder()
-                .name("이채림")
-                .uid("leechaerim00")
-                .pwd("1234")
-                .phone("01085453684")
-                .year(Year.of(2000))
-                .gender("female")
+                .name("1팀")
+                .uid("travle")
+                .pwd("maker")
+                .phone("01012345678")
+                .year(Year.of(1999))
+                .gender("male")
                 .build();
 
-        memberService.register(memberDTO);
+        memberService.signUp(memberDTO);
     }
 
     @Test
@@ -60,12 +60,10 @@ public class MemberServiceTests {
         log.info("=================" + result + "=====================");
     }
 
-
-
     @Test
     public void fileUploadTest() {
         MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-        memberProfileDTO.setMemberId(43L);
+        memberProfileDTO.setMemberProfileId(43L);
         memberProfileDTO.setUuid("uuidTest asdfsdfasdds");
         memberProfileDTO.setContent("content test asdfasdfsadfsdf");
         memberProfileDTO.setFileName("fileNamne.test");

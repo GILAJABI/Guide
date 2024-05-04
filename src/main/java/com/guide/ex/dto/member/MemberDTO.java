@@ -40,4 +40,10 @@ public class MemberDTO {
     private int commentCount;
     private int likeCount;
 
+    private MemberProfileDTO profileInfo;
+
+    public void setProfileInfo(MemberProfileDTO profileInfo) {
+        this.profileInfo = profileInfo;
+    }
+
 }

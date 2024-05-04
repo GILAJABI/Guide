@@ -32,4 +32,11 @@ public class MemberProfile {
     @Column(length = 20, nullable = false, name = "travel_type")
     private String travelType;
 
+    // change()
+    public void change(String uuid, String fileName, String content, String travelType) {
+        this.uuid = uuid;
+        this.fileName = fileName;
+        this.content = content;
+        this.travelType = travelType;
+    }
 }
