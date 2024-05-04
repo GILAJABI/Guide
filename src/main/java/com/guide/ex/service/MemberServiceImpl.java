@@ -66,7 +66,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean login(String uid, String pwd) {
         Member member = memberRepository.findByUid(uid);
-        if (member != null) {
+        System.out.println("=================================");
+        System.out.println(member.isBan());
+        System.out.println("=================================");
+        if (member != null && !member.isBan()) {
             String hashedPassword = hashPassword(pwd, member.getSalt());
             if (hashedPassword.equals(member.getPwd())) {
                 return true;
@@ -98,6 +101,7 @@ public class MemberServiceImpl implements MemberService {
                 .uuid(memberProfileDTO.getUuid())
                 .fileName(memberProfileDTO.getFileName())
                 .content(memberProfileDTO.getContent())
+                .travelType(memberProfileDTO.getTravelType())
                 .member(member)
                 .build();
 
