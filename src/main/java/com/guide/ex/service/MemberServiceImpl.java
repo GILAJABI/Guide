@@ -127,4 +127,15 @@ public class MemberServiceImpl implements MemberService {
 
         memberProfileRepository.save(memberProfile);
     }
+
+    //아래 함수는 DTO로 ModelMapper를 활용해 수정
+    @Override
+    public MemberProfile memberInfo(Long member_id) {
+        Optional<Member> optionalMember = memberRepository.findById(member_id);
+        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        Optional<MemberProfile> optionalMemberProfile = memberProfileRepository.findByMember(member);
+        MemberProfile memberProfile = optionalMemberProfile.orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return memberProfile;
+    }
 }
