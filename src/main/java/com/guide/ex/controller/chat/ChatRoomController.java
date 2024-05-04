@@ -25,7 +25,4 @@ public class ChatRoomController {
     public ChatRoom createRoom(@RequestParam Long roomNumber) {
         return chatRoomRepository.save(new ChatRoom(null, null, roomNumber));
     }
-
-    // 특정 채팅방 조회
-
 }
