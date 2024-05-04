@@ -4,6 +4,8 @@ import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.member.MemberProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface MemberProfileRepository extends JpaRepository<MemberProfile, Long> {
-    MemberProfile findByMember(Member member);
+    Optional<MemberProfile> findByMember(Member member);
 }

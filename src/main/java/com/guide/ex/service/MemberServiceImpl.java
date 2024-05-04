@@ -29,29 +29,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberProfileRepository memberProfileRepository;
 
-//    @Override
-//    public void signUp(MemberDTO dto) {
-//
-//        String salt = generateSalt();
-//        String hashedPassword = hashPassword(dto.getPwd(), salt);
-//
-//        // Build Member object
-//        Member member = Member.builder()
-//                .uid(dto.getUid())
-//                .salt(salt)
-//                .pwd(hashedPassword)
-//                .name(dto.getName())
-//                .phone(dto.getPhone())
-//                .travelType(dto.getTravelType())
-//                .year(dto.getYear())
-//                .gender(dto.getGender())
-//                .build();
-//
-//        memberRepository.save(member);
-//    }
-
     @Override
-    public void register(MemberDTO memberDto) {
+    public void signUp(MemberDTO memberDto) {
         String salt = generateSalt();
         String hashedPassword = hashPassword(memberDto.getPwd(), salt);
 
@@ -112,14 +91,14 @@ public class MemberServiceImpl implements MemberService {
         MemberProfile result = memberProfileRepository.findByMember(member);
 
         MemberProfileDTO dto = new MemberProfileDTO();
-        
+
         //사진 정보
         dto.setFileName(result.getFileName());
         dto.setUuid(result.getUuid());
-        
+
         //개인 소개
         dto.setContent(result.getContent());
-        
+
         //회원 활동
         dto.setLikeCount(result.getMember().getLikeCount());
         dto.setPostCount(result.getMember().getPostCount());
@@ -143,13 +122,36 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
+    // 조회 작업
+    @Override
     public MemberDTO readOne(Long memberId) {
+        // Member 엔티티 조회
         Optional<Member> result = memberRepository.findById(memberId);
+        Member member = result.orElseThrow(); // 조회된 Member가 없을 경우 예외 발생
 
-        Member member = result.orElseThrow();
+        // MemberDTO로 변환
+        MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
 
-        MemberDTO dto = modelMapper.map(member, MemberDTO.class);
+        // MemberProfile 조회
+        Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
+        MemberProfile memberProfile = memberProfileResult.orElseThrow(); // 조회된 MemberProfile이 없을 경우 예외 발생
 
-        return dto;
+        // MemberProfile 정보를 MemberDTO에 추가
+        // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
+        memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+
+        return memberDTO;
+    }
+
+    // 수정 작업
+    @Override
+    public void modify(MemberProfileDTO memberProfileDTO) {
+        Optional<MemberProfile> result = memberProfileRepository.findById(memberProfileDTO.getMemberId());
+
+        MemberProfile memberProfile = result.orElseThrow();
+
+        memberProfile.change(memberProfileDTO.getUuid(), memberProfileDTO.getFileName(), memberProfileDTO.getContent(), memberProfileDTO.getTravelType());
+
+        memberProfileRepository.save(memberProfile);
     }
 }

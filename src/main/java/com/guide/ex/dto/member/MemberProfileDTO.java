@@ -1,28 +1,23 @@
 package com.guide.ex.dto.member;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.Year;
 
 @Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberProfileDTO {
-    private String uuid;
-    private String fileName;
+    private Long memberProfileId;
     private String content;
-    private Long memberId;
-
-    private String name;
-    private String phone;
-    private String gender;
+    private String fileName;
+    private String uuid;
+    @NotEmpty
     private String travelType;
-    private Year year;
-    private String rating;
 
-    private int postCount;
-    private int commentCount;
-    private int likeCount;
+    private Long memberId;
 }
