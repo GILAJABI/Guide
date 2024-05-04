@@ -6,6 +6,7 @@ import com.guide.ex.repository.search.AllPostSearch;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import static org.springframework.test.util.AssertionErrors.assertTrue;
 public class PostQueryDslTests {
 
     @Autowired
+    @Qualifier("allPostSearchImpl") // AllPostSearch는 1개 이상의 빈을 사용하고 있어 우선순위를 지정
     private AllPostSearch allPostSearch;
 
     @Test

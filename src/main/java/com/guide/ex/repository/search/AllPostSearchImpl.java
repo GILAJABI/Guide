@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Repository
+@Repository("allPostSearchImpl")
 public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllPostSearch {
 
     private final JPAQueryFactory queryFactory;

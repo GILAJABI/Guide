@@ -14,5 +14,4 @@ public interface AllPostSearch {
 
     List<Post> searchPostContaining(String searchValue);
 
-
 }
