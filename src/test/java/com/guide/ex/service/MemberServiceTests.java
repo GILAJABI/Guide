@@ -70,12 +70,4 @@ public class MemberServiceTests {
         memberService.fileUpload(memberProfileDTO);
     }
 
-    @Test
-    public void selectOneTest() {
-        MemberProfileDTO memberInfo = memberService.memberInfo(43L);
-        log.info("=====================================================");
-        log.info(memberInfo.toString());
-        log.info("=====================================================");
-    }
-
 }

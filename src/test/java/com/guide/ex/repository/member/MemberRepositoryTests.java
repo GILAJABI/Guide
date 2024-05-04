@@ -60,7 +60,7 @@ public class MemberRepositoryTests {
 
         Member member = result.orElseThrow();
 
-        member.change("update 이채림");
+//        member.change("update 이채림");
 
         memberRepository.save(member);
     }

@@ -87,37 +87,6 @@ public class MemberServiceImpl implements MemberService {
         memberProfileRepository.save(memberProfile);
     }
 
-    @Override
-    public MemberProfileDTO memberInfo(Long member_id) {
-        Optional<Member> optionalMember = memberRepository.findById(member_id);
-        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
-
-        MemberProfile result = memberProfileRepository.findByMember(member);
-
-        MemberProfileDTO dto = new MemberProfileDTO();
-
-        //사진 정보
-        dto.setFileName(result.getFileName());
-        dto.setUuid(result.getUuid());
-
-        //개인 소개
-        dto.setContent(result.getContent());
-
-        //회원 활동
-        dto.setLikeCount(result.getMember().getLikeCount());
-        dto.setPostCount(result.getMember().getPostCount());
-        dto.setCommentCount(result.getMember().getCommentCount());
-
-        //회원 정보
-        dto.setName(result.getMember().getName());
-        dto.setGender(result.getMember().getGender());
-        dto.setPhone(result.getMember().getPhone());
-        dto.setYear(result.getMember().getYear());
-        dto.setRating(result.getMember().getRating());
-
-        return dto;
-    }
-
     private String generateSalt() {
         return UUID.randomUUID().toString();
     }

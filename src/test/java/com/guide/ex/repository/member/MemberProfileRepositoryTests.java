@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
@@ -34,7 +35,7 @@ public class MemberProfileRepositoryTests {
     @Transactional
     public void memberProfileSelectOneTest() {
         Member member = Member.builder().memberId(6L).build();
-        MemberProfile memberProfile = memberProfileRepository.findByMember(member);
+        Optional<MemberProfile> memberProfile = memberProfileRepository.findByMember(member);
         log.info(memberProfile.toString());
     }
 
