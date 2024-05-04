@@ -25,10 +25,4 @@ public class ChatRoomController {
     public ChatRoom createRoom(@RequestParam Long roomNumber) {
         return chatRoomRepository.save(new ChatRoom(null, null, roomNumber));
     }
-
-    // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
-    public ChatRoom getRoomById(@PathVariable Long roomId) {
-        return chatRoomRepository.findById(roomId).orElse(null);
-    }
 }
