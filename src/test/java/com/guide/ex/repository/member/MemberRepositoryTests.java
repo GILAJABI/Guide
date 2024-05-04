@@ -43,7 +43,7 @@ public class MemberRepositoryTests {
 
     @Test
     public void memberSelectTest() {
-        Long member_id = 43L;
+        Long member_id = 1L;
 
         Optional<Member> result = memberRepository.findById(member_id);
 

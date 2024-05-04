@@ -25,12 +25,12 @@ public class MemberProfile {
     @Column(length = 500)
     private String content;
 
+    @Column(length = 20, nullable = false, name = "travel_type")
+    private String travelType;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @Column(length = 20, nullable = false, name = "travel_type")
-    private String travelType;
 
     // change()
     public void change(String uuid, String fileName, String content, String travelType) {

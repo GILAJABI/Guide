@@ -34,7 +34,7 @@ public class MemberProfileRepositoryTests {
     @Test
     @Transactional
     public void memberProfileSelectOneTest() {
-        Member member = Member.builder().memberId(6L).build();
+        Member member = Member.builder().memberId(1L).build();
         Optional<MemberProfile> memberProfile = memberProfileRepository.findByMember(member);
         log.info(memberProfile.toString());
     }
