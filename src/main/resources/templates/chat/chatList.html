@@ -1,153 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travelmaker List Page</title>
-    <link rel="stylesheet" href="../../static/css/chat/style.css">
-    <script src="../../static/js/chat/pop.js"></script>
+    <title>채팅 목록</title>
+    <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
 </head>
 
 <body>
-<header>
-    <div class="chat_header">
-
-    </div>
-</header>
-<h2 class="chat">채팅</h2>
+<div class="header" th:include="/include/header.html"></div>
 <div class="container">
-    <ul>
+    <header>
+        <p id="title">채팅</p>
+    </header>
+    <div>
+        <ul id="chat_arrange">
+            <li class="chat_div">
+                <div class="chat_list">
+                    <img class="profile" th:src="@{/image/profile.png}">
+                    <div class="list_div">
+                        <span class="name">username1</span>
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username1</span>
                 </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
+            </li>
 
-            </div>
-        </li>
+            <li class="chat_div">
+                <div class="chat_list">
+                    <img class="profile" th:src="@{/image/profile.png}">
+                    <div class="list_div">
+                        <span class="name">username2</span>
+                        <!-- 추가: 채팅 신청 버튼 -->
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username2</span>
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
                 </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
+            </li>
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username3</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username4</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username5</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username6</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">scrolltest</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">scrolltest</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-    </ul>
+        </ul>
+    </div>
 </div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
+
+<div id="chatModal" class="modal">
+    <div class="modal_content">
+        <div class="modal_profile">
+            <div class=""></div>
         <span class="close">&times;</span>
-        <div class="icon2"><img class="profile" src="../../static/image/profile.png"></div>
+        <div class="modal_profile"><img class="profile" th:src="@{/image/profile.png}"></div>
         <div>
             <span class="name">username1</span>
             <button>차단하기</button>
             <button>1:1채팅</button>
         </div>
     </div>
+    </div>
 </div>
 
-
-<script src="../../static/js/chat/chatList.js"></script>
+<script th:src="@{/js/chat/chatModal.js}"></script>
+<script th:src="@{/js/chat/pop.js}"></script>
+<script th:src="@{/js/chat/chatDelete.js}"></script>
 </body>
 
 </html>
