@@ -45,10 +45,10 @@ public class MemberController {
 
         boolean check = memberService.login(uid, pwd);
 
-        if(check) {
+        if (check) {
             session.setAttribute("member_id", memberService.setLoginSession(uid));
             return "redirect:/member/testSuccess";
-        }else{
+        } else {
             return "redirect:/member/login?error=incorrect";
         }
 
@@ -65,7 +65,7 @@ public class MemberController {
 
     @GetMapping("/profile")
     public String profile(HttpSession session) {
-        if(session.getAttribute("member_id") == null){
+        if (session.getAttribute("member_id") == null) {
             return "redirect:/member/login";
         }
         return "/member/profile.html";
@@ -73,13 +73,9 @@ public class MemberController {
 
     @PostMapping("/profile")
     public String uploadFile(HttpSession session,
-                                   MemberProfileDTO memberProfileDTO,
-                                   @RequestParam("file") MultipartFile file) {
-
-        System.out.println("upload Controller::uploadFile");
-
+                             MemberProfileDTO memberProfileDTO,
+                             @RequestParam("file") MultipartFile file) {
         memberProfileDTO.setMemberId((Long) session.getAttribute("member_id"));
-        System.out.println("member_id: " + (Long) session.getAttribute("member_id"));
 
         if (file.isEmpty()) {
             throw new RuntimeException("업로드된 파일이 비어 있습니다.");
@@ -91,13 +87,9 @@ public class MemberController {
         try {
             Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
             file.transferTo(savePath);
-
-            boolean isImage = Files.probeContentType(savePath).startsWith("image");
-
             memberProfileDTO.setUuid(uuid);
             memberProfileDTO.setFileName(originalName);
             memberService.fileUpload(memberProfileDTO);
-
             return "redirect:/member/testSuccess";
 
         } catch (IOException e) {
