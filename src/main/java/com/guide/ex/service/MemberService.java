@@ -10,9 +10,7 @@ public interface MemberService {
     Long setLoginSession(String uid);
     boolean isIdAlreadyExists(String uid);
     void fileUpload(MemberProfileDTO dto);
-//    MemberProfileDTO memberInfo(Long member_id);
-    MemberDTO readOne(Long member_id);
-    void modify(MemberProfileDTO memberProfileDTO);
-    //아래 함수는 DTO로 ModelMapper를 활용해 수정
-    MemberProfile memberInfo(Long member_id);
+
+    MemberDTO memberReadOne(Long member_id);
+    void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO);
 }

@@ -40,6 +40,10 @@ public class MemberDTO {
     private int commentCount;
     private int likeCount;
 
+    private void change(String name) {
+        this.name = name;
+    }
+
     private MemberProfileDTO profileInfo;
 
     public void setProfileInfo(MemberProfileDTO profileInfo) {

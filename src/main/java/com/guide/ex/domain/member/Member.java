@@ -64,4 +64,8 @@ public class Member extends BaseEntity {
     protected void onCreate() {
         this.rating = "동메달";
     }
+
+    public void change(String name) {
+        this.name = name;
+    }
 }
