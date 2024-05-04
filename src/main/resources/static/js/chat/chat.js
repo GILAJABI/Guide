@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const chatItem = document.createElement('div');
             const text = document.createElement('span');
 
-            
+
             text.textContent = chatContent;
 
             chatItem.appendChild(text);

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
+    <script th:src="@{/js/chat/chat.js}"></script>
+    <script th:src="@{/js/chat/close.js}"></script>
+    <script th:src="@{/js/socket.js}"></script>
+</head>
+
+<body>
+<header>
+    <div class="chat_close">
+        <button>
+            <img th:src="@{/image/chat_close.png}" alt="">
+        </button>
+    </div>
+    <div class="chat_header">
+        <img th:src="@{/image/guide_logo.png}">
+    </div>
+</header>
+
+<div id="chat_list"></div>
+<div class="chat_input">
+    <input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
+    <button id="chat_btn">
+        <img th:src="@{/image/chat_btn.png}">
+    </button>
+</div>
+</body>
+
+</html>
