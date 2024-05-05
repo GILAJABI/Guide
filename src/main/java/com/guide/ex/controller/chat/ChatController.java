@@ -19,10 +19,10 @@ public class ChatController {
 
     @MessageMapping("/message")
     public void sendMessage(ChatMessage message) {
-        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
-        if (room != null) {
-            chatMessageRepository.save(message);
-            messagingTemplate.convertAndSend("/chat/room/" + room.getRoomId(), message);
-        }
+//        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
+//        if (room != null) {
+//            chatMessageRepository.save(message);
+            messagingTemplate.convertAndSend("/chat/room/", message);
+        //}
     }
 }

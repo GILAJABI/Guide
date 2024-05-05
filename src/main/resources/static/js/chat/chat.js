@@ -10,7 +10,7 @@ stompClient.connect({}, function(frame) {
     stompClient.subscribe('/topic/chat/room/{roomId}', function(message) {
         const messageBody = JSON.parse(message.body);
         // 메시지를 chatMessages 영역에 추가
-        const chatMessagesDiv = document.getElementById("chatMessages");
+        const chatMessagesDiv = document.getElementById("chat_list");
         const messageParagraph = document.createElement("p");
         messageParagraph.textContent = messageBody.content;
         chatMessagesDiv.appendChild(messageParagraph);
@@ -18,10 +18,11 @@ stompClient.connect({}, function(frame) {
 });
 
 // 폼 제출 이벤트 리스너
+document.addEventListener("DOMContentLoaded", function() {
 document.getElementById("chatForm").addEventListener("submit", function(event) {
     event.preventDefault(); // 폼 기본 동작 중단
 
-    const messageInput = document.getElementById("message");
+    const messageInput = document.getElementById("chat_content");
     const message = messageInput.value; // 입력된 메시지 가져오기
 
     // 메시지를 서버로 전송
@@ -32,4 +33,6 @@ document.getElementById("chatForm").addEventListener("submit", function(event) {
 
     // 입력 폼 비우기
     messageInput.value = "";
+});
+
 });
