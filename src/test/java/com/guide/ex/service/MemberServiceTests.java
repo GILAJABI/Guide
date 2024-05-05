@@ -1,7 +1,10 @@
 package com.guide.ex.service;
 
+import com.guide.ex.domain.member.Member;
+import com.guide.ex.domain.member.MemberProfile;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.member.MemberProfileDTO;
+import com.guide.ex.repository.member.MemberProfileRepository;
 import com.guide.ex.repository.member.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -18,17 +21,19 @@ public class MemberServiceTests {
     private MemberService memberService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private MemberProfileRepository memberProfileRepository;
 
     @Test
     public void signUpTest() {
         log.info(memberService.getClass().getName());
 
         MemberDTO memberDTO = MemberDTO.builder()
-                .name("1팀")
-                .uid("travle")
-                .pwd("maker")
-                .phone("01012345678")
-                .year(Year.of(1999))
+                .name("이백억")
+                .uid("qordjr")
+                .pwd("0726")
+                .phone("01085453684")
+                .year(Year.of(2010))
                 .gender("male")
                 .build();
 
@@ -62,6 +67,18 @@ public class MemberServiceTests {
     public void memberReadOneTest() {
         MemberDTO memberDTO = memberService.memberReadOne(2L);
         log.info(memberDTO);
+    }
+
+    @Test
+    public void profileRegisterTest() {
+        MemberProfileDTO memberProfileDTO = MemberProfileDTO.builder()
+                .memberId(5L)  // Member ID 설정
+                .uuid("uuid register test")
+                .content("content register test")
+                .fileName("fileName.test")
+                .travelType("ISFP")
+                .build();
+        memberService.profileRegister(memberProfileDTO);
     }
 
     @Test

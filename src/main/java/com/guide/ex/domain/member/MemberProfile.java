@@ -40,4 +40,9 @@ public class MemberProfile {
         this.content = content;
         this.travelType = travelType;
     }
+
+    // Member 객체 설정 메소드 추가
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

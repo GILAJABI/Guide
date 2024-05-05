@@ -116,6 +116,18 @@ public class MemberServiceImpl implements MemberService {
         return memberDTO;
     }
 
+    // 프로필 등록 작업
+    @Override
+    public void profileRegister(MemberProfileDTO memberProfileDTO) {
+        Member member = memberRepository.findById(memberProfileDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberProfileDTO.getMemberId()));
+
+        MemberProfile memberProfile = modelMapper.map(memberProfileDTO, MemberProfile.class);
+        memberProfile.setMember(member); // Member 설정
+        memberProfileRepository.save(memberProfile);
+    }
+
+
     // 프로필 수정 작업
     @Override
     public void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO) {
