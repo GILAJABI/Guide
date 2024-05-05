@@ -14,20 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 @Controller
-public class ChatHtmlController {
+public class ChatTestController {
 
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
-
-    @MessageMapping("/chat/message")
-    public void sendMessage(ChatMessage message) {
-        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
-        if (room != null) {
-            chatMessageRepository.save(message);
-            messagingTemplate.convertAndSend("/sub/chat/room/" + room.getRoomId(), message);
-        }
-    }
 
     @GetMapping("/chatList")
     public void getRoomById() {

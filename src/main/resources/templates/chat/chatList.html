@@ -1,27 +1,74 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Chat</title>
-    <!-- WebSocket 클라이언트용 SockJS 및 STOMP 라이브러리 추가 -->
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
-    <!-- 로컬에 저장된 STOMP.js 파일 로드 -->
-<!--    <script type="module" th:src="@{/js/stompjs/esm6/compatibility/stomp.js}"></script>-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅 목록</title>
+    <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
 </head>
+
 <body>
-<h1>Chat</h1>
-<!-- 메시지를 입력할 폼 -->
-<form id="chatForm">
-    <label for="message"></label><input type="text" id="message" name="message" placeholder="메시지를 입력하세요">
-    <button type="submit">전송</button>
-</form>
+<div class="header" th:include="/include/header.html"></div>
+<div class="container">
+    <header>
+        <p id="title">채팅</p>
+    </header>
+    <div>
+        <ul id="chat_arrange">
+            <li class="chat_div">
+                <div class="chat_list">
+                    <img class="profile" th:src="@{/image/profile.png}">
+                    <div class="list_div">
+                        <span class="name">username1</span>
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
 
-<!-- 메시지를 출력할 영역 -->
-<div id="chatMessages"></div>
+                </div>
+            </li>
 
-<!-- JavaScript 파일 추가 -->
-<script th:src="@{/js/chat/chat.js}"></script>
+            <li class="chat_div">
+                <div class="chat_list">
+                    <img class="profile" th:src="@{/image/profile.png}">
+                    <div class="list_div">
+                        <span class="name">username2</span>
+                        <!-- 추가: 채팅 신청 버튼 -->
+
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<div id="chatModal" class="modal">
+    <div class="modal_content">
+        <div class="modal_profile">
+            <div class=""></div>
+            <span class="close">&times;</span>
+            <div class="modal_profile"><img class="profile" th:src="@{/image/profile.png}"></div>
+            <div>
+                <span class="name">username1</span>
+                <button>차단하기</button>
+                <button>1:1채팅</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/chat/chatModal.js}"></script>
+<script th:src="@{/js/chat/pop.js}"></script>
+<script th:src="@{/js/chat/chatDelete.js}"></script>
 </body>
+
 </html>
