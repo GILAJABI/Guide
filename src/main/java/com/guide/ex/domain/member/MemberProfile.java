@@ -14,7 +14,8 @@ public class MemberProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_profile_id;
+    @Column(name = "member_profile_id")
+    private Long memberProfileId;
 
     @Column(name="uuid", length = 500)
     private String uuid;

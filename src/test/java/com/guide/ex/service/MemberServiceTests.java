@@ -59,7 +59,7 @@ public class MemberServiceTests {
     }
 
     @Test
-    public void memberReadOne() {
+    public void memberReadOneTest() {
         MemberDTO memberDTO = memberService.memberReadOne(2L);
         log.info(memberDTO);
     }
@@ -68,15 +68,15 @@ public class MemberServiceTests {
     public void profileModifyTest() {
         MemberDTO memberDTO = MemberDTO.builder()
                 .memberId(2L)
-                .name("수정된 이름2")
+                .name("또 수정된 이름")
                 .build();
 
         MemberProfileDTO memberProfileDTO = MemberProfileDTO.builder()
                 .memberProfileId(2L)
-                .uuid("modifyUuid2")
-                .fileName("modifyFileName2")
-                .content("수정된 한줄소개2")
-                .travelType("ENFJ")
+                .uuid("또 modifyUuid")
+                .fileName("또 modifyFileName")
+                .content("또 수정된 한줄소개")
+                .travelType("ENFP")
                 .build();
 
         memberService.profileModify(memberDTO, memberProfileDTO);
