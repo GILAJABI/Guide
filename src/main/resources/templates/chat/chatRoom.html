@@ -5,9 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
     <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
     <script th:src="@{/js/chat/chatRoom.js}"></script>
-    <script th:src="@{/js/socket.js}"></script>
+    <script th:src="@{/js/chat/chat.js}"></script>
 </head>
 
 <body>
@@ -22,13 +26,15 @@
     </div>
 </header>
 
+<form id="chatForm">
 <div id="chat_list"></div>
 <div class="chat_input">
     <input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
-    <button id="chat_btn">
+    <button type="submit" id="chat_btn">
         <img th:src="@{/image/chat_btn.png}">
     </button>
 </div>
+</form>
 </body>
 
 </html>
