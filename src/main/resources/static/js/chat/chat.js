@@ -1,7 +1,7 @@
 const socket = new SockJS('/connection');
 
 // 외부 접속 시
-// const socket = new SockJS('ws://192.168.0.12:8888/connection');
+// const socket = new SockJS('ws://192.168.219.106:8888/connection');
 
 const stompClient = Stomp.over(socket);
 
