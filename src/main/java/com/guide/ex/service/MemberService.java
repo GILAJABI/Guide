@@ -13,4 +13,5 @@ public interface MemberService {
     void profileRegister(MemberProfileDTO memberProfileDTO);
     MemberDTO memberReadOne(Long member_id);
     void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO);
+//    void memberRemove(Long member_id);
 }

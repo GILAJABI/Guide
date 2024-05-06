@@ -6,8 +6,6 @@ import javax.validation.constraints.NotEmpty;
 import java.time.Year;
 
 @Data
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

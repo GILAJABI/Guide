@@ -29,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberProfileRepository memberProfileRepository;
 
+    // 회원 등록 작업(회원가입)
     @Override
     public void signUp(MemberDTO memberDto) {
         String salt = generateSalt();
@@ -148,6 +149,13 @@ public class MemberServiceImpl implements MemberService {
         member.change(memberDTO.getName());
         memberRepository.save(member);
     }
+
+//    // 회원 삭제 작업
+//    @Override
+//    public void memberRemove(Long memberId) {
+//        memberProfileRepository.deleteByMemberId(memberId);
+//        memberRepository.deleteById(memberId);
+//    }
 
 //
 //    //아래 함수는 DTO로 ModelMapper를 활용해 수정

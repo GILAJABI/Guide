@@ -48,6 +48,10 @@ public class MemberDTO {
 
     public void setProfileInfo(MemberProfileDTO profileInfo) {
         this.profileInfo = profileInfo;
+        // MemberProfileDTO에 MemberDTO의 memberId를 설정
+        if (profileInfo != null && this.memberId != null) {
+            profileInfo.setMemberId(this.memberId);
+        }
     }
 
 }
