@@ -1,6 +1,9 @@
-// WebSocket 연결을 수행할 변수 선언
-var socket = new SockJS('/connection');
-var stompClient = Stomp.over(socket);
+const socket = new SockJS('/connection');
+
+// 외부 접속 시
+// const socket = new SockJS('ws://192.168.0.12:8888/connection');
+
+const stompClient = Stomp.over(socket);
 
 // 웹소켓 연결
 stompClient.connect({}, function(frame) {
