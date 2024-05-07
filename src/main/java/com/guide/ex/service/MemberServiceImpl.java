@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.transaction.Transactional;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -97,28 +95,6 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
-    // 조회 작업
-//    @Override
-//    public MemberDTO readOne(Long memberId) {
-//        // Member 엔티티 조회
-//        Optional<Member> result = memberRepository.findById(memberId);
-//        Member member = result.orElseThrow(); // 조회된 Member가 없을 경우 예외 발생
-//
-//        // MemberDTO로 변환
-//        MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
-//
-//        // MemberProfile 조회
-//        Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
-//        MemberProfile memberProfile = memberProfileResult.orElseThrow(); // 조회된 MemberProfile이 없을 경우 예외 발생
-//
-//        // MemberProfile 정보를 MemberDTO에 추가
-//        // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
-//        memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
-//
-//        return memberDTO;
-//    }
-
-    // 회원 모든 정보 조회 작업(memberDTO + memberProfile)
     @Override
     public MemberDTO memberReadOne(Long memberId) {
         // Member 엔티티 조회
@@ -151,6 +127,23 @@ public class MemberServiceImpl implements MemberService {
         MemberProfile memberProfile = modelMapper.map(memberProfileDTO, MemberProfile.class);
         memberProfile.setMember(member); // Member 설정
         memberProfileRepository.save(memberProfile);
+    }
+
+    @Override
+    public List<MemberDTO> findProfileMember() {
+        List<Member> members = memberRepository.findAll();
+        List<MemberDTO> memberDTOList = new ArrayList<>();
+
+        for (Member member : members) {
+            Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
+            memberProfileResult.ifPresent(memberProfile -> {
+                MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
+                MemberProfileDTO memberProfileDTO = modelMapper.map(memberProfile, MemberProfileDTO.class);
+                memberDTO.setProfileInfo(memberProfileDTO);
+                memberDTOList.add(memberDTO);
+            });
+        }
+        return memberDTOList;
     }
 
 

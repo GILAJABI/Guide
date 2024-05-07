@@ -4,6 +4,8 @@ import com.guide.ex.domain.member.MemberProfile;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.member.MemberProfileDTO;
 
+import java.util.List;
+
 public interface MemberService {
     void signUp(MemberDTO memberDto);
     boolean login(String uid, String pwd);
@@ -20,4 +22,5 @@ public interface MemberService {
     MemberDTO memberReadOne(Long member_id);
     void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO);
     void profileRegister(MemberProfileDTO memberProfileDTO);
+    List<MemberDTO> findProfileMember();
 }

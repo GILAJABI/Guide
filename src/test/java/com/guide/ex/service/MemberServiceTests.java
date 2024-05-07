@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Year;
+import java.util.List;
 
 @SpringBootTest
 @Log4j2
@@ -95,13 +96,11 @@ public class MemberServiceTests {
         log.info(memberDTO);
     }
 
-//    @Test
-//    public void fileUploadTest() {
-//        MemberProfileDTO memberProfileDTO = new MemberProfileDTO();
-//        memberProfileDTO.setMemberProfileId(43L);
-//        memberProfileDTO.setUuid("uuidTest asdfsdfasdds");
-//        memberProfileDTO.setContent("content test asdfasdfsadfsdf");
-//        memberProfileDTO.setFileName("fileNamne.test");
-//        memberService.fileUpload(memberProfileDTO);
-//    }
+    @Test
+    public void findAllMember() {
+        List<MemberDTO> memberDTOList = memberService.findProfileMember();
+        log.info(memberDTOList);
+    }
+
+
 }

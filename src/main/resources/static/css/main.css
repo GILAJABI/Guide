@@ -143,6 +143,7 @@ footer {
     background-color: #45a049;
 }
 #all_user_profile {
+    margin-left: 5px;
     padding-top: 4px;
     padding-left: 10px;
     padding-right: 10px;

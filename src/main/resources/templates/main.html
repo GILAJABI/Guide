@@ -147,44 +147,44 @@
     setInterval(toggleImages, 5000);
 </script>
 
-<script>
+<<script th:inline="javascript">
     var profiles = [
         {
             imgSrc: "/image/carrotBtn.png",
             name: "김채림",
             info: "20/ISFJ"
-        },
-        {
-            imgSrc: "/image/carrotBtn.png",
-            name: "이채림",
-            info: "21/ISFJ"
-        },
-        {
-            imgSrc: "/image/pf_example.png",
-            name: "박채림",
-            info: "22/ISFJ"
-        },
-        {
-            imgSrc: "/image/kakao.png",
-            name: "정채림",
-            info: "23/ISFJ"
-        },
-        {
-            imgSrc: "/image/pf_example.png",
-            name: "엄채림",
-            info: "25/ISFJ"
-        },
-        {
-            imgSrc: "/image/kakao.png",
-            name: "강채림",
-            info: "24/ISFJ"
-        },
-        {
-            imgSrc: "/image/carrotBtn.png",
-            name: "박채림",
-            info: "26/ISFJ"
-        },
+        }
     ];
+
+    var otherMembers = /*[[${otherMembers}]]*/ '';
+
+    for (var i = 0; i < otherMembers.length; i++) {
+        var member = otherMembers[i]
+        console.log(member.memberId)
+        console.log('나이: ', member.ageRange)
+        console.log('이름: ', member.name)
+        console.log('mbti: ', member.profileInfo.travelType)
+        console.log('사진uuid: ', member.profileInfo.uuid)
+        console.log('사진이름: ', member.profileInfo.fileName)
+
+    }
+
+    for (var i = 0; i < otherMembers.length; i++) {
+        var member = otherMembers[i]
+        // console.log(member.memberId)
+        // console.log('나이: ', member.ageRange)
+        // console.log('이름: ', member.name)
+        // console.log('mbti: ', member.profileInfo.travelType)
+        // console.log('사진uuid: ', member.profileInfo.uuid)
+        // console.log('사진이름: ', member.profileInfo.fileName)
+        var profile = {
+            memberId : member.memberId,
+            imgSrc: "/api/photo/" + member.profileInfo.uuid +'_' + member.profileInfo.fileName, // 이미지 경로
+            name: member.name, // 이름
+            info: member.ageRange.slice(0, -1) + '/' + member.profileInfo.travelType // 정보 조합
+        };
+        profiles.push(profile); // profiles 배열에 추가
+    }
 
     function generateProfiles(profiles) {
         var profileContainer = document.getElementById('all_user_profile');
@@ -232,8 +232,15 @@
             });
         }
 
+        // 클릭 이벤트 추가
+        profileContainer.on('click', '.profile_area', function() {
+            var memberId = $(this).data('memberId'); // 클릭된 프로필의 memberId를 가져옴
+            console.log('Clicked member ID:', memberId);
+        });
+
         setInterval(slideProfiles, 400);
     });
+
 </script>
 
 <!--메인 페이지 화면이동 스크립트-->
