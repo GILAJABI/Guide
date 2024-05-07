@@ -1,5 +1,7 @@
 package com.guide.ex.service;
 
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.member.MemberProfileDTO;
 import com.guide.ex.dto.post.CarrotDTO;
 import com.guide.ex.dto.post.JoinDTO;
 import com.guide.ex.dto.post.PostDTO;
@@ -90,6 +92,26 @@ public class PostServiceTests {
 
         log.info("PostDTO: {}", postDTO);
         postService.joinRegister(postDTO, joinDTO);
+    }
+
+    @Test
+    public void testCarrotModify() {
+        PostDTO postDTO = PostDTO.builder()
+                .memberId(1L)
+                .postId(2L)
+                .modifyDate(LocalDateTime.now())
+                .title("수정된 제목")
+                .content("수정된 내용")
+                .build();
+
+        CarrotDTO carrotDTO = CarrotDTO.builder()
+                .postId(2L)
+                .price(812000)
+                .build();
+
+        log.info("PostDTO: {}", postDTO);
+
+        postService.carrotModify(postDTO, carrotDTO);
     }
 
 

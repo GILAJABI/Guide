@@ -12,5 +12,6 @@ public interface PostService {
     void carrotRegister(PostDTO postDTO, CarrotDTO carrotDTO);
     void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO);
     void joinRegister(PostDTO postDTO, JoinDTO joinDTO);
+    void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO);
 
 }

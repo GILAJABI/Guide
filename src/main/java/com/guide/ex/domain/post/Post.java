@@ -80,4 +80,13 @@ public class Post {
     public void setMember(Member member) {
         this.member = member;
     }
+
+    public void change(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void changeDate(LocalDateTime modifyDate) {
+        this.modifyDate = modifyDate;
+    }
 }

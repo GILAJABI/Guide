@@ -78,7 +78,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void joinRegister(PostDTO postDTO, JoinDTO joinDTO) {
-
         Member member =  memberRepository.findById(postDTO.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
         Post post = modelMapper.map(postDTO, Post.class);
@@ -90,5 +89,42 @@ public class PostServiceImpl implements PostService {
         Join join = modelMapper.map(joinDTO, Join.class);
         joinRepository.save(join); // Carrot 저장
     }
+
+    @Override
+    public void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO) {
+        // Post 엔티티 찾기
+        Post post = postRepository.findById(postDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post not found with id : " + postDTO.getPostId()));
+
+        // 게시글 소유자 확인
+        if (!post.getMember().getMemberId().equals(postDTO.getMemberId())) {
+            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + postDTO.getMemberId());
+        }
+
+        post.change(
+                postDTO.getTitle(),
+                postDTO.getContent()
+        );
+
+        post.changeDate(
+                postDTO.getModifyDate()
+        );
+
+        // 변경사항 저장
+        postRepository.save(post);
+
+        // Carrot 엔티티 찾기
+        Carrot carrot = carrotRepository.findById(carrotDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Carrot post not found with id : " + carrotDTO.getPostId()));
+
+        // Carrot 엔티티 업데이트
+        carrot.change(carrotDTO.getPrice());
+
+        // 변경사항 저장
+        carrotRepository.save(carrot);
+
+        log.info("Updated Post ID: {}, Carrot Post ID: {}, by Member ID: {}", post.getPostId(), carrot.getPostId(), postDTO.getMemberId());
+    }
+
 
 }

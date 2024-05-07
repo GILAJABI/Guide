@@ -18,4 +18,8 @@ public class Carrot extends Post{
 
     @Column(nullable = false)
     private final boolean status = false;
+
+    public void change(int price) {
+        this.price = price;
+    }
 }
