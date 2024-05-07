@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Table(name = "postJoin")
+@DiscriminatorValue("postJoin")
+
 public class Join extends Post {
 
     @Column(nullable = false)
@@ -31,9 +33,5 @@ public class Join extends Post {
     @LastModifiedDate
     @Column(updatable = false)
     private LocalDateTime endTravelDate;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
 
 }

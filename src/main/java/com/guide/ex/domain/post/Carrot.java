@@ -19,10 +19,6 @@ public class Carrot extends Post{
     @Column(nullable = false)
     private final boolean status = false;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
     public void change(String title, String content) {
         this.title = title;
         this.content = content;

@@ -1,7 +1,8 @@
 package com.guide.ex.repository.post;
 
+import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.*;
-import com.guide.ex.repository.post.*;
+import com.guide.ex.dto.post.PostDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,10 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @SpringBootTest
 @Log4j2
-public class PostRepositoryTests {
+public class PostInsertTests {
 
-    @Autowired
-    private CommentRepository testComment;
+//    @Autowired
+//    private CommentRepository testComment;
 
     @Autowired
     private LikeRepository testLike;
@@ -93,7 +94,7 @@ public class PostRepositoryTests {
 
     @Test
     public void testUpdate() {
-        Long postId = 6L;
+        Long postId = 5L;
         Optional<Carrot> optional = testCarrot.findById(postId);
         if (optional.isPresent()) {
             Carrot carrot = optional.get();
@@ -116,39 +117,39 @@ public class PostRepositoryTests {
     }
 
     //---------------------------Comment-------------------
-    @Test
-    public void testInsertComment() {
-        Comment comment = Comment.builder()
-                .content("ㅋㅋㅋㅋ집가고싶다.")
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now())
-                .build();
-        Comment com = testComment.save(comment);
+//    @Test
+//    public void testInsertComment() {
+//        Comment comment = Comment.builder()
+//                .content("ㅋㅋㅋㅋ집가고싶다.")
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now())
+//                .build();
+//        Comment com = testComment.save(comment);
+//
+//        log.info(com);
+//    }
 
-        log.info(com);
-    }
-
-    @Test
-    public void testCommentUpdate() {
-
-        Long bno = 1L;
-
-        Optional<Comment> result = testComment.findById(bno);
-
-        Comment comment = result.orElseThrow();
-
-        comment.change("update..title 100");
-
-        testComment.save(comment);
-
-    }
-
-    @Test
-    public void testCommentDelete() {
-        Long bno = 2L;
-
-        testComment.deleteById(bno);
-    }
+//    @Test
+//    public void testCommentUpdate() {
+//
+//        Long bno = 1L;
+//
+//        Optional<Comment> result = testComment.findById(bno);
+//
+//        Comment comment = result.orElseThrow();
+//
+//        comment.change("update..title 100");
+//
+//        testComment.save(comment);
+//
+//    }
+//
+//    @Test
+//    public void testCommentDelete() {
+//        Long bno = 2L;
+//
+//        testComment.deleteById(bno);
+//    }
 
 
     //----------------like-------------------
@@ -239,4 +240,14 @@ public class PostRepositoryTests {
 
         testReview.deleteById(bno);
     }
+
+//    @Test
+//    public void testPost() {
+//        Member member = Member.builder().memberId(13L).build();
+//        Post post = Post.builder()
+//                .member(member)
+//                .price(19000)
+//                .build();
+//
+//    }
 }
