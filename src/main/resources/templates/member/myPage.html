@@ -18,7 +18,9 @@
         <div id="left">
             <div id="myProfile">
                 <div id="ratingImg">
-                    <img th:src="@{/image/high.png}" alt="금메달">
+                    <img th:if="${member.rating == '금메달'}" th:src="@{/image/high.png}" alt="금메달">
+                    <img th:if="${member.rating == '은메달'}" th:src="@{/image/second.png}" alt="은메달">
+                    <img th:if="${member.rating == '동메달'}" th:src="@{/image/third.png}" alt="동메달">
                 </div>
                 <div id="profilePhoto">
                     <div id="circle">
