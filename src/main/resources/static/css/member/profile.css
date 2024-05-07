@@ -115,6 +115,13 @@ hr {
 #signUp a {
     color: #ff6392;
 }
+#imagePreview {
+    width: 200px;
+    height: 200px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 auto;
+}
 
 @font-face {
     font-family: 'Pretendard-Regular';

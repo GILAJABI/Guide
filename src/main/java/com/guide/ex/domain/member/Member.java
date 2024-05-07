@@ -5,6 +5,7 @@ import com.guide.ex.util.YearAttributeConverter;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class Member extends BaseEntity {
     @Column(length = 256, nullable = false)
     private String pwd;
 
-    @Column(length = 256)
+    @Column(length = 256, nullable = false)
     private String salt;
 
     @Column(length = 20, nullable = false)
@@ -47,9 +48,6 @@ public class Member extends BaseEntity {
     @Column(length = 20, nullable = false, columnDefinition = "varchar(20) default '동메달'")
     private String rating;
 
-    @Column(length = 20, nullable = false, name = "travel_type")
-    private String travelType;
-
     @Column(length = 500, nullable = false)
     private boolean isBan;
 
@@ -68,8 +66,16 @@ public class Member extends BaseEntity {
         this.rating = "동메달";
     }
 
-    // change() : 닉네임(name) 변경
     public void change(String name) {
         this.name = name;
     }
+
+//    public String getAgeRange() {
+//        int currentYear = LocalDate.now().getYear(); // 현재 연도를 구함
+//        int birthYear = this.year.getValue(); // Year 객체에서 연도를 int로 추출
+//        int age = currentYear - birthYear; // 실제 나이 계산
+//        int rangeStart = (age / 10) * 10; // 연령대 계산
+//        return rangeStart + "대"; // "20대", "30대" 등의 문자열 반환
+//    }
+
 }

@@ -1,0 +1,190 @@
+* {
+    background-color: #fafafa;
+    color: #363636;
+    font-family: "Pretendard-Regular";
+    font-size: 20px;
+}
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+header img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+.imageWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.imageButtons {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.prevButton {
+    position: absolute;
+    left: 10px;
+}
+
+.nextButton {
+    position: absolute;
+    right: 10px;
+}
+
+#sec1 {
+    height: 300px;
+    margin-top: 30px;
+}
+#sec11 {
+    display: flex;
+    justify-content: space-between;
+}
+#sec11 > button {
+    height: 200px;
+    border: none;
+    padding-left: 0px;
+}
+button > img {
+    height: 300px;
+}
+#sec11_3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+#user,
+#weather {
+    width: 400px;
+    height: 120px;
+    border: 1px solid #363636;
+    border-radius: 13px;
+    margin-bottom: 20px;
+}
+#all_user {
+    width: 400px;
+    height: 160px;
+    border-radius: 13px;
+    border: 1px solid #363636;
+    margin-bottom: 0;
+    font-size: 9px;
+}
+#all_user_title {
+    margin: 10px;
+}
+#sec2 {
+    height: 800px;
+    border: 1px solid #363636;
+    margin-top: 30px;
+}
+.title {
+    font-family: "BMJUA";
+    font-size: 21px;
+}
+footer {
+    height: 200px;
+    border: 1px solid #363636;
+    margin-top: 30px;
+}
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "BMJUA";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff")
+    format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+.img_area {
+    margin-left: 26px;
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: inline-block;
+}
+.img_area img {
+    width: 100%;
+    height: 100%;
+}
+.user_info {
+    margin-top: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+.button_area button {
+    margin-top: 5px;
+    height: 35px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button_area button:hover {
+    background-color: #45a049;
+}
+#all_user_profile {
+    margin-left: 5px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: -6px;
+    display: flex;
+    overflow: hidden;
+}
+.profile_area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+    width: 80px;
+    font-size: 9px;
+}
+.profile_img_area img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+.profile_content_area {
+    font-size: 9px;
+    text-align: center;
+}
+.profile_content_area span {
+    font-size: 14px;
+}
+#notLogin{
+    margin-top: 10px;
+}
+.button_area > .profileBtn {
+    border-style: none;
+    color: #ffffff; /* 연한 분홍색 */
+    background-color: #ffcccc; /* 마우스 호버 시 연한 분홍색 배경 */
+    cursor: pointer; /* 마우스 호버 시 포인터로 변경 */
+    outline: none; /* 기본 버튼 테두리 제거 */
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* 부드러운 효과를 위한 트랜지션 */
+}
+
+.button_area > .profileBtn:hover {
+    background-color: #ff7f7f; /* 마우스 호버 시 연한 분홍색으로 변경 */
+}

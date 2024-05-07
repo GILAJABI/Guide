@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>홈</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:include="/include/header.html"></div>
+<div class="container">
+    <header>
+        <div id="imageContainer">
+            <img src="/image/main.webp" id="image1"/>
+            <img src="/image/main_pic.webp" id="image2" style="display: none;"/>
+        </div>
+    </header>
+
+    <section id="sec1">
+        <div id="sec11">
+            <button>
+                <img src="/image/joinBtn.png"/>
+            </button>
+            <button>
+                <img src="/image/carrotBtn.png"/>
+            </button>
+            <div id="sec11_3">
+                <div id="user">
+                    <div class="img_area" th:if="${session.member_id != null and session.member_profile != null}">
+                        <!--아래 이미지 호출 test RestController 호출 -> imgController로 변경해야하는 내용 -->
+                        <img th:src="'/api/photo/' + ${member_info.profileInfo.uuid + '_' + member_info.profileInfo.fileName}"
+                             alt="Member Photo">
+                    </div>
+
+                    <div class="img_area" th:unless="${session.member_id != null and session.member_profile != null}">
+                        <img src="/image/pf_example.png"/>
+                    </div>
+
+                    <div class="user_info" th:if="${session.member_id != null and session.member_profile != null}">
+                        <div> 안녕하세요 여행자님 &nbsp;: )</div>
+                        <div>
+                            <span class="user_name">[(${member_info.name})]님</span>
+                            &nbsp;| &nbsp;
+                            <span class="user_mbti"> [(${member_info.profileInfo.travelType})]</span>
+                        </div>
+                        <div class="button_area">
+                            <button class="myPageBtn">마이페이지</button>
+                            <form method="post" th:action="@{/member/logout}" style="display: inline;">
+                                <button class="logoutBtn">로그아웃</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="user_info" th:if="${session.member_id != null and session.member_profile == null}">
+                        <div> 안녕하세요 여행자님 &nbsp;: )</div>
+                        <div>
+                            <span class="user_name">[(${member_info.name})]님</span>
+                        </div>
+                        <div class="button_area">
+                            <button class="profileBtn">프로필 등록</button>
+                            <form method="post" th:action="@{/member/logout}" style="display: inline;">
+                                <button class="logoutBtn">로그아웃</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="user_info" th:if="${session.member_id == null}">
+                        <div id="notLogin">
+                            <div> 안녕하세요 여행자님 &nbsp;: )</div>
+                            <div class="button_area">
+                                <button class="loginBtn">로그인</button>
+                                <button class="signupBtn">회원가입</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="all_user">
+                    <div id="all_user_title">
+                        <span>🍀 TRAVELMAKER 여행자들</span>
+                    </div>
+                    <div id="all_user_profile">
+                        <!--                        <div class="profile_area">-->
+                        <!--                            <div class="profile_img_area">-->
+                        <!--                                <img src="/image/pf_example.png" />-->
+                        <!--                            </div>-->
+                        <!--                            <div class="profile_content_area">-->
+                        <!--                                <span>김채림</span>-->
+                        <!--                                <br>-->
+                        <!--                                <span>20/ISFJ</span>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec2">
+        <div>
+            <p class="title">✨ 인기 게시물</p>
+        </div>
+    </section>
+</div>
+<footer>
+    <div></div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    var currentImageIndex = 1; // 기본적으로 첫 번째 이미지가 보입니다.
+    function toggleImages() {
+        var image1 = document.getElementById('image1');
+        var image2 = document.getElementById('image2');
+
+        if (currentImageIndex === 1) {
+            // 이미지1이 보이면 이미지2를 보이게 합니다.
+            image1.style.display = 'none';
+            image2.style.display = 'block';
+            currentImageIndex = 2;
+        } else {
+            // 이미지2가 보이면 이미지1을 보이게 합니다.
+            image1.style.display = 'block';
+            image2.style.display = 'none';
+            currentImageIndex = 1;
+        }
+    }
+    document.getElementById('imageContainer').addEventListener('click', toggleImages);
+</script>
+
+<script>
+    function toggleImages() {
+        var image1 = document.getElementById('image1');
+        var image2 = document.getElementById('image2');
+
+        if (image1.style.display === 'block') {
+            image1.style.display = 'none';
+            image2.style.display = 'block';
+        } else {
+            image1.style.display = 'block';
+            image2.style.display = 'none';
+        }
+    }
+
+    // Call toggleImages function every 5 seconds
+    setInterval(toggleImages, 5000);
+</script>
+
+<<script th:inline="javascript">
+    var profiles = [
+        {
+            imgSrc: "/image/carrotBtn.png",
+            name: "김채림",
+            info: "20/ISFJ"
+        }
+    ];
+
+    var otherMembers = /*[[${otherMembers}]]*/ '';
+
+    for (var i = 0; i < otherMembers.length; i++) {
+        var member = otherMembers[i]
+        console.log(member.memberId)
+        console.log('나이: ', member.ageRange)
+        console.log('이름: ', member.name)
+        console.log('mbti: ', member.profileInfo.travelType)
+        console.log('사진uuid: ', member.profileInfo.uuid)
+        console.log('사진이름: ', member.profileInfo.fileName)
+
+    }
+
+    for (var i = 0; i < otherMembers.length; i++) {
+        var member = otherMembers[i]
+        // console.log(member.memberId)
+        // console.log('나이: ', member.ageRange)
+        // console.log('이름: ', member.name)
+        // console.log('mbti: ', member.profileInfo.travelType)
+        // console.log('사진uuid: ', member.profileInfo.uuid)
+        // console.log('사진이름: ', member.profileInfo.fileName)
+        var profile = {
+            memberId : member.memberId,
+            imgSrc: "/api/photo/" + member.profileInfo.uuid +'_' + member.profileInfo.fileName, // 이미지 경로
+            name: member.name, // 이름
+            info: member.ageRange.slice(0, -1) + '/' + member.profileInfo.travelType // 정보 조합
+        };
+        profiles.push(profile); // profiles 배열에 추가
+    }
+
+    function generateProfiles(profiles) {
+        var profileContainer = document.getElementById('all_user_profile');
+
+        profiles.forEach(function (profile) {
+            var profileArea = document.createElement('div');
+            profileArea.className = 'profile_area';
+
+            var imgArea = document.createElement('div');
+            imgArea.className = 'profile_img_area';
+            var img = document.createElement('img');
+            img.src = profile.imgSrc;
+            imgArea.appendChild(img);
+
+            var contentArea = document.createElement('div');
+            contentArea.className = 'profile_content_area';
+            var name = document.createElement('span');
+            name.textContent = profile.name;
+            var br = document.createElement('br');
+            var info = document.createElement('span');
+            info.textContent = profile.info;
+            contentArea.appendChild(name);
+            contentArea.appendChild(br);
+            contentArea.appendChild(info);
+
+            profileArea.appendChild(imgArea);
+            profileArea.appendChild(contentArea);
+
+            profileContainer.appendChild(profileArea);
+        });
+    }
+
+    // Call the function with the profiles array
+    generateProfiles(profiles);
+
+
+    $(document).ready(function () {
+        var profileContainer = $('#all_user_profile'); // 프로필 컨테이너
+        var profileWidth = $('.profile_area').outerWidth(true); // 프로필 하나의 너비
+
+        function slideProfiles() {
+            profileContainer.animate({left: '-=' + profileWidth}, 500, function () {
+                profileContainer.append(profileContainer.find('.profile_area:first'));
+                profileContainer.css('left', '0');
+            });
+        }
+
+        // 클릭 이벤트 추가
+        profileContainer.on('click', '.profile_area', function() {
+            var memberId = $(this).data('memberId'); // 클릭된 프로필의 memberId를 가져옴
+            console.log('Clicked member ID:', memberId);
+        });
+
+        setInterval(slideProfiles, 400);
+    });
+
+</script>
+
+<!--메인 페이지 화면이동 스크립트-->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var loginBtn = document.querySelector(".loginBtn");
+        var signupBtn = document.querySelector(".signupBtn");
+
+        loginBtn.addEventListener("click", function() {
+            window.location.href = '/member/login';
+        });
+
+        signupBtn.addEventListener("click", function() {
+            window.location.href = '/member/signUp';
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var myPageBtn = document.querySelector(".myPageBtn");
+        var logoutBtn = document.querySelector(".logoutBtn");
+        var profileBtn = document.querySelector(".profileBtn");
+
+
+        myPageBtn.addEventListener("click", function() {
+            window.location.href = '/member/myPage';
+        });
+
+        logoutBtn.addEventListener("click", function() {
+            document.getElementById('logoutForm').submit();
+        });
+
+        profileBtn.addEventListener("click", function() {
+            window.location.href = '/member/profile';
+        });
+
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var profileBtn = document.querySelector(".profileBtn");
+
+        profileBtn.addEventListener("click", function() {
+            window.location.href = '/member/profile';
+        });
+
+    });
+</script>
+
+</body>
+</html>

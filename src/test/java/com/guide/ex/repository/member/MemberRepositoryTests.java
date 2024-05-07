@@ -34,7 +34,6 @@ public class MemberRepositoryTests {
                     .phone("01012345678")
                     .year(Year.of(1999))
                     .gender("male")
-                    .travelType("ISTJ")
                     .build();
 
             Member result = memberRepository.save(member);
@@ -44,7 +43,7 @@ public class MemberRepositoryTests {
 
     @Test
     public void memberSelectTest() {
-        Long member_id = 43L;
+        Long member_id = 1L;
 
         Optional<Member> result = memberRepository.findById(member_id);
 
@@ -61,7 +60,7 @@ public class MemberRepositoryTests {
 
         Member member = result.orElseThrow();
 
-        member.change("update 이채림");
+//        member.change("update 이채림");
 
         memberRepository.save(member);
     }
