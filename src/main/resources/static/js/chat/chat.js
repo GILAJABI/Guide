@@ -4,17 +4,17 @@
 const stompClient = Stomp.client("ws://localhost:8888/connection"); // 예시: 서버 주소와 엔드포인트 설정
 
 // 연결 시도
-let authToken;
-stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
+stompClient.connect({}, function(frame) {
     console.log('Connected: ' + frame);
 
     // 메시지를 받았을 때의 동작 정의
     stompClient.subscribe("/topic/chat/room/", function(message) {
         const messageBody = JSON.parse(message.body);
+        console.log('test6: ', messageBody);
         // 메시지를 chatMessages 영역에 추가
         const chatMessagesDiv = document.getElementById("chat_list");
         const messageParagraph = document.createElement("p");
-        messageParagraph.QtextContent = messageBody.content;
+        messageParagraph.textContent = messageBody.content;
         chatMessagesDiv.appendChild(messageParagraph);
     });
 });
@@ -23,12 +23,6 @@ stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("chatForm").addEventListener("submit", function(event) {
         event.preventDefault(); // 폼 기본 동작 중단
-        //
-        // const messageInput = document.getElementById("chat_content");
-        // console.log("messageInput: ",messageInput)
-        //
-        // const message = messageInput.value; // 입력된 메시지 가져오기
-        // console.log("message: ",message)
 
         const messageInput = document.querySelector("#chat_content");
         console.log(messageInput);
@@ -40,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const chatMessage = {
             content: message
         };
-        stompClient.send("/message", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
         // 입력 폼 비우기
         messageInput.value = "";
 
