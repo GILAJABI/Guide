@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.transaction.Transactional;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -96,28 +97,52 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
+    // 조회 작업
+//    @Override
+//    public MemberDTO readOne(Long memberId) {
+//        // Member 엔티티 조회
+//        Optional<Member> result = memberRepository.findById(memberId);
+//        Member member = result.orElseThrow(); // 조회된 Member가 없을 경우 예외 발생
+//
+//        // MemberDTO로 변환
+//        MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
+//
+//        // MemberProfile 조회
+//        Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
+//        MemberProfile memberProfile = memberProfileResult.orElseThrow(); // 조회된 MemberProfile이 없을 경우 예외 발생
+//
+//        // MemberProfile 정보를 MemberDTO에 추가
+//        // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
+//        memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+//
+//        return memberDTO;
+//    }
+
     // 회원 모든 정보 조회 작업(memberDTO + memberProfile)
     @Override
     public MemberDTO memberReadOne(Long memberId) {
         // Member 엔티티 조회
         Optional<Member> result = memberRepository.findById(memberId);
-        Member member = result.orElseThrow(); // 조회된 Member가 없을 경우 예외 발생
+        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
 
         // MemberDTO로 변환
         MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
 
         // MemberProfile 조회
         Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
-        MemberProfile memberProfile = memberProfileResult.orElseThrow(); // 조회된 MemberProfile이 없을 경우 예외 발생
+        MemberProfile memberProfile = memberProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
 
         // MemberProfile 정보를 MemberDTO에 추가
         // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
-        memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+        if (memberProfile != null) {
+            memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+        } else {
+            memberDTO.setProfileInfo(null); // 또는 빈 MemberProfileDTO 객체를 넣어도 됩니다.
+        }
 
         return memberDTO;
     }
 
-    // 프로필 등록 작업
     @Override
     public void profileRegister(MemberProfileDTO memberProfileDTO) {
         Member member = memberRepository.findById(memberProfileDTO.getMemberId())
@@ -150,6 +175,14 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
+    @Override
+    public boolean setProfileSession(Long member_id) {
+        MemberDTO member = readOne(member_id);
+        if (member.getProfileInfo() != null){
+            return true;
+        }
+        return false;
+    }
 //    // 회원 삭제 작업
 //    @Override
 //    public void memberRemove(Long memberId) {
