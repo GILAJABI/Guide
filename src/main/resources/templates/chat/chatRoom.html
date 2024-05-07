@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
+</head>
+
+<body>
+<header>
+    <div class="chat_close">
+        <button>
+            <img th:src="@{/image/chat_close.png}" alt="">
+        </button>
+    </div>
+    <div class="chat_header">
+        <img th:src="@{/image/guide_logo.png}">
+    </div>
+</header>
+
+<form id="chatForm">
+<div id="chat_list"></div>
+<div class="chat_input">
+    <label for="chat_content"></label><input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
+    <button type="submit" id="chat_btn">
+        <img th:src="@{/image/chat_btn.png}" alt="">
+    </button>
+</div>
+</form>
+
+</body>
+
+<script th:src="@{/js/chat/chat.js}"></script>
+</html>

@@ -1,28 +1,46 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const chatContentInput = document.querySelector('#chat_content');
-    const chatButton = document.querySelector('#chat_btn');
-    let chatList = document.querySelector('#chat_list');
+// const roomId = "YOUR_ROOM_ID"; // 실제 채팅방의 식별자로 대체해야 합니다.
 
-    // Check if chatList exists, if not, create it
-    if (!chatList) {
-        chatList = document.createElement('div');
-        chatList.id = 'chat_list';
-        document.body.appendChild(chatList);
-    }
+// STOMP 클라이언트 생성
+const stompClient = Stomp.client("ws://localhost:8888/connection"); // 예시: 서버 주소와 엔드포인트 설정
 
-    chatButton.addEventListener('click', () => {
-        const chatContent = chatContentInput.value.trim();
-        if (chatContent !== '') {
-            const chatItem = document.createElement('div');
-            const text = document.createElement('span');
+// 연결 시도
+stompClient.connect({}, function(frame) {
+    console.log('Connected: ' + frame);
 
-            
-            text.textContent = chatContent;
+    // 메시지를 받았을 때의 동작 정의
+    stompClient.subscribe("/topic/chat/room/", function(message) {
+        const messageBody = JSON.parse(message.body);
+        console.log('test6: ', messageBody);
+        // 메시지를 chatMessages 영역에 추가
+        const chatMessagesDiv = document.getElementById("chat_list");
+        const messageParagraph = document.createElement("p");
+        messageParagraph.textContent = messageBody.content;
+        chatMessagesDiv.appendChild(messageParagraph);
+    });
+});
 
-            chatItem.appendChild(text);
-            chatList.appendChild(chatItem);
 
-            chatContentInput.value = '';
-        }
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("chatForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 폼 기본 동작 중단
+
+        const messageInput = document.querySelector("#chat_content");
+        console.log(messageInput);
+        const message = messageInput.value;
+
+        console.log('test: ', message);
+        console.log("Message entered:", message);
+        // 메시지를 서버로 전송
+        const chatMessage = {
+            content: message
+        };
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        // 입력 폼 비우기
+        messageInput.value = "";
+
+        // 전송된 메시지 확인
+        console.log("전송된 메시지:", JSON.stringify({
+            content: message,
+        }));
     });
 });

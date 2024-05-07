@@ -1,153 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travelmaker List Page</title>
-    <link rel="stylesheet" href="../../static/css/chat/style.css">
-    <script src="../../static/js/chat/pop.js"></script>
+    <title>채팅 목록</title>
+    <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
 </head>
 
 <body>
-<header>
-    <div class="chat_header">
-
-    </div>
-</header>
-<h2 class="chat">채팅</h2>
+<div class="header" th:include="/include/header.html"></div>
 <div class="container">
-    <ul>
+    <header>
+        <p id="title">채팅</p>
+    </header>
+    <div>
+        <ul id="chat_arrange">
+            <li class="chat_div">
+                <div class="chat_list">
+                    <img class="profile" th:src="@{/image/profile.png}">
+                    <div class="list_div">
+                        <span class="name">username1</span>
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username1</span>
                 </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
+            </li>
 
-            </div>
-        </li>
+            <li class="chat_div">
+                <div class="chat_list">
+                    <img class="profile" th:src="@{/image/profile.png}">
+                    <div class="list_div">
+                        <span class="name">username2</span>
+                        <!-- 추가: 채팅 신청 버튼 -->
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username2</span>
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
                 </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
+            </li>
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username3</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username4</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username5</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username6</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">scrolltest</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">scrolltest</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-    </ul>
-</div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="icon2"><img class="profile" src="../../static/image/profile.png"></div>
-        <div>
-            <span class="name">username1</span>
-            <button>차단하기</button>
-            <button>1:1채팅</button>
-        </div>
+        </ul>
     </div>
 </div>
 
+<div id="chatModal" class="modal">
+    <div class="modal_content">
+        <section>
+            <div id="left">
+                <div id="myProfile">
+                    <div id="ratingImg">
+                        <img th:src="@{/image/high.png}" alt="금메달">
+                    </div>
+                    <div id="profilePhoto">
+                        <div id="circle">
+                            <div id="photo">
+                                <img th:src="@{/image/user.png}" alt="기본 프로필 사진">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="name">
+                        홍길동
+                    </div>
+                    <div id="modify">
+                        프로필 수정
+                    </div>
+                </div>
+                <div id="myCount">
+                    <div id="like">
+                        <img th:src="@{/image/like.png}" alt="좋아요">
+                        <p>16</p>
+                    </div>
+                    <div id="post">
+                        <img th:src="@{/image/post.png}" alt="게시물">
+                        <p>16</p>
+                    </div>
+                    <div id="chat">
+                        <img th:src="@{/image/chat.png}" alt="채팅">
+                        <p>16</p>
+                    </div>
+                </div>
+                <p id="withdraw">탈퇴</p>
+            </div>
+            <div id="right">
+                <div id="info">
+                    <div>
+                        20대
+                    </div>
+                    <div>
+                        남자
+                    </div>
+                </div>
+                <div id="mbti">
+                    <p>나의 여행 유형</p>
+                    <p id="userMbti">ENFP</p>
+                    <div id="mbtiBox">
+                        <div class="box">
+                            사람 많은 도시파
+                        </div>
+                        <div class="box">
+                            상상대로 모험파
+                        </div>
+                        <div class="box">
+                            감성파
+                        </div>
+                        <div class="box">
+                            끌리는대로 행동파
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 
-<script src="../../static/js/chat/chatList.js"></script>
+<script th:src="@{/js/chat/chatList.js}"></script>
+<script th:src="@{/js/chat/chatModal.js}"></script>
+<script th:src="@{/js/chat/closeModal.js}"></script>
 </body>
 
 </html>
