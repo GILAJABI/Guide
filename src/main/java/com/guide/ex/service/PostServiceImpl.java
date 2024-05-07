@@ -51,6 +51,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public void carrotRegister(PostDTO postDTO) {
         commonTask(postDTO);
-        Carrot carrot = modelMapper.map(, Carrot.class);
+//        Carrot carrot = modelMapper.map(, Carrot.class);
     }
 }
