@@ -26,7 +26,7 @@ public class MainController {
     public void main(HttpSession session, Model model) {
         //로그인이 된 상태
         if(session.getAttribute("member_id") != null){
-            MemberDTO memberInfo = memberService.readOne((Long) session.getAttribute("member_id"));
+            MemberDTO memberInfo = memberService.memberReadOne((Long) session.getAttribute("member_id"));
             model.addAttribute("member_info", memberInfo);
         }
     }

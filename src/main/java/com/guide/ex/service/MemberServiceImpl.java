@@ -177,7 +177,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean setProfileSession(Long member_id) {
-        MemberDTO member = readOne(member_id);
+        MemberDTO member = memberReadOne(member_id);
         if (member.getProfileInfo() != null){
             return true;
         }
