@@ -1,8 +1,10 @@
 package com.guide.ex.domain.post;
 
+import com.guide.ex.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -39,9 +41,9 @@ public abstract class Post {
     @Column(updatable = false)
     private LocalDateTime modifyDate;
 
-    @Column(nullable = true, precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal locationX;
-    @Column(nullable = true, precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal locationY;
 
     @Column(nullable = false)
@@ -56,15 +58,10 @@ public abstract class Post {
     private String postType;
 
     @Builder.Default
-    private int likeCount = 1;
+    private int likeCount = 0;
 
-
-    @Column(nullable = true)
-    private String memberId;
-
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostImage> postImages;
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PostImage postImages;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
@@ -72,4 +69,15 @@ public abstract class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public Long getId() {
+        return this.postId;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

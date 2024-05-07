@@ -28,11 +28,6 @@ public class Review extends Post{
     @LastModifiedDate
     private LocalDateTime endTravelDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-
     public void change(String title, String content) {
         this.title = title;
         this.content = content;

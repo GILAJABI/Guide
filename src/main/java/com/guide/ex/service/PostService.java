@@ -1,8 +1,12 @@
 package com.guide.ex.service;
 
-import com.guide.ex.dto.post.AllPostDTO;
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.post.CarrotDTO;
+import com.guide.ex.dto.post.PostDTO;
 
 public interface PostService {
 
-    Long register(AllPostDTO allPostDTO);
+    boolean commonTask(PostDTO postDTO);
+    void carrotRegister(PostDTO postDTO);
+
 }
