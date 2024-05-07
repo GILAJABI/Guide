@@ -15,4 +15,6 @@ public interface MemberService {
     void modify(MemberProfileDTO memberProfileDTO);
     //아래 함수는 DTO로 ModelMapper를 활용해 수정
     MemberProfile memberInfo(Long member_id);
+    //프로필 id 세션 할당 값
+    boolean setProfileSession(Long member_id);
 }

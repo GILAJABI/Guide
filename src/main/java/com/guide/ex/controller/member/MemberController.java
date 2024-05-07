@@ -3,7 +3,6 @@ package com.guide.ex.controller.member;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.member.MemberProfileDTO;
 import com.guide.ex.service.MemberService;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,13 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -46,7 +42,11 @@ public class MemberController {
         boolean check = memberService.login(uid, pwd);
 
         if (check) {
-            session.setAttribute("member_id", memberService.setLoginSession(uid));
+            Long memberId = memberService.setLoginSession(uid);
+            session.setAttribute("member_id", memberId);
+            if (memberService.setProfileSession(memberId)) {
+                session.setAttribute("member_profile", true);
+            }
             return "redirect:/member/testSuccess";
         } else {
             return "redirect:/member/login?error=incorrect";
