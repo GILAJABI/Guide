@@ -30,13 +30,12 @@ public class ChatMessage {
     private LocalDateTime registDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @Column(name = "room_id")
     private ChatRoom chatRoom;
 
     public void change(String newMessage, String s) {
         this.chatMsg = newMessage;
     }
-
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "member_id")

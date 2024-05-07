@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('test: ', message);
         console.log("Message entered:", message);
         // 메시지를 서버로 전송
-        let roomId = '1';
+        const roomId = 'roomid';
         const chatMessage = {
             content: message,
             chatRoom: roomId, // 예시: 선택한 채팅방의 식별자
