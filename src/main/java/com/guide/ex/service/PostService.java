@@ -10,7 +10,7 @@ public interface PostService {
 
 //    boolean confirm(MemberDTO memberDTO);
     void carrotRegister(PostDTO postDTO, CarrotDTO carrotDTO);
-//    void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO);
-//    void joinRegister(PostDTO postDTO, JoinDTO joinDTO);
+    void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO);
+    void joinRegister(PostDTO postDTO, JoinDTO joinDTO);
 
 }

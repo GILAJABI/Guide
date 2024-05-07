@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
         Post post = modelMapper.map(postDTO, Post.class);
         post.setMember(member);
         postRepository.save(post); // Post 저장
-        log.info("Saved Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
+        log.info("Saved Carrot Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
 
 
         carrotDTO.setPostId(post.getId()); // 저장된 Post의 ID를 가져와서 설정
@@ -62,39 +62,33 @@ public class PostServiceImpl implements PostService {
         carrotRepository.save(carrot); // Carrot 저장
     }
 
-//    @Override
-//    public void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO) {
-//        Member member =  memberRepository.findById(postDTO.getMemberId())
-//                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
-//        Post post = modelMapper.map(postDTO, Post.class);
-//        post.setMember(member);
-//        log.info("Mapping result: {}", post);
-//        postRepository.save(post);
-//
-//        log.info("저장 후 result: {}", post);
-//
-//        postRepository.save(post);
-//        //        commonTask(postDTO);
-//        Review review = modelMapper.map(reviewDTO, Review.class);
-//        reviewRepository.save(review);
-//    }
-//
-//    @Override
-//    public void joinRegister(PostDTO postDTO, JoinDTO joinDTO) {
-//
-//        Member member =  memberRepository.findById(postDTO.getMemberId())
-//                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
-//        Post post = modelMapper.map(postDTO, Post.class);
-//        post.setMember(member);
-//        log.info("Mapping result: {}", post);
-//        postRepository.save(post);
-//
-//        log.info("저장 후 result: {}", post);
-//
-//        postRepository.save(post);
-//        //        commonTask(postDTO);
-//        Join join = modelMapper.map(joinDTO, Join.class);
-//        joinRepository.save(join);
-//    }
+    @Override
+    public void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO) {
+        Member member =  memberRepository.findById(postDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
+        Post post = modelMapper.map(postDTO, Post.class);
+        post.setMember(member);
+        postRepository.save(post); // Post 저장
+        log.info("Saved Review Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
+
+        reviewDTO.setPostId(post.getId()); // 저장된 Post의 ID를 가져와서 설정
+        Review review = modelMapper.map(reviewDTO, Review.class);
+        reviewRepository.save(review); // Carrot 저장
+    }
+
+    @Override
+    public void joinRegister(PostDTO postDTO, JoinDTO joinDTO) {
+
+        Member member =  memberRepository.findById(postDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
+        Post post = modelMapper.map(postDTO, Post.class);
+        post.setMember(member);
+        postRepository.save(post); // Post 저장
+        log.info("Saved Join Review Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
+
+        joinDTO.setPostId(post.getId()); // 저장된 Post의 ID를 가져와서 설정
+        Join join = modelMapper.map(joinDTO, Join.class);
+        joinRepository.save(join); // Carrot 저장
+    }
 
 }
