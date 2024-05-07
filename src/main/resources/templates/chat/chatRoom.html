@@ -10,8 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
     <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
-    <script th:src="@{/js/chat/chatRoom.js}"></script>
-    <script th:src="@{/js/chat/chat.js}"></script>
 </head>
 
 <body>
@@ -29,12 +27,21 @@
 <form id="chatForm">
 <div id="chat_list"></div>
 <div class="chat_input">
-    <input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
+    <label for="chat_content"></label><input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
     <button type="submit" id="chat_btn">
-        <img th:src="@{/image/chat_btn.png}">
+        <img th:src="@{/image/chat_btn.png}" alt="">
     </button>
 </div>
 </form>
+
 </body>
 
+<script th:src="@{/js/chat/chat.js}"></script>
+<script>
+    document.querySelector('#chat_btn').addEventListener('click', () => {
+        console.log("test2:  " + document.querySelector('#chat_content').value);
+    })
+
+
+</script>
 </html>
