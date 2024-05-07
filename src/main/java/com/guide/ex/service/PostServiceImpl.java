@@ -1,18 +1,19 @@
 package com.guide.ex.service;
 
+import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.Carrot;
-import com.guide.ex.domain.post.Join;
 import com.guide.ex.domain.post.Post;
-import com.guide.ex.domain.post.Review;
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.post.CarrotDTO;
 import com.guide.ex.dto.post.PostDTO;
+import com.guide.ex.repository.member.MemberRepository;
 import com.guide.ex.repository.post.PostRepository;
+import com.guide.ex.repository.search.AllPostSearchImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,69 +23,34 @@ public class PostServiceImpl implements PostService {
 
     private final ModelMapper modelMapper;
     private final PostRepository postRepository;
-
-    @Override
-    public void register(String postType, PostDTO postDTO) {
-        Post post;
-        switch (postType) {
-            case "Review":
-                post = modelMapper.map(postDTO.getReview(), Review.class);
-                postRepository.save(post);
-                break;
-            case "Carrot":
-                post = modelMapper.map(postDTO.getCarrot(), Carrot.class);
-                postRepository.save(post);
-                break;
-            case "Join":
-                post = modelMapper.map(postDTO.getJoin(), Join.class);
-                postRepository.save(post);
-                break;
-            default:
-                log.error("Unknown post type {}", postType);
-                return;
-        }
-        postRepository.save(post);
-    }
+    private final AllPostSearchImpl allPostSearchImpl;
+    private final MemberRepository memberRepository;
 
 
     @Override
-    public void remove(String postType, Long postId) {
-        // postId로 게시물을 찾는다.
-        Optional<Post> optionalPost = postRepository.findById(postId);
+    public boolean commonTask(PostDTO postDTO) {
+        Member member =  memberRepository.findById(postDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
 
-        if (!optionalPost.isPresent()) {
-            log.error("게시물을 찾을 수 없습니다. ID: {}", postId);
-            return;
+        Post post = modelMapper.map(postDTO, Post.class);
+        post.setMember(member);
+
+        // 게시글 작성 시 postType으로 게시판 나눠 -> [회원 ID가 not null -> 해당 회원ID가 is_Ban == false이어야 게시글 작성 가능]
+        // 게시글 수정/삭제 시 postType으로 게시판 나눠 -> 회원 ID가 postId가 포함되있어야됨 -> is_Ban == false여야 됨
+        // memberId가 존재할 경우, member.isBan == false, PostId가
+
+
+        if(!member.isBan()) {
+            postRepository.save(post);
+            return true;
         }
+        return false;
 
-        Post post = optionalPost.get();
-
-        // 게시물 유형을 확인하고 일치하는 경우에만 삭제를 진행한다.
-        switch (postType) {
-            case "Review":
-                if (post instanceof Review) {
-                    postRepository.delete(post);
-                } else {
-                    log.error("게시물 유형이 일치하지 않습니다. 요청 유형: Review, 실제 유형: {}", post.getClass().getSimpleName());
-                }
-                break;
-            case "Carrot":
-                if (post instanceof Carrot) {
-                    postRepository.delete(post);
-                } else {
-                    log.error("게시물 유형이 일치하지 않습니다. 요청 유형: Carrot, 실제 유형: {}", post.getClass().getSimpleName());
-                }
-                break;
-            case "Join":
-                if (post instanceof Join) {
-                    postRepository.delete(post);
-                } else {
-                    log.error("게시물 유형이 일치하지 않습니다. 요청 유형: Join, 실제 유형: {}", post.getClass().getSimpleName());
-                }
-                break;
-            default:
-                log.error("알 수 없는 게시물 유형: {}", postType);
-        }
     }
 
+    @Override
+    public void carrotRegister(PostDTO postDTO) {
+        commonTask(postDTO);
+        Carrot carrot = modelMapper.map(, Carrot.class);
+    }
 }

@@ -19,7 +19,7 @@ import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 @SpringBootTest
 @Log4j2
-public class PostQueryDslTests {
+public class PostSearchTests {
 
     @Autowired
     @Qualifier("allPostSearchImpl") // AllPostSearch는 1개 이상의 빈을 사용하고 있어 우선순위를 지정

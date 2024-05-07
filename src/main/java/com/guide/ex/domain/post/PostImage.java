@@ -17,9 +17,9 @@ public class PostImage {
     private String fileName;
 
     @Column(nullable = false)
-    private int ord;
+    private String uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 }

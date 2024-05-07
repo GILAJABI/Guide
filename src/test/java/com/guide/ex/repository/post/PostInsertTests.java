@@ -1,6 +1,8 @@
 package com.guide.ex.repository.post;
 
+import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.*;
+import com.guide.ex.dto.post.PostDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @SpringBootTest
 @Log4j2
-public class PostRepositoryTests {
+public class PostInsertTests {
 
 //    @Autowired
 //    private CommentRepository testComment;
@@ -238,4 +240,14 @@ public class PostRepositoryTests {
 
         testReview.deleteById(bno);
     }
+
+//    @Test
+//    public void testPost() {
+//        Member member = Member.builder().memberId(13L).build();
+//        Post post = Post.builder()
+//                .member(member)
+//                .price(19000)
+//                .build();
+//
+//    }
 }
