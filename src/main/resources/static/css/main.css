@@ -174,17 +174,16 @@ footer {
 #notLogin{
     margin-top: 10px;
 }
-.profile_register_btn {
+.button_area > .profileBtn {
     border-style: none;
     color: #ffffff; /* 연한 분홍색 */
     background-color: #ffcccc; /* 마우스 호버 시 연한 분홍색 배경 */
-    padding: 4px 10px; /* 필요에 따라 패딩 조절 */
     cursor: pointer; /* 마우스 호버 시 포인터로 변경 */
     outline: none; /* 기본 버튼 테두리 제거 */
     border-radius: 5px;
     transition: background-color 0.3s ease; /* 부드러운 효과를 위한 트랜지션 */
 }
 
-.profile_register_btn:hover {
+.button_area > .profileBtn:hover {
     background-color: #ff7f7f; /* 마우스 호버 시 연한 분홍색으로 변경 */
 }

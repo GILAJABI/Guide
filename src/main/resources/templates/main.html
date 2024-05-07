@@ -44,30 +44,34 @@
                             <span class="user_mbti"> [(${member_info.profileInfo.travelType})]</span>
                         </div>
                         <div class="button_area">
-                            <button>마이페이지</button>
-                            <button>로그아웃</button>
+                            <button class="myPageBtn">마이페이지</button>
+                            <form method="post" th:action="@{/member/logout}" style="display: inline;">
+                                <button class="logoutBtn">로그아웃</button>
+                            </form>
                         </div>
+
                     </div>
 
                     <div class="user_info" th:if="${session.member_id != null and session.member_profile == null}">
                         <div> 안녕하세요 여행자님 &nbsp;: )</div>
                         <div>
                             <span class="user_name">[(${member_info.name})]님</span>
-                            &nbsp;| &nbsp;
-                            <button class="user_mbti profile_register_btn">프로필 등록</button>
                         </div>
                         <div class="button_area">
-                            <button>마이페이지</button>
-                            <button>로그아웃</button>
+                            <button class="profileBtn">프로필 등록</button>
+                            <form method="post" th:action="@{/member/logout}" style="display: inline;">
+                                <button class="logoutBtn">로그아웃</button>
+                            </form>
                         </div>
+
                     </div>
 
                     <div class="user_info" th:if="${session.member_id == null}">
                         <div id="notLogin">
                             <div> 안녕하세요 여행자님 &nbsp;: )</div>
                             <div class="button_area">
-                                <button>로그인</button>
-                                <button>회원가입</button>
+                                <button class="loginBtn">로그인</button>
+                                <button class="signupBtn">회원가입</button>
                             </div>
                         </div>
                     </div>
@@ -229,6 +233,51 @@
         }
 
         setInterval(slideProfiles, 400);
+    });
+</script>
+
+<!--메인 페이지 화면이동 스크립트-->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var loginBtn = document.querySelector(".loginBtn");
+        var signupBtn = document.querySelector(".signupBtn");
+
+        loginBtn.addEventListener("click", function() {
+            window.location.href = '/member/login';
+        });
+
+        signupBtn.addEventListener("click", function() {
+            window.location.href = '/member/signUp';
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var myPageBtn = document.querySelector(".myPageBtn");
+        var logoutBtn = document.querySelector(".logoutBtn");
+        var profileBtn = document.querySelector(".profileBtn");
+
+
+        myPageBtn.addEventListener("click", function() {
+            window.location.href = '/member/myPage';
+        });
+
+        logoutBtn.addEventListener("click", function() {
+            document.getElementById('logoutForm').submit();
+        });
+
+        profileBtn.addEventListener("click", function() {
+            window.location.href = '/member/profile';
+        });
+
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var profileBtn = document.querySelector(".profileBtn");
+
+        profileBtn.addEventListener("click", function() {
+            window.location.href = '/member/profile';
+        });
+
     });
 </script>
 

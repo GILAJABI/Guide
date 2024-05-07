@@ -24,9 +24,8 @@
                 </div>
                 <div id="profilePhoto">
                     <div id="circle">
-                        <div id="photo">
-                            <img th:src="@{/image/user.png}" alt="기본 프로필 사진">
-                        </div>
+                            <img th:if="${session.member_id != null and session.member_profile != null}" th:src="'/api/photo/' + ${member.profileInfo.uuid + '_' + member.profileInfo.fileName}">
+                            <img th:unless="${session.member_id != null and session.member_profile != null}" th:src="@{/image/user.png}" alt="기본 프로필 사진">
                     </div>
                 </div>
                 <div id="name">
@@ -59,34 +58,34 @@
         <div id="right">
             <div id="info">
                 <p>한줄 소개</p>
-                <p id="content">[[${profile.content}]]</p>
+                <p id="content">[[${member.profileInfo.content}]]</p>
             </div>
             <div id="mbti">
                 <p>나의 여행 유형</p>
-                <p id="userMbti"><p>[[${profile.travelType}]]</p></p>
+                <p id="userMbti"><p>[[${member.profileInfo.travelType}]]</p></p>
                 <div id="mbtiBox">
-                    <div class="box" th:if="${profile.travelType.startsWith('E')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.startsWith('E')}">
                         사람 많은 도시파
                     </div>
-                    <div class="box" th:if="${profile.travelType.startsWith('I')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.startsWith('I')}">
                         나무 많은 자연파
                     </div>
-                    <div class="box" th:if="${profile.travelType.contains('S')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.contains('S')}">
                         정해진 코스 관광파
                     </div>
-                    <div class="box" th:if="${profile.travelType.contains('N')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.contains('N')}">
                         상상대로 모험파
                     </div>
-                    <div class="box" th:if="${profile.travelType.contains('F')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.contains('F')}">
                         감성파
                     </div>
-                    <div class="box" th:if="${profile.travelType.contains('T')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.contains('T')}">
                         효율파
                     </div>
-                    <div class="box" th:if="${profile.travelType.contains('J')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.contains('J')}">
                         꼼꼼한 계획파
                     </div>
-                    <div class="box" th:if="${profile.travelType.contains('P')}">
+                    <div class="box" th:if="${member.profileInfo.travelType.contains('P')}">
                         끌리는대로 행동파
                     </div>
                 </div>

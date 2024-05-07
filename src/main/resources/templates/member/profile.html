@@ -5,16 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>프로필</title>
     <link rel="stylesheet" th:href="@{/css/member/profile.css}">
-    <style>
-        #imagePreview {
-            width: 200px;
-            height: 200px;
-            background-color: #ccc;
-            border-radius: 50%;
-            margin: 0 auto;
-        }
 
-    </style>
 </head>
 <body>
 <div th:include="/include/header.html"></div>
@@ -55,9 +46,8 @@
         <br>
         <button type="submit" class="loginBtn">완료</button>
     </form>
-    <script th:src="@{/js/member/mbti.js}"></script>
 </div>
-
+<script th:src="@{/js/member/mbti.js}"></script>
 <script>
     document.getElementById('file').addEventListener('change', function(event) {
         var file = event.target.files[0]; // Get the selected file
