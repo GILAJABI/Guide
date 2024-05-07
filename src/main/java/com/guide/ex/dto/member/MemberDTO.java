@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.time.Year;
 
 @Data
@@ -54,4 +55,16 @@ public class MemberDTO {
         }
     }
 
+    public String getAgeRange() {
+        int currentYear = LocalDate.now().getYear(); // 현재 연도를 구함
+        int birthYear = this.year.getValue(); // Year 객체에서 연도를 int로 추출
+        int age = currentYear - birthYear; // 실제 나이 계산
+        int rangeStart = (age / 10) * 10; // 연령대 계산
+        return rangeStart + "대"; // "20대", "30대" 등의 문자열 반환
+    }
+
+    public String getGenderDescription() {
+        if (gender == null) return "정보 없음"; // gender 정보가 없을 경우 처리
+        return gender.equals("male") ? "남자" : "여자";
+    }
 }
