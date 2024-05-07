@@ -28,7 +28,11 @@
                     </div>
                 </div>
                 <div id="name">
-                    홍길동
+                    <p>[[${member.name}]]</p>
+                </div>
+                <div id="userInfo">
+                    <p class="cir">[[${member.getAgeRange()}]]</p>
+                    <p class="cir">[[${member.getGenderDescription()}]]</p>
                 </div>
                 <div id="modify">
                     프로필 수정
@@ -37,42 +41,50 @@
             <div id="myCount">
                 <div id="like">
                     <img th:src="@{/image/like.png}" alt="좋아요">
-                    <p>16</p>
+                    <p>[[${member.likeCount}]]</p>
                 </div>
                 <div id="post">
                     <img th:src="@{/image/post.png}" alt="게시물">
-                    <p>16</p>
+                    <p>[[${member.postCount}]]</p>
                 </div>
                 <div id="chat">
                     <img th:src="@{/image/chat.png}" alt="채팅">
-                    <p>16</p>
+                    <p>[[${member.commentCount}]]</p>
                 </div>
             </div>
             <p id="withdraw">탈퇴</p>
         </div>
         <div id="right">
             <div id="info">
-                <div>
-                    20대
-                </div>
-                <div>
-                    남자
-                </div>
+                <p>한줄 소개</p>
+                <p id="content">[[${profile.content}]]</p>
             </div>
             <div id="mbti">
                 <p>나의 여행 유형</p>
-                <p id="userMbti">ENFP</p>
+                <p id="userMbti"><p>[[${profile.travelType}]]</p></p>
                 <div id="mbtiBox">
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.startsWith('E')}">
                         사람 많은 도시파
                     </div>
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.startsWith('I')}">
+                        나무 많은 자연파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('S')}">
+                        정해진 코스 관광파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('N')}">
                         상상대로 모험파
                     </div>
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.contains('F')}">
                         감성파
                     </div>
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.contains('T')}">
+                        효율파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('J')}">
+                        꼼꼼한 계획파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('P')}">
                         끌리는대로 행동파
                     </div>
                 </div>
