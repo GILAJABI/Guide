@@ -12,7 +12,7 @@
 <div th:include="/include/header.html"></div>
 <div class="container">
     <header>
-        <p id="title">홍길동님의 페이지</p>
+        <p id="title">[[${member.name}]]님의 페이지</p>
     </header>
     <section>
         <div id="left">
@@ -28,58 +28,70 @@
                     </div>
                 </div>
                 <div id="name">
-                    홍길동
+                    [[${member.name}]]
+                </div>
+                <div id="userInfo">
+                    <p>[[${member.getAgeRange()}]]</p>
+                    <p>[[${member.getGenderDescription()}]]</p>
                 </div>
                 <div id="chatImg">
-                    <img th:src="@{/image/chatting.png}" alt="채팅 걸기">
+                    <img th:src="@{/image/chattingBtn.png}" alt="채팅 걸기">
                 </div>
             </div>
             <div id="otherCount">
                 <div id="like">
                     <img th:src="@{/image/like.png}" alt="좋아요">
-                    <p>16</p>
+                    <p>[[${member.likeCount}]]</p>
                 </div>
                 <div id="post">
                     <img th:src="@{/image/post.png}" alt="게시물">
-                    <p>16</p>
+                    <p>[[${member.postCount}]]</p>
                 </div>
                 <div id="chat">
                     <img th:src="@{/image/chat.png}" alt="채팅">
-                    <p>16</p>
+                    <p>[[${member.commentCount}]]</p>
                 </div>
             </div>
             <p id="report">신고</p>
         </div>
         <div id="right">
             <div id="info">
-                <div>
-                    20대
-                </div>
-                <div>
-                    남자
-                </div>
+                <p>한줄 소개</p>
+                <p id="content">[[${profile.content}]]</p>
             </div>
             <div id="mbti">
-                <p>홍길동님의 여행 유형</p>
-                <p id="userMbti">ENFP</p>
+                <p>[[${member.name}]]님의 여행 유형</p>
+                <p id="userMbti">[[${profile.travelType}]]</p>
                 <div id="mbtiBox">
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.startsWith('E')}">
                         사람 많은 도시파
                     </div>
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.startsWith('I')}">
+                        나무 많은 자연파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('S')}">
+                        정해진 코스 관광파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('N')}">
                         상상대로 모험파
                     </div>
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.contains('F')}">
                         감성파
                     </div>
-                    <div class="box">
+                    <div class="box" th:if="${profile.travelType.contains('T')}">
+                        효율파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('J')}">
+                        꼼꼼한 계획파
+                    </div>
+                    <div class="box" th:if="${profile.travelType.contains('P')}">
                         끌리는대로 행동파
                     </div>
                 </div>
             </div>
             <div id="otherPost">
                 <div id="more">
-                    <p>나의 게시물</p>
+                    <p>[[${member.name}]]님의 게시물</p>
                     <p id="postMore">더보기</p>
                 </div>
                 <ul>

@@ -29,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberProfileRepository memberProfileRepository;
 
+    // 회원 등록 작업(회원가입)
     @Override
     public void signUp(MemberDTO memberDto) {
         String salt = generateSalt();
@@ -95,9 +96,9 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
-    // 조회 작업
+    // 회원 모든 정보 조회 작업(memberDTO + memberProfile)
     @Override
-    public MemberDTO readOne(Long memberId) {
+    public MemberDTO memberReadOne(Long memberId) {
         // Member 엔티티 조회
         Optional<Member> result = memberRepository.findById(memberId);
         Member member = result.orElseThrow(); // 조회된 Member가 없을 경우 예외 발생
@@ -116,26 +117,56 @@ public class MemberServiceImpl implements MemberService {
         return memberDTO;
     }
 
-    // 수정 작업
+    // 프로필 등록 작업
     @Override
-    public void modify(MemberProfileDTO memberProfileDTO) {
-        Optional<MemberProfile> result = memberProfileRepository.findById(memberProfileDTO.getMemberId());
+    public void profileRegister(MemberProfileDTO memberProfileDTO) {
+        Member member = memberRepository.findById(memberProfileDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberProfileDTO.getMemberId()));
 
-        MemberProfile memberProfile = result.orElseThrow();
-
-        memberProfile.change(memberProfileDTO.getUuid(), memberProfileDTO.getFileName(), memberProfileDTO.getContent(), memberProfileDTO.getTravelType());
-
+        MemberProfile memberProfile = modelMapper.map(memberProfileDTO, MemberProfile.class);
+        memberProfile.setMember(member); // Member 설정
         memberProfileRepository.save(memberProfile);
     }
 
-    //아래 함수는 DTO로 ModelMapper를 활용해 수정
-    @Override
-    public MemberProfile memberInfo(Long member_id) {
-        Optional<Member> optionalMember = memberRepository.findById(member_id);
-        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
-        Optional<MemberProfile> optionalMemberProfile = memberProfileRepository.findByMember(member);
-        MemberProfile memberProfile = optionalMemberProfile.orElseThrow(() -> new IllegalArgumentException("Member not found"));
-        return memberProfile;
+    // 프로필 수정 작업
+    @Override
+    public void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO) {
+        // MemberProfile 엔티티 조회 및 변경
+        MemberProfile memberProfile = memberProfileRepository.findById(memberProfileDTO.getMemberProfileId())
+                .orElseThrow(() -> new RuntimeException("MemberProfile not found"));
+        memberProfile.change(
+                memberProfileDTO.getUuid(),
+                memberProfileDTO.getFileName(),
+                memberProfileDTO.getContent(),
+                memberProfileDTO.getTravelType()
+        );
+        memberProfileRepository.save(memberProfile);
+
+        // Member 엔티티 조회 및 변경
+        Member member = memberRepository.findById(memberDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+        member.change(memberDTO.getName());
+        memberRepository.save(member);
     }
+
+//    // 회원 삭제 작업
+//    @Override
+//    public void memberRemove(Long memberId) {
+//        memberProfileRepository.deleteByMemberId(memberId);
+//        memberRepository.deleteById(memberId);
+//    }
+
+//
+//    //아래 함수는 DTO로 ModelMapper를 활용해 수정
+//    @Override
+//    public MemberProfile memberInfo(Long member_id) {
+//        Optional<Member> optionalMember = memberRepository.findById(member_id);
+//        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
+//
+//        Optional<MemberProfile> optionalMemberProfile = memberProfileRepository.findByMember(member);
+//        MemberProfile memberProfile = optionalMemberProfile.orElseThrow(() -> new IllegalArgumentException("Member not found"));
+//        return memberProfile;
+//    }
+
 }

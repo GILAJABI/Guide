@@ -23,7 +23,7 @@
         <!--        <img src="../image/logo.png" alt="로고">-->
         <p id="title">프로필</p>
     </header>
-    <form th:action="@{profile}" method="post" enctype="multipart/form-data">
+    <form action="/member/profile" method="post" enctype="multipart/form-data">
         <div id="imagePreview"></div>
         <label class="file-label">
             <input type="file" id="file" name="file" required>

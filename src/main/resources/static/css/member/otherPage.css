@@ -7,7 +7,7 @@
 
 .container {
     max-width: 1000px;
-    margin: 40px auto;
+    margin: 86px auto;
 }
 
 #title {
@@ -62,11 +62,22 @@ div#name {
     margin-top: 20px;
 }
 
+#userInfo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#userInfo > p {
+    font-family: 'Pretendard-Regular';
+    font-size: 16px;
+}
+
 #chatImg {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
 }
 
 #otherCount {
@@ -91,23 +102,15 @@ div#chat {
     font-size: 14px;
 }
 
-#info {
-    display: flex;
-    justify-content: start;
-    width: 650px;
-    height: 48px;
-    border-radius: 5px;
+#info > p {
+    font-family: 'BMJUA';
+    font-size: 20px;
+    margin-top: 0px;
 }
 
-#info > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 103px;
-    height: 48px;
-    border: 1px solid #ff6392;
-    border-radius: 10px;
-    margin-right: 21px;
+#info > #content {
+    font-family: 'Pretendard-Regular';
+    font-size: 20px;
 }
 
 #end {

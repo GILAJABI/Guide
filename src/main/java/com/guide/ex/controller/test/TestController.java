@@ -38,10 +38,10 @@ public class TestController {
 
     }
 
-    @GetMapping("/test_out_member")
-    public void test_out_member(Model model) {
-        model.addAttribute("member_info", memberService.memberInfo(1L));
-    }
+//    @GetMapping("/test_out_member")
+//    public void test_out_member(Model model) {
+//        model.addAttribute("member_info", memberService.memberInfo(2L));
+//    }
 
 
 }

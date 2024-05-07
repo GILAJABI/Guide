@@ -14,7 +14,8 @@ public class MemberProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_profile_id;
+    @Column(name = "member_profile_id")
+    private Long memberProfileId;
 
     @Column(name="uuid", length = 500)
     private String uuid;
@@ -38,5 +39,10 @@ public class MemberProfile {
         this.fileName = fileName;
         this.content = content;
         this.travelType = travelType;
+    }
+
+    // Member 객체 설정 메소드 추가
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
