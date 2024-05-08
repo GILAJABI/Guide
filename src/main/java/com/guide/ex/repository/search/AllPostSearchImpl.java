@@ -112,6 +112,11 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .where(post.postId.eq(postId))
                 .execute();
     }
+
+    @Override
+    public Page<Post> searchMemberPostAll(Pageable pageable) {
+        return null;
+    }
 }
 
 

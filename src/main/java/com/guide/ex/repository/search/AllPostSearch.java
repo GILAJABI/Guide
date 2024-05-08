@@ -17,4 +17,6 @@ public interface AllPostSearch {
     Post searchOne(Long postId);
 
     void updateViews(Long postId);
+
+    Page<Post> searchMemberPostAll(Pageable pageable);
 }

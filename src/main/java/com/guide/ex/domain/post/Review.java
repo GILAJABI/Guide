@@ -28,8 +28,10 @@ public class Review extends Post{
     @LastModifiedDate
     private LocalDateTime endTravelDate;
 
-//    public void change(String title, String content) {
-//        this.title = title;
-//        this.content = content;
-//    }
+    public void change(int expense, Long grade, LocalDateTime startTravelDate, LocalDateTime endTravelDate) {
+        this.expense = expense;
+        this.grade = grade;
+        this.startTravelDate = startTravelDate;
+        this.endTravelDate = endTravelDate;
+    }
 }

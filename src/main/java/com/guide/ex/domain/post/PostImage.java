@@ -1,25 +1,30 @@
 package com.guide.ex.domain.post;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
+@SuperBuilder
 @Entity
 @Getter
 @NoArgsConstructor
 public class PostImage {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageId;
+    private Long postId;
 
-    @Column(nullable = false, length = 255)
-    private String fileName;
-
-    @Column(nullable = false)
+    @Column(name="uuid", length = 500)
     private String uuid;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name = "file_name", length = 200)
+    private String fileName;
+
+    @Column(name = "ord", length = 50)
+    @Builder.Default
+    private int ord = 0;
+
+    @MapsId
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 }

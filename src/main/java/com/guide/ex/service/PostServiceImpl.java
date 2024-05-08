@@ -18,8 +18,11 @@ import com.guide.ex.repository.search.AllPostSearchImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -33,6 +36,8 @@ public class PostServiceImpl implements PostService {
     private final CarrotRepository carrotRepository;
     private final ReviewRepository reviewRepository;
     private final JoinRepository joinRepository;
+    private final AllPostSearchImpl allPostSearch;
+
 
 
 //    @Override
@@ -125,6 +130,84 @@ public class PostServiceImpl implements PostService {
 
         log.info("Updated Post ID: {}, Carrot Post ID: {}, by Member ID: {}", post.getPostId(), carrot.getPostId(), postDTO.getMemberId());
     }
+
+    @Override
+    public void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO) {
+        // Post 엔티티 찾기
+        Post post = postRepository.findById(postDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post not found with id : " + postDTO.getPostId()));
+
+        // 게시글 소유자 확인
+        if (!post.getMember().getMemberId().equals(postDTO.getMemberId())) {
+            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + postDTO.getMemberId());
+        }
+        post.change(
+                postDTO.getTitle(),
+                postDTO.getContent()
+        );
+        post.changeDate(
+                postDTO.getModifyDate()
+        );
+
+        // 변경사항 저장
+        postRepository.save(post);
+
+        // Carrot 엔티티 찾기
+        Review review = reviewRepository.findById(reviewDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Carrot post not found with id : " + reviewDTO.getPostId()));
+
+        // Carrot 엔티티 업데이트
+        review.change(reviewDTO.getExpense(),
+                reviewDTO.getGrade(),
+                reviewDTO.getStartTravelDate(),
+                reviewDTO.getEndTravelDate());
+
+        // 변경사항 저장
+        reviewRepository.save(review);
+
+        log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), review.getPostId(), postDTO.getMemberId());
+    }
+
+    @Override
+    public void joinModify(PostDTO postDTO, JoinDTO joinDTO) {
+        // Post 엔티티 찾기
+        Post post = postRepository.findById(postDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post not found with id : " + postDTO.getPostId()));
+
+        // 게시글 소유자 확인
+        if (!post.getMember().getMemberId().equals(postDTO.getMemberId())) {
+            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + postDTO.getMemberId());
+        }
+
+        post.change(
+                postDTO.getTitle(),
+                postDTO.getContent()
+        );
+
+        post.changeDate(
+                postDTO.getModifyDate()
+        );
+
+        // 변경사항 저장
+        postRepository.save(post);
+
+        // Carrot 엔티티 찾기
+        Join join = joinRepository.findById(joinDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Carrot post not found with id : " + joinDTO.getPostId()));
+
+        // Carrot 엔티티 업데이트
+        join.change(
+                joinDTO.getExpense(),
+                joinDTO.getNumPeople(),
+                joinDTO.getStartTravelDate(),
+                joinDTO.getEndTravelDate());
+
+        // 변경사항 저장
+        joinRepository.save(join);
+
+        log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
+    }
+
 
 
 }
