@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -128,7 +128,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: url('../image/cat.jpeg') no-repeat;
+            background: url('/image/cat.jpeg') no-repeat;
 
         }
 
@@ -157,13 +157,13 @@
         <div class="top">
             <div class="snu">
                 <input type="text" class="search">
-                <button type="button" class="glass" style="background-image: url('../image/white.png');"></button>
+                <button type="button" class="glass" style="background-image: th:url('@{/image/white.png}');"></button>
                 <button type="submit" class="upload">올리기</button>
             </div>
         </div>
         <div class="bottom">
             <div class="left">
-                <img src="../image/cat.jpeg" alt="상품사진">
+                <img th:src="@{/image/cat.jpeg}" alt="상품사진">
                 <div class="location-map">
 
                     <iframe
@@ -176,7 +176,7 @@
             <div class="right">
 
                 <div class="profile">
-                    <img src="../image/cat.jpeg" alt="프로필 사진">
+                    <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">
                     <p>닉네임</p>
                 </div>
 
@@ -185,9 +185,9 @@
                 <h3>여행 날짜 | 1/1 ~ 12/31</h3>
 
                 <div class="line">
-                    <img src="../image/red.png" alt="heart">
+                    <img th:src="@{/image/red.png}" alt="heart">
                     <h3>8</h3>
-                    <img src="../image/eye.png" alt="eye">
+                    <img th:src="@{/image/eye.png}" alt="eye">
                     <h3>20</h3>
                 </div>
 
@@ -198,7 +198,7 @@
                 </div>
                 <h4 style="color: #c1c1c1;">댓글</h4>
                 <div class="profile">
-                    <img src="../image/cat.jpeg" alt="프로필 사진">
+                    <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">
                     <h4>김시언: 뭐요</h4>
                 </div>
             </div>

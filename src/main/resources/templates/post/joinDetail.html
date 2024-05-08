@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
 <body>
 
 <div class="container">
-  <img src="이미지_경로.jpg" alt="이미지 설명">
+  <img th:src="@{이미지_경로.jpg}" alt="이미지 설명">
   <div class="description">이곳에는 이미지에 대한 설명을 작성하세요. 설명이 길어질 경우 이 부분만 늘어납니다.</div>
 </div>
 

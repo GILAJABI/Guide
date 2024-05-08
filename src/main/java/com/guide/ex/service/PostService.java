@@ -7,6 +7,5 @@ import com.guide.ex.dto.post.PostDTO;
 public interface PostService {
 
     boolean commonTask(PostDTO postDTO);
-    void carrotRegister(PostDTO postDTO);
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -144,18 +144,18 @@
 
 <body>
 
-    <button class="btn prevBtn" onclick="moveSlide(-1)"><img src="../image/prev.png" alt="Prev"></button>
+    <button class="btn prevBtn" onclick="moveSlide(-1)"><img th:src="@{/image/prev.png}" alt="Prev"></button>
 
     <div class="container">
         <div class="box fir">
             <div class="overlay"></div> <!-- 오버레이 추가 -->
-            <img src="../image/art_16378855673824_4f85c7.jpg">
+            <img th:src="@{/image/art_16378855673824_4f85c7.jpg}">
             <div class="title">필리핀 보라돌이</div>
 
             <div class="text">
-                <img src="../image/people.png" alt="사람">
+                <img th:src="@{/image/people.png}" alt="사람">
                 <span class="space">2인</span> <!-- span 태그 추가 -->
-                <img src="../image/calendar.png" alt="날짜">
+                <img th:src="@{/image/calendar.png}" alt="날짜">
                 5월 8일
             </div>
 
@@ -164,13 +164,13 @@
 
         <div class="box sec">
             <div class="overlay"></div> <!-- 오버레이 추가 -->
-            <img src="../image/edasupb6ur3cx9vk5wdk.webp">
+            <img th:src="@{/image/edasupb6ur3cx9vk5wdk.webp}">
             <div class="title">제목 2</div>
 
             <div class="text">
-                <img src="../image/people.png" alt="사람">
+                <img th:src="@{/image/people.png}" alt="사람">
                 <span class="space">2인</span> <!-- span 태그 추가 -->
-                <img src="../image/calendar.png" alt="날짜">
+                <img th:src="@{/image/calendar.png}" alt="날짜">
                 5월 8일
             </div>
 
@@ -179,13 +179,13 @@
         <div class="box thir">
             <div class="overlay"></div> <!-- 오버레이 추가 -->
             <img
-                src="../image/ilcQqf__o2TdcXAj0XeVm1ZRxMeEVA6cQ4lzZcaLXoWeFe8iYdzwZSSp8Aw0jS0ZhBDIeLtkvtjdxXgZrz84C15hU4gftIKs2YNg33c4KEGBrQAo1xlh2BJoOAtIZ_Locz-nnfKA_LgwEIVa9hwxoQ.webp">
+                th:src="@{/image/ilcQqf__o2TdcXAj0XeVm1ZRxMeEVA6cQ4lzZcaLXoWeFe8iYdzwZSSp8Aw0jS0ZhBDIeLtkvtjdxXgZrz84C15hU4gftIKs2YNg33c4KEGBrQAo1xlh2BJoOAtIZ_Locz-nnfKA_LgwEIVa9hwxoQ.webp}">
             <div class="title">제목 3</div>
 
             <div class="text">
-                <img src="../image/people.png" alt="사람">
+                <img th:src="@{/image/people.png}" alt="사람">
                 <span class="space">2인</span> <!-- span 태그 추가 -->
-                <img src="../image/calendar.png" alt="날짜">
+                <img th:src="@{/image/calendar.png}" alt="날짜">
                 5월 8일
             </div>
 
@@ -203,7 +203,7 @@
             </div> -->
 
         </div>
-        <button class="btn nextBtn" onclick="moveSlide(1)"><img src="../image/next.png" alt="Next"></button>
+        <button class="btn nextBtn" onclick="moveSlide(1)"><img th:src="@{/image/next.png}" alt="Next"></button>
     </div>
 
 
