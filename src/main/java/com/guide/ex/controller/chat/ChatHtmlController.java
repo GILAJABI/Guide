@@ -37,4 +37,15 @@ public class ChatHtmlController {
     public void chatRoom(){
 
     }
+
+    @GetMapping("/chatList1")
+    public void getRoomById1() {
+    }
+
+    @GetMapping("/chatRoom1.html")
+    public void chatRoom1(){
+
+    }
+
+
 }
