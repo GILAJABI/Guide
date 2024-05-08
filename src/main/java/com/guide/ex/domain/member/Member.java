@@ -1,12 +1,14 @@
 package com.guide.ex.domain.member;
 
 import com.guide.ex.domain.BaseEntity;
+    import com.guide.ex.domain.post.Post;
 import com.guide.ex.util.YearAttributeConverter;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -59,6 +61,9 @@ public class Member extends BaseEntity {
 
     @Column(columnDefinition = "int default 0", name = "like_count")
     private int likeCount;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
     // 새로운 회원이 추가될 때 rating 필드의 기본값 설정
     @PrePersist
