@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="top">
+            <!-- <div class="snu">
+                <input type="text" class="search">
+
+                <button type="button" class="glass" style="background-image: url('../image/white.png');"></button>
+                <button type="submit" class="upload">올리기</button>
+            </div> -->
+        </div>
+        <div class="bottom">
+
+            <div class="left">
+                <img th:src="@{/image/product.jpg}" alt="상품사진">
+            </div>
+
+            <div class="right">
+
+                <h1>상품설명</h1>
+                <h2>가격</h2>
+                <div class="line">
+                    <!-- 프로필 정보 추가 -->
+                    <div class="profile-info">
+                        <img th:src="@{/image/profile.jpg}" alt="프로필 사진" class="profile-pic">
+                        <h3 class="nickname">닉네임</h3>
+                    </div>
+                    <h3>시간</h3>
+                    <img th:src="@{/image/empty.png}" class="line-item">
+                    <h3 class="line-item">좋아요</h3>
+                    <img th:src="@{/image/eye.png}" class="line-item">
+                    <h3 class="line-item">조회수</h3>
+                </div>
+                
+
+
+
+                <div class="line">
+                    <h3>상품 상태 | 새상품</h3>
+                </div>
+                <hr>
+                <p>100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년
+                    됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ </p>
+
+                <div class="comment">
+
+                </div>
+                <div class="comment">
+                    <div class="profile-info">
+                        <img th:src="@{/image/profile.jpg}" alt="프로필 사진" class="profile-pic">
+                        <h4 class="nickname">닉네임</h4>
+                        <h4>: 안사요</h4>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

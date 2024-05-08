@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .container {
+            width: 310px;
+            height: 310px;
+            border: none;
+            box-shadow: 10px 10px 10px rgb(227, 227, 227);
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .image-section,
+        .text-section {
+            width: 100%;
+            height: 50%;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .text-section {
+            width: calc(100% - 20px);
+            /* container 너비에서 좌우 마진을 제외한 만큼 */
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: left;
+            padding: 0 15px;
+            /* 위, 아래는 0, 양 옆은 30px로 설정 */
+        }
+
+
+
+        .text-section span {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .text-section p {
+            margin-bottom: 5px;
+            /* 각 문단 사이의 간격 조정 */
+        }
+
+        .additional-text {
+            color: grey;
+            /* 회색으로 텍스트 색상 지정 */
+            font-size: 14px;
+            /* 텍스트 크기 조정 */
+        }
+
+        .image-section {
+            width: 100%;
+            height: calc(100% - 110px);
+            /* container의 높이에서 text-section의 높이를 뺀 만큼 */
+        }
+
+
+        body {
+            font-family: 'Pretendard-Regular';
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .additional-text {
+            color: grey;
+            font-size: 14px;
+            text-align: right;
+            width: 100%;
+            box-sizing: border-box;
+            /* 패딩을 포함한 너비로 계산 */
+        }
+
+        .text-section span,
+        .text-section p {
+            margin-top: 10px;
+            /* 상단 마진을 10px로 설정 */
+            margin-bottom: 5px;
+            /* 기존에 있던 하단 마진 설정 유지 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="image-section">
+            <img th:src="@{/image/cat.jpeg}" alt="이미지 설명" />
+        </div>
+        <div class="text-section">
+            <span>판매 물품 제목</span>
+            <p>가격</p>
+            <p class="additional-text">몇분전, 좋아요수, 조회수</p> <!-- 추가된 텍스트 -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="image-section">
+            <img th:src="@{/image/cat.jpeg}" alt="이미지 설명" />
+        </div>
+        <div class="text-section">
+            <span>판매 물품 제목</span>
+            <p>가격</p>
+            <p class="additional-text">몇분전, 좋아요수, 조회수</p> <!-- 추가된 텍스트 -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="image-section">
+            <img th:src="@{/image/cat.jpeg}" alt="이미지 설명" />
+        </div>
+        <div class="text-section">
+            <span>판매 물품 제목</span>
+            <p>가격</p>
+            <p class="additional-text">몇분전, 좋아요수, 조회수</p> <!-- 추가된 텍스트 -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="image-section">
+            <img th:src="@{/image/cat.jpeg}" alt="이미지 설명" />
+        </div>
+        <div class="text-section">
+            <span>판매 물품 제목</span>
+            <p>가격</p>
+            <p class="additional-text">몇분전, 좋아요수, 조회수</p> <!-- 추가된 텍스트 -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="image-section">
+            <img th:src="@{/image/cat.jpeg}" alt="이미지 설명" />
+        </div>
+        <div class="text-section">
+            <span>판매 물품 제목</span>
+            <p>가격</p>
+            <p class="additional-text">몇분전, 좋아요수, 조회수</p> <!-- 추가된 텍스트 -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="image-section">
+            <img th:src="@{/image/cat.jpeg}" alt="이미지 설명" />
+        </div>
+        <div class="text-section">
+            <span>판매 물품 제목</span>
+            <p>가격</p>
+            <p class="additional-text">몇분전, 좋아요수, 조회수</p> <!-- 추가된 텍스트 -->
+        </div>
+    </div>
+
+</body>
+
+</html>

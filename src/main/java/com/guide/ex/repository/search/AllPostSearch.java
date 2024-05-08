@@ -14,7 +14,7 @@ public interface AllPostSearch {
 
     List<Post> searchPostContaining(String searchValue);
 
-    Post searchOne(Long postId);
+    void searchOne(Long postId);
 
     void updateViews(Long postId);
 }

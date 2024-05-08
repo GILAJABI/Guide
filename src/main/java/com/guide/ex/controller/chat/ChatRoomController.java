@@ -23,6 +23,7 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room")
     public ChatRoom createRoom(@RequestParam Long roomNumber) {
-        return chatRoomRepository.save(new ChatRoom(null, null, roomNumber));
+        return null;
+//                chatRoomRepository.save(new ChatRoom(null, null, roomNumber));
     }
 }
