@@ -99,7 +99,7 @@ public class PostInsertTests {
         if (optional.isPresent()) {
             Carrot carrot = optional.get();
             log.info("Found post: {}", carrot);
-            carrot.change("update..title입니다", "내용수정함");
+//            carrot.change("update..title입니다", "내용수정함");
             carrot.getRegisterDate();
             carrot = testCarrot.save(carrot);
         }

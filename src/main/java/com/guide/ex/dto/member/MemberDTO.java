@@ -34,6 +34,7 @@ public class MemberDTO {
 
     private Year year;
     private String rating;
+    private boolean isBan;
 
 
     //마이페이지 왼쪽 하단 사용

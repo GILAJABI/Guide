@@ -1,10 +1,7 @@
 package com.guide.ex.domain.post;
 
 import com.guide.ex.domain.member.Member;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -17,21 +14,24 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // Lombok으로 protected 기본 생성자를 추가
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public abstract class Post {
+@ToString
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
     @Column(length = 100,nullable = false)
-    String title;
+    @Builder.Default
+    String title = ".";
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    String content;
+    @Builder.Default
+    String content = ".";
 
     @CreatedDate
     @Column(updatable = false)
@@ -60,8 +60,8 @@ public abstract class Post {
     @Builder.Default
     private int likeCount = 0;
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PostImage postImages;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostImage> postImages;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
@@ -79,5 +79,14 @@ public abstract class Post {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void change(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void changeDate(LocalDateTime modifyDate) {
+        this.modifyDate = modifyDate;
     }
 }

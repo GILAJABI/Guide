@@ -34,4 +34,10 @@ public class Join extends Post {
     @Column(updatable = false)
     private LocalDateTime endTravelDate;
 
+    public void change(int expense, int numPeople, LocalDateTime startTravelDate, LocalDateTime endTravelDate) {
+        this.expense = expense;
+        this.numPeople = numPeople;
+        this.startTravelDate = startTravelDate;
+        this.endTravelDate = endTravelDate;
+    }
 }

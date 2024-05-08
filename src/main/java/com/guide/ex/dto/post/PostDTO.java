@@ -14,13 +14,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostDTO {
 
+    private ImageDTO imageDTO;
+
     private Long postId;
 
-    @Size(min = 3, max = 100)
-    @NotEmpty
+    @NotNull
     private String title;
 
-    @NotEmpty
+    @NotNull
     private String content;
 
     private LocalDateTime registerDate;
