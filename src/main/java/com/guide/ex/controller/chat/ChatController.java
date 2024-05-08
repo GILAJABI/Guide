@@ -2,6 +2,7 @@ package com.guide.ex.controller.chat;
 
 import com.guide.ex.domain.chat.ChatMessage;
 import com.guide.ex.domain.chat.ChatRoom;
+import com.guide.ex.dto.chat.ChatMessageDTO;
 import com.guide.ex.repository.chat.ChatMessageRepository;
 import com.guide.ex.repository.chat.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +19,17 @@ public class ChatController {
     private final ChatRoomRepository chatRoomRepository;
 
     @MessageMapping("/message")
-    public void sendMessage(ChatMessage message) {
-        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
-        if (room != null) {
-            chatMessageRepository.save(message);
-        System.out.println(message.toString());
+    public void sendMessage(ChatMessageDTO message) {
+
+        if (message.getChatRoom() != null) {
+//            chatMessageRepository.save(message);
+            System.out.println("==============================================");
+            System.out.println(message.getChatRoom()+"번방");
+            System.out.println(message.getMemberId() + " 아이디: " + message.getChatMsg());
+            System.out.println("==============================================");
             messagingTemplate.convertAndSend("/topic/chat/room/", message);
         }
+
+
     }
 }

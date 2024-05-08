@@ -1,7 +1,7 @@
 // const roomId = "YOUR_ROOM_ID"; // 실제 채팅방의 식별자로 대체해야 합니다.
 
 // STOMP 클라이언트 생성
-const socket = new SockJS('http://192.168.0.12:8888/connection');
+const socket = new SockJS('http://localhost:8888/connection');
 const stompClient = Stomp.over(socket);
 // const stompClient = Stomp.client("ws://192.168.0.12:8888/connection"); // 예시: 서버 주소와 엔드포인트 설정
 
@@ -40,13 +40,14 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Message entered:", message);
         // 메시지를 서버로 전송
         let roomId = 1;
-        const chatMessage = {
-            content: message,
-            chatRoom: roomId, // 예시: 선택한 채팅방의 식별자
-            registDate: new Date().toISOString() // 현재 시간을 ISO 8601 형식의 문자열로 설정
-            // 기타 필요한 필드 추가
+        let memberId = 1
+        const chatMessageDTO = {
+            chatMsg: message,
+            memberId: 1,
+            chatRoom: roomId,
+            registDate: new Date().toISOString()
         };
-        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessageDTO));
         // 입력 폼 비우기
         messageInput.value = "";
 
