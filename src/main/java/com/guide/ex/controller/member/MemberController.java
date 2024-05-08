@@ -124,6 +124,45 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/profileModify")
+    public String profileModify(Model model, HttpSession session) {
+        Long sessionMemberId = (Long) session.getAttribute("member_id");
+        if (sessionMemberId == null) {
+            return "redirect:/member/login";
+        }
+        MemberDTO member = memberService.memberReadOne(sessionMemberId);
+        model.addAttribute("member", member);
+        return "/member/profile";
+    }
+
+    @PostMapping("/profileModify")
+    public String profileModify(HttpSession session,
+                                MemberProfileDTO memberProfileDTO,
+                                @RequestParam("file") MultipartFile file) {
+        memberProfileDTO.setMemberId((Long) session.getAttribute("member_id"));
+
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            memberProfileDTO.setUuid(uuid);
+            memberProfileDTO.setFileName(originalName);
+
+            memberService.profileModify(memberProfileDTO);
+            session.setAttribute("member_profile", true);
+            return "redirect:/main";
+
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+    }
+
 //    @PostMapping("/profile")
 //    public String updateProfile(@ModelAttribute MemberProfileDTO memberProfileDTO, HttpSession session) {
 //        Long memberId = (Long) session.getAttribute("member_id"); // 세션에서 회원 ID 가져오기
@@ -162,6 +201,15 @@ public class MemberController {
 
     @GetMapping("/myPage")
     public String myPage(HttpSession session, Model model) {
+
+        Long sessionMemberId = (Long) session.getAttribute("member_id");
+
+        if (sessionMemberId == null) {
+            return "redirect:/member/login";
+        }else if(sessionMemberId != null && !memberService.setProfileSession(sessionMemberId)){
+            return "/member/profile";
+        }
+
         Long memberId = (Long) session.getAttribute("member_id");
         MemberDTO member = memberService.memberReadOne(memberId);
         model.addAttribute("member", member);

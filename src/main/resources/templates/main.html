@@ -148,13 +148,7 @@
 </script>
 
 <<script th:inline="javascript">
-    var profiles = [
-        {
-            imgSrc: "/image/carrotBtn.png",
-            name: "김채림",
-            info: "20/ISFJ"
-        }
-    ];
+    var profiles = [];
 
     var otherMembers = /*[[${otherMembers}]]*/ '';
 
@@ -166,7 +160,6 @@
         console.log('mbti: ', member.profileInfo.travelType)
         console.log('사진uuid: ', member.profileInfo.uuid)
         console.log('사진이름: ', member.profileInfo.fileName)
-
     }
 
     for (var i = 0; i < otherMembers.length; i++) {
@@ -185,13 +178,13 @@
         };
         profiles.push(profile); // profiles 배열에 추가
     }
-
     function generateProfiles(profiles) {
         var profileContainer = document.getElementById('all_user_profile');
 
         profiles.forEach(function (profile) {
             var profileArea = document.createElement('div');
             profileArea.className = 'profile_area';
+            profileArea.setAttribute('data-memberId', profile.memberId); // memberId를 데이터 속성으로 추가
 
             var imgArea = document.createElement('div');
             imgArea.className = 'profile_img_area';
@@ -214,12 +207,15 @@
             profileArea.appendChild(contentArea);
 
             profileContainer.appendChild(profileArea);
+
+            // 프로필 이미지 클릭 시 이벤트 리스너 추가
+            img.addEventListener('click', function() {
+                window.location.href = '/member/otherPage/' + profile.memberId; // memberId에 해당하는 프로필 페이지로 이동
+            });
         });
     }
 
-    // Call the function with the profiles array
     generateProfiles(profiles);
-
 
     $(document).ready(function () {
         var profileContainer = $('#all_user_profile'); // 프로필 컨테이너

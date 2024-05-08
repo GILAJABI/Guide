@@ -20,7 +20,8 @@ public interface MemberService {
     //프로필 id 세션 할당 값
     boolean setProfileSession(Long member_id);
     MemberDTO memberReadOne(Long member_id);
-    void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO);
+//    void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO);
+    void profileModify(MemberProfileDTO memberProfileDTO);
     void profileRegister(MemberProfileDTO memberProfileDTO);
     List<MemberDTO> findProfileMember();
 }
