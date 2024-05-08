@@ -20,14 +20,14 @@ public class ChatHtmlController {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
 
-    @MessageMapping("/chat/message")
-    public void sendMessage(ChatMessage message) {
-        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
-        if (room != null) {
-            chatMessageRepository.save(message);
-            messagingTemplate.convertAndSend("/sub/chat/room/" + room.getRoomId(), message);
-        }
-    }
+//    @MessageMapping("/chat/message")
+//    public void sendMessage(ChatMessage message) {
+//        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
+//        if (room != null) {
+//            chatMessageRepository.save(message);
+//            messagingTemplate.convertAndSend("/sub/chat/room/" + room.getRoomId(), message);
+//        }
+//    }
 
     @GetMapping("/chatList")
     public void getRoomById() {
@@ -37,4 +37,15 @@ public class ChatHtmlController {
     public void chatRoom(){
 
     }
+
+    @GetMapping("/chatList1")
+    public void getRoomById1() {
+    }
+
+    @GetMapping("/chatRoom1.html")
+    public void chatRoom1(){
+
+    }
+
+
 }

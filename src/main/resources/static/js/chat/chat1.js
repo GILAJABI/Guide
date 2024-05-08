@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Message entered:", message);
         // 메시지를 서버로 전송
         let roomId = 1;
-        let memberId = 1;
+        let memberId = 2;
         const chatMessageDTO = {
             chatMsg: message,
             memberId: memberId,
