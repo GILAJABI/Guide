@@ -21,15 +21,14 @@ public class ChatController {
     @MessageMapping("/message")
     public void sendMessage(ChatMessageDTO message) {
 
-        if (message.getChatRoom() != null) {
+//        if (message.getChatRoom() != null) {
 //            chatMessageRepository.save(message);
+            System.out.println("==============================================");
             System.out.println("==============================================");
             System.out.println(message.getChatRoom()+"번방");
             System.out.println(message.getMemberId() + " 아이디: " + message.getChatMsg());
             System.out.println("==============================================");
             messagingTemplate.convertAndSend("/topic/chat/room/", message);
-        }
-
-
+        //}
     }
 }
