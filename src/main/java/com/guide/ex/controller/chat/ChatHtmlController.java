@@ -22,7 +22,7 @@ public class ChatHtmlController {
 
     @MessageMapping("/chat/message")
     public void sendMessage(ChatMessage message) {
-        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
+        ChatRoom room = chatRoomRepository.findById(Long.valueOf(message.getChatRoom().getRoomId())).orElse(null);
         if (room != null) {
             chatMessageRepository.save(message);
             messagingTemplate.convertAndSend("/sub/chat/room/" + room.getRoomId(), message);
