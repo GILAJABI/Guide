@@ -33,7 +33,7 @@ public class ChatMessageRepositoryTests {
 
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatMsg("hello")
-                .chatRoom(chatRoom)
+//                .chatRoom(chatRoom)
                 .registDate(now)
                 .build();
 
