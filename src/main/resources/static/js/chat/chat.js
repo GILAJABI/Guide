@@ -1,7 +1,7 @@
 // const roomId = "YOUR_ROOM_ID"; // 실제 채팅방의 식별자로 대체해야 합니다.
 
 // STOMP 클라이언트 생성
-const socket = new SockJS('http://172.30.1.16:8888/connection');
+const socket = new SockJS('http://192.168.0.31:8888/connection');
 const stompClient = Stomp.over(socket);
 // const stompClient = Stomp.client("ws://192.168.0.12:8888/connection"); // 예시: 서버 주소와 엔드포인트 설정
 
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('test: ', message);
         console.log("Message entered:", message);
         // 메시지를 서버로 전송
-        const roomId = 'roomid';
+        let roomId = '1';
         const chatMessage = {
             content: message,
             chatRoom: roomId, // 예시: 선택한 채팅방의 식별자

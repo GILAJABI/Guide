@@ -17,13 +17,13 @@ public class ChatController {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
 
-    @MessageMapping("/chat1/message")
+    @MessageMapping("/message")
     public void sendMessage(ChatMessage message) {
         ChatRoom room = chatRoomRepository.findById(Long.valueOf(message.getChatRoom().getRoomId())).orElse(null);
         if (room != null) {
-        chatMessageRepository.save(message);
-        System.out.println(message.toString());
-        messagingTemplate.convertAndSend("/topic/chat/room/", message);
-    }
+//        chatMessageRepository.save(message);
+            System.out.println("서버호출=================================");
+            messagingTemplate.convertAndSend("/topic/chat/room/", message);
+        }
     }
 }
