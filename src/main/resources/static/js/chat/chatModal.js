@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   icon.addEventListener('click', openModal);
 
+  // const closeButton = document.querySelector('.close');
+  // closeButton.addEventListener('click', closeModal);
+
   window.onclick = function(event) {
     if (event.target === modal) {
       closeModal();
