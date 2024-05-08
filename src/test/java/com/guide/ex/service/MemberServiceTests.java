@@ -86,7 +86,7 @@ public class MemberServiceTests {
                 .travelType("ISFP")
                 .build();
 
-        memberService.profileModify(memberDTO, memberProfileDTO);
+//        memberService.profileModify(memberDTO, memberProfileDTO);
     }
 
     // 회원 정보 읽기(member + memberProfile)

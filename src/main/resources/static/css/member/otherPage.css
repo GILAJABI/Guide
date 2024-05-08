@@ -47,13 +47,14 @@ div#circle {
     box-sizing: border-box;
     overflow: hidden;
     transform: scale(1.01);
+    position: relative; /* Add this line */
 }
 
-div#photo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 25px;
+div#circle img {
+    width: 100%; /* Add this line */
+    height: 100%; /* Add this line */
+    object-fit: cover; /* Add this line for better image fitting */
+    object-position: center; /* Add this line for better image positioning */
 }
 
 div#name {

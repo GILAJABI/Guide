@@ -146,10 +146,28 @@ public class MemberServiceImpl implements MemberService {
         return memberDTOList;
     }
 
+// 프로필 수정 작업
+//    @Override
+//    public void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO) {
+//        // MemberProfile 엔티티 조회 및 변경
+//        MemberProfile memberProfile = memberProfileRepository.findById(memberProfileDTO.getMemberProfileId())
+//                .orElseThrow(() -> new RuntimeException("MemberProfile not found"));
+//        memberProfile.change(
+//                memberProfileDTO.getUuid(),
+//                memberProfileDTO.getFileName(),
+//                memberProfileDTO.getContent(),
+//                memberProfileDTO.getTravelType()
+//        );
+//        memberProfileRepository.save(memberProfile);
+        // Member 엔티티 조회 및 변경
+//        Member member = memberRepository.findById(memberDTO.getMemberId())
+//                .orElseThrow(() -> new RuntimeException("Member not found"));
+//        member.change(memberDTO.getName());
+//        memberRepository.save(member);
+//    }
 
-    // 프로필 수정 작업
     @Override
-    public void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO) {
+    public void profileModify(MemberProfileDTO memberProfileDTO) {
         // MemberProfile 엔티티 조회 및 변경
         MemberProfile memberProfile = memberProfileRepository.findById(memberProfileDTO.getMemberProfileId())
                 .orElseThrow(() -> new RuntimeException("MemberProfile not found"));
@@ -161,11 +179,6 @@ public class MemberServiceImpl implements MemberService {
         );
         memberProfileRepository.save(memberProfile);
 
-        // Member 엔티티 조회 및 변경
-        Member member = memberRepository.findById(memberDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-        member.change(memberDTO.getName());
-        memberRepository.save(member);
     }
 
     @Override
