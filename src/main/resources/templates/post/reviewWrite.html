@@ -143,11 +143,22 @@
             display: flex;
             justify-content: center;
         }
+        .address-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .address-container input[type="text"] {
+            flex: 1;
+            margin-right: 5px;
+        }
+
     </style>
 </head>
 <body>
 <div th:include="/include/header.html"></div>
 <div id="container">
+    <h1>리뷰 작성</h1>
     <p style="color: #CCCCCC">스크롤해서 별점을 주세요</p>
     <div class="star_rating">
         <span class="star on" value="1"></span>
@@ -182,16 +193,25 @@
                     <img src="/image/modify.png" alt="파일 선택">
                 </label>
             </div>
+            <br>
+            <p>
+                <label for="start_date">여행 시작일:</label>
+                <input type="date" id="start_date" name="start_date">
+            </p>
+            <p>
+                <label for="end_date">여행 종료일:</label>
+                <input type="date" id="end_date" name="end_date">
+            </p>
 
-                <p><input type="date" style="width: 160px;"></p>
         </div>
     </div>
+    <div class="address-container">
+        <input type="text" name="road_address" id="sample6_address" placeholder="위치">
+        <button class="btn btn-sm btn-primary" type="button" onclick="sample6_execDaumPostcode()">검색</button>
+    </div>
 
-    <input type="text" class="form-control" name="road_address" id="sample6_address" placeholder="주소">
-    <button class="btn btn-sm btn-primary" type="button" onclick="sample6_execDaumPostcode()">주소 찾기</button>
-
-    <input type="hidden" class="form-control" name="location_x" id="sample6_latitude" value="">
-    <input type="hidden" class="form-control" name="location_y" id="sample6_longitude" value="">
+    <input type="hidden" name="location_x" id="sample6_latitude" value="">
+    <input type="hidden" name="location_y" id="sample6_longitude" value="">
     <br/>
 
     <div id="map" style="width:500px;height:350px;"></div>
