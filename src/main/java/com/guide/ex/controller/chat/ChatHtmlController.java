@@ -22,7 +22,7 @@ public class ChatHtmlController {
 
 //    @MessageMapping("/chat/message")
 //    public void sendMessage(ChatMessage message) {
-//        ChatRoom room = chatRoomRepository.findById(Long.valueOf(message.getChatRoom().getRoomId())).orElse(null);
+//        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
 //        if (room != null) {
 //            chatMessageRepository.save(message);
 //            messagingTemplate.convertAndSend("/sub/chat/room/" + room.getRoomId(), message);
@@ -37,4 +37,15 @@ public class ChatHtmlController {
     public void chatRoom(){
 
     }
+
+    @GetMapping("/chatList1")
+    public void getRoomById1() {
+    }
+
+    @GetMapping("/chatRoom1.html")
+    public void chatRoom1(){
+
+    }
+
+
 }

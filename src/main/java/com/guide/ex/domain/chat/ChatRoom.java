@@ -1,5 +1,7 @@
 package com.guide.ex.domain.chat;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +23,7 @@ public class ChatRoom {
 //    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
-    private Long roomId;
+    private int roomId;
 
     @NotNull
     @CreatedDate
@@ -31,6 +33,10 @@ public class ChatRoom {
     @NotNull
     @Column(name = "room_number")
     private Long roomNumber;
+
+    public ChatRoom(Integer o, Object createdAt, Long roomNumber) {
+    }
+
 
     public void change(String s, String s1) {
 
