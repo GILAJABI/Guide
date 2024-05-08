@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .container {
+            position: relative;
+            /* 이를 통해 버튼들이 container에 대해 절대 위치를 가질 수 있도록 함 */
+            display: flex;
+            justify-content: center;
+            /* 가운데 정렬 */
+            flex-wrap: wrap;
+        }
+
+
+        .box {
+            position: relative;
+            display: inline-block;
+            width: 290px;
+            height: 350px;
+            overflow: hidden;
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 4px 4px 10px lightgray;
+        }
+
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* border-radius: 20px; */
+        }
+
+        .title,
+        .text {
+            position: absolute;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+            /* font-weight: bold; */
+        }
+
+        .title {
+            font-family: 'Pretendard-Bold';
+            font-size: 23px;
+            bottom: 30px;
+            margin: 15px;
+        }
+
+        .text {
+            font-family: 'Pretendard-Regular';
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            /* 예시로 추가한 속성 */
+            color: white;
+            font-size: 20px;
+            /* font-weight: bold; */
+            margin-left: 15px;
+        }
+
+
+        .text img {
+            height: 20px;
+            /* 이미지 높이 설정, 텍스트 크기와 비슷하게 조정 */
+            width: auto;
+            /* 이미지 원본 비율 유지 */
+            vertical-align: middle;
+            margin-top: -3px;
+        }
+
+
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+            border-radius: 20px;
+        }
+
+        .space {
+            margin-right: 10px;
+            /* 오른쪽 마진 추가 */
+        }
+
+        .slider-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .btn {
+            position: absolute;
+            top: 50%;
+            /* 상위 요소 대비 수직 방향 중앙 */
+            transform: translateY(-50%);
+            /* 버튼의 높이의 절반만큼 올라가서 완전히 중앙에 위치하도록 함 */
+            background-color: transparent;
+            border: none;
+        }
+
+        .prevBtn {
+            left: 0;
+            /* 왼쪽 정렬 */
+        }
+
+        .nextBtn {
+            right: 0;
+            /* 오른쪽 정렬 */
+        }
+
+        .btn img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <button class="btn prevBtn" onclick="moveSlide(-1)"><img th:src="@{/image/prev.png}" alt="Prev"></button>
+
+    <div class="container">
+        <div class="box fir">
+            <div class="overlay"></div> <!-- 오버레이 추가 -->
+            <img th:src="@{/image/art_16378855673824_4f85c7.jpg}">
+            <div class="title">필리핀 보라돌이</div>
+
+            <div class="text">
+                <img th:src="@{/image/people.png}" alt="사람">
+                <span class="space">2인</span> <!-- span 태그 추가 -->
+                <img th:src="@{/image/calendar.png}" alt="날짜">
+                5월 8일
+            </div>
+
+
+        </div>
+
+        <div class="box sec">
+            <div class="overlay"></div> <!-- 오버레이 추가 -->
+            <img th:src="@{/image/edasupb6ur3cx9vk5wdk.webp}">
+            <div class="title">제목 2</div>
+
+            <div class="text">
+                <img th:src="@{/image/people.png}" alt="사람">
+                <span class="space">2인</span> <!-- span 태그 추가 -->
+                <img th:src="@{/image/calendar.png}" alt="날짜">
+                5월 8일
+            </div>
+
+        </div>
+
+        <div class="box thir">
+            <div class="overlay"></div> <!-- 오버레이 추가 -->
+            <img
+                th:src="@{/image/ilcQqf__o2TdcXAj0XeVm1ZRxMeEVA6cQ4lzZcaLXoWeFe8iYdzwZSSp8Aw0jS0ZhBDIeLtkvtjdxXgZrz84C15hU4gftIKs2YNg33c4KEGBrQAo1xlh2BJoOAtIZ_Locz-nnfKA_LgwEIVa9hwxoQ.webp}">
+            <div class="title">제목 3</div>
+
+            <div class="text">
+                <img th:src="@{/image/people.png}" alt="사람">
+                <span class="space">2인</span> <!-- span 태그 추가 -->
+                <img th:src="@{/image/calendar.png}" alt="날짜">
+                5월 8일
+            </div>
+
+
+            <!-- 추가 될 요소들... 
+            <div class="overlay"></div> 오버레이 추가 -
+            <img src="../image/art_16378855673824_4f85c7.jpg">
+            <div class="title">4번째 이미지</div>
+
+            <div class="text">
+                <img src="../image/people.png" alt="사람">
+                <span class="space">2인</span> span 태그 추가 -
+                <img src="../image/calendar.png" alt="날짜">
+                5월 8일
+            </div> -->
+
+        </div>
+        <button class="btn nextBtn" onclick="moveSlide(1)"><img th:src="@{/image/next.png}" alt="Next"></button>
+    </div>
+
+
+    <script>
+        /* 스크롤 버튼 (작동안됨) */
+        let slideIndex = 0;
+
+        function moveSlide(step) {
+            const slides = document.querySelectorAll('.slide');
+            slideIndex += step;
+            if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            } else if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            }
+            const slider = document.getElementById('slider');
+            slider.style.transform = 'translateX(' + (-slideIndex * 100) + '%)';
+        }
+    </script>
+</body>
+
+</html>

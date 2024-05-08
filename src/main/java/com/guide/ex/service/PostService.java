@@ -7,7 +7,6 @@ import com.guide.ex.dto.post.*;
 import java.util.List;
 
 public interface PostService {
-
     void carrotRegister(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
     void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO);
     void joinRegister(PostDTO postDTO, JoinDTO joinDTO);

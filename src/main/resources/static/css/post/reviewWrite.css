@@ -1,0 +1,136 @@
+body {
+    background-color: #fafafa;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#container {
+    font-family: 'Pretendard-Regular';
+    background-color: white;
+    width: 480px;
+    margin: 80px auto;
+    padding: 10px 60px 20px;
+    border: black;
+    box-shadow: 3px 3px 10px rgb(205, 205, 205);
+    border-radius: 10px;
+    text-align: center;
+    justify-content: center;
+}
+
+.star_rating {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    /* 수정 */
+    justify-content: center;
+    /* 추가 */
+    margin-bottom: 10px;
+}
+
+.star_rating .star {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    display: inline-block;
+    /* background: url('../board/image/star_1.png') no-repeat; */
+    background: url('../../image/star_1.png') no-repeat;
+    background-size: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.star_rating .star.on {
+    background: url('../../image/star_2.png') no-repeat;
+    background-size: 100%;
+}
+
+input,
+textarea {
+    margin: 10px;
+    width: 85%;
+    border-color: #cccccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #F4F4F4;
+    color: #CCCCCC;
+    border: 1px solid #cccccc;
+}
+
+button {
+    background-color: #FF6392;
+    font-family: 'BMJUA';
+    color: white;
+    border: none;
+    border-radius: 30px;
+    margin: 20px;
+    padding: 15px 30px;
+    box-shadow: 3px 3px 8px rgb(205, 205, 205);
+}
+
+.my-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 추가 */
+    height: 100px;
+    /* 추가 */
+}
+
+.my-image {
+    background-color: #F4F4F4;
+    border: 1px solid #ccc;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    object-fit: cover;
+    display: flex;
+    /* 추가 */
+    justify-content: center;
+    /* 추가 */
+    align-items: center;
+    /* 추가 */
+}
+
+#profile-image {
+    width: 60px;
+    height: 60px;
+}
+
+.file-upload-container {
+    /* display: flex;
+    justify-content: space-between;
+    /* 수정
+    align-items: center;
+    추가 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#select {
+    display: none;
+}
+
+.file-upload-label img {
+    width: 30px;
+    height: 30px;
+}
+
+.ddd {
+    display: flex;
+    justify-content: center;
+}
