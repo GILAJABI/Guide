@@ -16,7 +16,7 @@ stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
         // 메시지를 chatMessages 영역에 추가
         const chatMessagesDiv = document.getElementById("chat_list");
         const messageParagraph = document.createElement("p");
-        messageParagraph.QtextContent = messageBody.content;
+        messageParagraph.textContent = messageBody.chatMsg;
         chatMessagesDiv.appendChild(messageParagraph);
     });
 });
@@ -39,20 +39,18 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('test: ', message);
         console.log("Message entered:", message);
         // 메시지를 서버로 전송
-        let roomId = '1';
-        const chatMessage = {
-            content: message,
-            chatRoom: roomId, // 예시: 선택한 채팅방의 식별자
-            registDate: new Date().toISOString() // 현재 시간을 ISO 8601 형식의 문자열로 설정
-            // 기타 필요한 필드 추가
+        let roomId = 1;
+        let memberId = 1;
+        const chatMessageDTO = {
+            chatMsg: message,
+            memberId: memberId,
+            chatRoom: roomId,
+            registDate: new Date().toISOString()
         };
-        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+        console.log(chatMessageDTO)
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessageDTO));
         // 입력 폼 비우기
         messageInput.value = "";
 
-        // 전송된 메시지 확인
-        console.log("전송된 메시지:", JSON.stringify({
-            content: message,
-        }));
     });
 });
