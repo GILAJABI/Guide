@@ -77,13 +77,12 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
     @Transactional
     @Override
-    public Post searchOne(Long postId) {
+    public void searchOne(Long postId) {
         // 조회수 증가 -> 게시글 조회
         updateViews(postId);
         Post post = findPostById(postId, "Review");
 
         // 변경된 게시글 정보를 다시 조회합니다.
-        return post;
     }
 
     private Post findPostById(Long postId, String postType) {
@@ -112,6 +111,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .where(post.postId.eq(postId))
                 .execute();
     }
+
 }
 
 

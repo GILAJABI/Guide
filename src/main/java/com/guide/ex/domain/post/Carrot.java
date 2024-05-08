@@ -19,8 +19,8 @@ public class Carrot extends Post{
     @Column(nullable = false)
     private final boolean status = false;
 
-    public void change(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void change(int price) {
+        this.price = price;
     }
+
 }
