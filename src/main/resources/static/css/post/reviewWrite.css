@@ -45,14 +45,14 @@ body {
     margin-right: 10px;
     display: inline-block;
     /* background: url('../board/image/star_1.png') no-repeat; */
-    background: url('../image/star_1.png') no-repeat;
+    background: url('../../image/star_1.png') no-repeat;
     background-size: 100%;
     box-sizing: border-box;
     cursor: pointer;
 }
 
 .star_rating .star.on {
-    background: url('../image/star_2.png') no-repeat;
+    background: url('../../image/star_2.png') no-repeat;
     background-size: 100%;
 }
 

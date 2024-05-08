@@ -12,4 +12,4 @@ export * from './versions.js';
 // Compatibility code
 export * from './compatibility/compat-client.js';
 export * from './compatibility/stomp.js';
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=reviewWrite.js.map
