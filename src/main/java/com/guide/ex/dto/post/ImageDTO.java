@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageDTO {
-    private String url;
 
+    private Long imageId;
     private String fileName;
-    private String fileType;
-
-
+    private int ord;
+    private String uuid;
+    private Long postId;
 }

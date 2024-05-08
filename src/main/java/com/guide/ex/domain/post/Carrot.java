@@ -22,4 +22,5 @@ public class Carrot extends Post{
     public void change(int price) {
         this.price = price;
     }
+
 }

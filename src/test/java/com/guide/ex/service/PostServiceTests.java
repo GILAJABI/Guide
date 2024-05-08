@@ -1,13 +1,7 @@
 package com.guide.ex.service;
 
-import com.guide.ex.domain.post.Join;
 import com.guide.ex.domain.post.Post;
-import com.guide.ex.dto.member.MemberDTO;
-import com.guide.ex.dto.member.MemberProfileDTO;
-import com.guide.ex.dto.post.CarrotDTO;
-import com.guide.ex.dto.post.JoinDTO;
-import com.guide.ex.dto.post.PostDTO;
-import com.guide.ex.dto.post.ReviewDTO;
+import com.guide.ex.dto.post.*;
 import com.guide.ex.repository.search.AllPostSearch;
 import com.guide.ex.repository.search.AllPostSearchImpl;
 import lombok.extern.log4j.Log4j2;
@@ -17,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -55,8 +48,14 @@ public class PostServiceTests {
                 .price(642000)
                 .build(); // postId는 여기서 설정하지 않습니다.
 
+        ImageDTO imageDTO = ImageDTO.builder()
+                .uuid("c://https://www.naver.com")
+                .ord(2)
+                .fileName("NAVER.html")
+                .build();
+
         log.info("PostDTO: {}", postDTO);
-        postService.carrotRegister(postDTO, carrotDTO);
+        postService.carrotRegister(postDTO, carrotDTO, imageDTO);
     }
 
     @Test
@@ -222,4 +221,25 @@ public class PostServiceTests {
 //            log.info(post.getTitle().contains(postTitle) || post.getContent().contains(postContent));
         }
     }
+
+//    @Autowired
+//    ImageRepository imageRepository;
+//    @Test
+//    public void testUploadFiles() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .postId(60L)
+//                .build();
+//
+//        log.info("PostDTO: {}", postDTO);
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .postId(60L)
+//                .fileName("당근사진")
+//                .uuid("uuid")
+//                .ord(3)
+//                .build();
+//
+//        log.info("imageDTO: {}", imageDTO);
+//
+//        postService.uploadImages(postDTO, imageDTO);
+//    }
 }

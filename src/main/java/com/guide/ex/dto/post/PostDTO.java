@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostDTO {
 
+    private ImageDTO imageDTO;
+
     private Long postId;
 
     @NotNull

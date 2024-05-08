@@ -11,7 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class PostImage {
     @Id
-    private Long postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long imageId;       // 기본키로 사용
 
     @Column(name="uuid", length = 500)
     private String uuid;
@@ -23,8 +24,15 @@ public class PostImage {
     @Builder.Default
     private int ord = 0;
 
-    @MapsId
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id")       // Post테이블의 외래키로 받아옴
     private Post post;
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Long getImageId() {
+        return this.imageId;
+    }
 }

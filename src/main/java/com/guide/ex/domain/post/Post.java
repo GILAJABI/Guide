@@ -27,11 +27,11 @@ public class Post {
 
     @Column(length = 100,nullable = false)
     @Builder.Default
-    String title = ",.";
+    String title = ".";
 
     @Column(nullable = false, columnDefinition = "TEXT")
     @Builder.Default
-    String content = ",.";
+    String content = ".";
 
     @CreatedDate
     @Column(updatable = false)
