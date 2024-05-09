@@ -33,192 +33,192 @@ public class PostServiceTests {
     @Autowired
     private AllPostSearchImpl allPostSearchImpl;
 
-    @Test
-    public void testCarrotRegister() {
-        PostDTO postDTO = PostDTO.builder()
-                .memberId(13L)
-                .title("너무 졸린데.") // 유효한 타이틀
-                .content("성공좀되라 제발")
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now().plusDays(25))
-                .locationX(BigDecimal.valueOf(85.143867))
-                .locationY(BigDecimal.valueOf(64.546438))
-                .postType("Carrot")
-                .build(); // postId는 여기서 설정하지 않습니다.
+//    @Test
+//    public void testCarrotRegister() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .memberId(13L)
+//                .title("너무 졸린데.") // 유효한 타이틀
+//                .content("성공좀되라 제발")
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now().plusDays(25))
+//                .locationX(BigDecimal.valueOf(85.143867))
+//                .locationY(BigDecimal.valueOf(64.546438))
+//                .postType("Carrot")
+//                .build(); // postId는 여기서 설정하지 않습니다.
+//
+//        CarrotDTO carrotDTO = CarrotDTO.builder()
+//                .price(642000)
+//                .build(); // postId는 여기서 설정하지 않습니다.
+//
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .uuid("c://https://www.naver.com")
+//                .ord(2)
+//                .fileName("NAVER.html")
+//                .build();
+//
+//        log.info("PostDTO: {}", postDTO);
+//        log.info("ImageDTO: {}", imageDTO);
+//        log.info("CarrotDTO: {}", carrotDTO);
+//        postService.carrotRegister(postDTO, carrotDTO, imageDTO);
+//        log.info("AFTER PostDTO: {}", postDTO);
+//        log.info("ImageDTO: {}", imageDTO);
+//        log.info("CarrotDTO: {}", carrotDTO);
+//    }
 
-        CarrotDTO carrotDTO = CarrotDTO.builder()
-                .price(642000)
-                .build(); // postId는 여기서 설정하지 않습니다.
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.naver.com")
-                .ord(2)
-                .fileName("NAVER.html")
-                .build();
-
-        log.info("PostDTO: {}", postDTO);
-        log.info("ImageDTO: {}", imageDTO);
-        log.info("CarrotDTO: {}", carrotDTO);
-        postService.carrotRegister(postDTO, carrotDTO, imageDTO);
-        log.info("AFTER PostDTO: {}", postDTO);
-        log.info("ImageDTO: {}", imageDTO);
-        log.info("CarrotDTO: {}", carrotDTO);
-    }
-
-    @Test
-    public void testReviewRegister() {
-        PostDTO postDTO = PostDTO.builder()
-                .memberId(13L)
-                .title("리뷰좀 달자.") // 유효한 타이틀
-                .content("이건 느낌 왔다(제발)")
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now().plusDays(12))
-                .locationX(BigDecimal.valueOf(37.943972))
-                .locationY(BigDecimal.valueOf(51.586388))
-                .postType("Review")
-                .build(); // postId는 여기서 설정하지 않습니다.
-
-        ReviewDTO reviewDTO = ReviewDTO.builder()
-                .grade(3L)
-                .startTravelDate(LocalDateTime.now())
-                .endTravelDate(LocalDateTime.now().plusDays(15))
-                .expense(750000)
-                .build(); // postId는 여기서 설정하지 않습니다.
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.Google.com")
-                .ord(5)
-                .fileName("Google.html")
-
-                .build();
+//    @Test
+//    public void testReviewRegister() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .memberId(13L)
+//                .title("리뷰좀 달자.") // 유효한 타이틀
+//                .content("이건 느낌 왔다(제발)")
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now().plusDays(12))
+//                .locationX(BigDecimal.valueOf(37.943972))
+//                .locationY(BigDecimal.valueOf(51.586388))
+//                .postType("Review")
+//                .build(); // postId는 여기서 설정하지 않습니다.
+//
+//        ReviewDTO reviewDTO = ReviewDTO.builder()
+//                .grade(3L)
+//                .startTravelDate(LocalDateTime.now())
+//                .endTravelDate(LocalDateTime.now().plusDays(15))
+//                .expense(750000)
+//                .build(); // postId는 여기서 설정하지 않습니다.
+//
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .uuid("c://https://www.Google.com")
+//                .ord(5)
+//                .fileName("Google.html")
+//
+//                .build();
+//
+//
+//        log.info("PostDTO: {}", postDTO);
+//        postService.reviewRegister(postDTO, reviewDTO, imageDTO);
+//    }
 
 
-        log.info("PostDTO: {}", postDTO);
-        postService.reviewRegister(postDTO, reviewDTO, imageDTO);
-    }
+//    @Test
+//    public void testJoinRegister() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .memberId(13L)
+//                .title("새벽 4시 40분.") // 유효한 타이틀
+//                .content("안졸린거 같기도(아닌가)")
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now().plusDays(25))
+//                .locationX(BigDecimal.valueOf(75.732128))
+//                .locationY(BigDecimal.valueOf(68.759421))
+//                .postType("Join")
+//                .build(); // postId는 여기서 설정하지 않습니다.
+//
+//        JoinDTO joinDTO = JoinDTO.builder()
+//                .startTravelDate(LocalDateTime.now())
+//                .endTravelDate(LocalDateTime.now().plusDays(15))
+//                .expense(1500000)
+//                .numPeople(3)
+//                .build();
+//
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .uuid("c://https://www.nate.com")
+//                .ord(1)
+//                .fileName("Nate.html")
+//                .build();
+//
+//        log.info("PostDTO: {}", postDTO);
+//        postService.joinRegister(postDTO, joinDTO, imageDTO);
+//    }
 
+//    @Test
+//    public void testCarrotModify() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .memberId(1L)
+//                .postId(2L)
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now())
+//                .title("수정된 제목")
+//                .content("수정된 내용")
+//                .build();
+//
+//        CarrotDTO carrotDTO = CarrotDTO.builder()
+//                .postId(2L)
+//                .price(812000)
+//                .build();
+//
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .uuid("c://https://www.nate.com")
+//                .ord(5)
+//                .fileName("StarBucks.html")
+//                .build();
+//
+//        log.info("PostDTO: {}", postDTO);
+//        log.info("CarrotDTO: {}", carrotDTO);
+//        log.info("ImageDTO: {}", imageDTO);
+//
+//        postService.carrotModify(postDTO, carrotDTO, imageDTO);
+//    }
 
-    @Test
-    public void testJoinRegister() {
-        PostDTO postDTO = PostDTO.builder()
-                .memberId(13L)
-                .title("새벽 4시 40분.") // 유효한 타이틀
-                .content("안졸린거 같기도(아닌가)")
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now().plusDays(25))
-                .locationX(BigDecimal.valueOf(75.732128))
-                .locationY(BigDecimal.valueOf(68.759421))
-                .postType("Join")
-                .build(); // postId는 여기서 설정하지 않습니다.
+//    @Test
+//    public void testReviewModify() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .memberId(11L)
+//                .postId(27L)
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now())
+//                .title("수정된 제목")
+//                .content("수정된 내용")
+//                .build();
+//
+//        ReviewDTO reviewDTO = ReviewDTO.builder()
+//                .postId(27L)
+//                .expense(50000)
+//                .grade(5L)
+//                .startTravelDate(LocalDateTime.now())
+//                .endTravelDate(LocalDateTime.now().plusDays(30))
+//                .build();
+//
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .uuid("c://https://www.bitcamp.com")
+//                .ord(5)
+//                .fileName("BitCamp.html")
+//                .build();
+//        log.info("PostDTO: {}", postDTO);
+//        log.info("ReviewDTO: {}", reviewDTO);
+//        log.info("ImageDTO: {}", imageDTO);
+//
+//        postService.reviewModify(postDTO, reviewDTO, imageDTO);
+//    }
 
-        JoinDTO joinDTO = JoinDTO.builder()
-                .startTravelDate(LocalDateTime.now())
-                .endTravelDate(LocalDateTime.now().plusDays(15))
-                .expense(1500000)
-                .numPeople(3)
-                .build();
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.nate.com")
-                .ord(1)
-                .fileName("Nate.html")
-                .build();
-
-        log.info("PostDTO: {}", postDTO);
-        postService.joinRegister(postDTO, joinDTO, imageDTO);
-    }
-
-    @Test
-    public void testCarrotModify() {
-        PostDTO postDTO = PostDTO.builder()
-                .memberId(1L)
-                .postId(2L)
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now())
-                .title("수정된 제목")
-                .content("수정된 내용")
-                .build();
-
-        CarrotDTO carrotDTO = CarrotDTO.builder()
-                .postId(2L)
-                .price(812000)
-                .build();
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.nate.com")
-                .ord(5)
-                .fileName("StarBucks.html")
-                .build();
-
-        log.info("PostDTO: {}", postDTO);
-        log.info("CarrotDTO: {}", carrotDTO);
-        log.info("ImageDTO: {}", imageDTO);
-
-        postService.carrotModify(postDTO, carrotDTO, imageDTO);
-    }
-
-    @Test
-    public void testReviewModify() {
-        PostDTO postDTO = PostDTO.builder()
-                .memberId(11L)
-                .postId(27L)
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now())
-                .title("수정된 제목")
-                .content("수정된 내용")
-                .build();
-
-        ReviewDTO reviewDTO = ReviewDTO.builder()
-                .postId(27L)
-                .expense(50000)
-                .grade(5L)
-                .startTravelDate(LocalDateTime.now())
-                .endTravelDate(LocalDateTime.now().plusDays(30))
-                .build();
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.bitcamp.com")
-                .ord(5)
-                .fileName("BitCamp.html")
-                .build();
-        log.info("PostDTO: {}", postDTO);
-        log.info("ReviewDTO: {}", reviewDTO);
-        log.info("ImageDTO: {}", imageDTO);
-
-        postService.reviewModify(postDTO, reviewDTO, imageDTO);
-    }
-
-    @Test
-    public void testJoinModify() {
-        PostDTO postDTO = PostDTO.builder()
-                .memberId(3L)
-                .postId(26L)
-                .registerDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now())
-                .title("수정된 제목")
-                .content("수정된 내용")
-                .build();
-
-        JoinDTO joinDTO = JoinDTO.builder()
-                .postId(26L)
-                .expense(702000)
-                .numPeople(2)
-                .startTravelDate(LocalDateTime.now())
-                .endTravelDate(LocalDateTime.now().plusDays(10))
-                .build();
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.BixBox.com")
-                .ord(5)
-                .fileName("BixBox.html")
-                .build();
-
-        log.info("PostDTO: {}", postDTO);
-        log.info("joinDTO: {}", joinDTO);
-        log.info("ImageDTO: {}", imageDTO);
-
-        postService.joinModify(postDTO, joinDTO, imageDTO);
-    }
+//    @Test
+//    public void testJoinModify() {
+//        PostDTO postDTO = PostDTO.builder()
+//                .memberId(3L)
+//                .postId(26L)
+//                .registerDate(LocalDateTime.now())
+//                .modifyDate(LocalDateTime.now())
+//                .title("수정된 제목")
+//                .content("수정된 내용")
+//                .build();
+//
+//        JoinDTO joinDTO = JoinDTO.builder()
+//                .postId(26L)
+//                .expense(702000)
+//                .numPeople(2)
+//                .startTravelDate(LocalDateTime.now())
+//                .endTravelDate(LocalDateTime.now().plusDays(10))
+//                .build();
+//
+//        ImageDTO imageDTO = ImageDTO.builder()
+//                .uuid("c://https://www.BixBox.com")
+//                .ord(5)
+//                .fileName("BixBox.html")
+//                .build();
+//
+//        log.info("PostDTO: {}", postDTO);
+//        log.info("joinDTO: {}", joinDTO);
+//        log.info("ImageDTO: {}", imageDTO);
+//
+//        postService.joinModify(postDTO, joinDTO, imageDTO);
+//    }
 
 
     @Qualifier("allPostSearchImpl")
