@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -55,7 +57,12 @@ public class PostServiceTests {
                 .build();
 
         log.info("PostDTO: {}", postDTO);
+        log.info("ImageDTO: {}", imageDTO);
+        log.info("CarrotDTO: {}", carrotDTO);
         postService.carrotRegister(postDTO, carrotDTO, imageDTO);
+        log.info("AFTER PostDTO: {}", postDTO);
+        log.info("ImageDTO: {}", imageDTO);
+        log.info("CarrotDTO: {}", carrotDTO);
     }
 
     @Test
@@ -78,8 +85,16 @@ public class PostServiceTests {
                 .expense(750000)
                 .build(); // postId는 여기서 설정하지 않습니다.
 
+        ImageDTO imageDTO = ImageDTO.builder()
+                .uuid("c://https://www.Google.com")
+                .ord(5)
+                .fileName("Google.html")
+
+                .build();
+
+
         log.info("PostDTO: {}", postDTO);
-        postService.reviewRegister(postDTO, reviewDTO);
+        postService.reviewRegister(postDTO, reviewDTO, imageDTO);
     }
 
 
@@ -103,8 +118,14 @@ public class PostServiceTests {
                 .numPeople(3)
                 .build();
 
+        ImageDTO imageDTO = ImageDTO.builder()
+                .uuid("c://https://www.nate.com")
+                .ord(1)
+                .fileName("Nate.html")
+                .build();
+
         log.info("PostDTO: {}", postDTO);
-        postService.joinRegister(postDTO, joinDTO);
+        postService.joinRegister(postDTO, joinDTO, imageDTO);
     }
 
     @Test
@@ -112,6 +133,7 @@ public class PostServiceTests {
         PostDTO postDTO = PostDTO.builder()
                 .memberId(1L)
                 .postId(2L)
+                .registerDate(LocalDateTime.now())
                 .modifyDate(LocalDateTime.now())
                 .title("수정된 제목")
                 .content("수정된 내용")
@@ -122,9 +144,17 @@ public class PostServiceTests {
                 .price(812000)
                 .build();
 
-        log.info("PostDTO: {}", postDTO);
+        ImageDTO imageDTO = ImageDTO.builder()
+                .uuid("c://https://www.nate.com")
+                .ord(5)
+                .fileName("StarBucks.html")
+                .build();
 
-        postService.carrotModify(postDTO, carrotDTO);
+        log.info("PostDTO: {}", postDTO);
+        log.info("CarrotDTO: {}", carrotDTO);
+        log.info("ImageDTO: {}", imageDTO);
+
+        postService.carrotModify(postDTO, carrotDTO, imageDTO);
     }
 
     @Test
@@ -132,6 +162,7 @@ public class PostServiceTests {
         PostDTO postDTO = PostDTO.builder()
                 .memberId(11L)
                 .postId(27L)
+                .registerDate(LocalDateTime.now())
                 .modifyDate(LocalDateTime.now())
                 .title("수정된 제목")
                 .content("수정된 내용")
@@ -145,9 +176,16 @@ public class PostServiceTests {
                 .endTravelDate(LocalDateTime.now().plusDays(30))
                 .build();
 
+        ImageDTO imageDTO = ImageDTO.builder()
+                .uuid("c://https://www.bitcamp.com")
+                .ord(5)
+                .fileName("BitCamp.html")
+                .build();
         log.info("PostDTO: {}", postDTO);
+        log.info("ReviewDTO: {}", reviewDTO);
+        log.info("ImageDTO: {}", imageDTO);
 
-        postService.reviewModify(postDTO, reviewDTO);
+        postService.reviewModify(postDTO, reviewDTO, imageDTO);
     }
 
     @Test
@@ -155,6 +193,7 @@ public class PostServiceTests {
         PostDTO postDTO = PostDTO.builder()
                 .memberId(3L)
                 .postId(26L)
+                .registerDate(LocalDateTime.now())
                 .modifyDate(LocalDateTime.now())
                 .title("수정된 제목")
                 .content("수정된 내용")
@@ -168,9 +207,17 @@ public class PostServiceTests {
                 .endTravelDate(LocalDateTime.now().plusDays(10))
                 .build();
 
-        log.info("joinDTO: {}", joinDTO);
+        ImageDTO imageDTO = ImageDTO.builder()
+                .uuid("c://https://www.BixBox.com")
+                .ord(5)
+                .fileName("BixBox.html")
+                .build();
 
-        postService.joinModify(postDTO, joinDTO);
+        log.info("PostDTO: {}", postDTO);
+        log.info("joinDTO: {}", joinDTO);
+        log.info("ImageDTO: {}", imageDTO);
+
+        postService.joinModify(postDTO, joinDTO, imageDTO);
     }
 
 
@@ -180,7 +227,24 @@ public class PostServiceTests {
 
     @Test
     public void testSearchPostOne() {
-        allPostSearch.searchOne(60L);
+//        allPostSearch.searchOne(60L,"Review");
+        postService.PostReadOne(60L,"Review");
+    }
+    @Test
+    public void testSearchPostTypeAll() {
+        int page = 0;
+        int size = 10;
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "postId "));
+        Page<PostDTO> postPage = postService.PostReadAll("Review", 3, 6);
+        log.info("postPage: {}", postPage);
+        log.info("postPage.getTotalElements(): {}", postPage.getTotalElements());
+        log.info("postPage.getTotalPages(): {}", postPage.getTotalPages());
+        log.info("postPage.getNumber(): {}", postPage.getNumber());
+        log.info("postPage.getSize(): {}", postPage.getSize());
+        postPage.getContent().forEach(post -> {
+            System.out.println("POST ID: " + post.getPostId());
+            // 필요한 다른 속성들도 출력
+        });
     }
 
     @Test
@@ -208,7 +272,7 @@ public class PostServiceTests {
         String searchValue = "승규";
 
         // When
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue);
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Review");
 
         // Then
         assertNotNull(posts);
