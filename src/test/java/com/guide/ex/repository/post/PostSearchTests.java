@@ -2,6 +2,7 @@ package com.guide.ex.repository.post;
 
 import com.guide.ex.domain.post.Join;
 import com.guide.ex.domain.post.Post;
+import com.guide.ex.domain.post.Review;
 import com.guide.ex.repository.search.AllPostSearch;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ public class PostSearchTests {
         String searchValue = "리뷰";
 
         // When
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue);
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Review");
 
         // Then
         assertNotNull(posts);
