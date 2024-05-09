@@ -12,12 +12,13 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,28 +37,42 @@ public class PostServiceImpl implements PostService {
     private final ImageRepository imageRepository;
 
     @Override
-    public PostDTO PostReadOne(Long postId, String postType) {
+    public void PostDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
         // 데이터베이스에서 Post 객체를 검색
         Post post = allPostSearch.searchOne(postId, postType);
         if (post == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
-        // Post 객체를 PostDTO로 변환
-        return modelMapper.map(post, PostDTO.class);
     }
-
     @Override
-    public Page<PostDTO> PostReadAll(String postType, int page, int size) {
+    public Page<PostDTO> PostTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
         if (!(postType.contains("Review") || postType.contains("Carrot") || postType.contains("Join"))) {
             throw new EntityNotFoundException("존재하지 않는 게시판 유형입니다: " + postType);
         }
 
-//        Page<Post> postPage = allPostSearch.searchPostPaging(postType, page, size);
-//        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-        return  null;
+        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size, page);
+        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
     }
 
+    @Override
+    public List<PostDTO> PostSelectAll(String searchValue, String postType) {
+        if (searchValue == null || searchValue.trim().isEmpty()) {
+            throw new IllegalArgumentException("검색 값이 제공되지 않았습니다.");
+        }
+        if (postType == null || postType.trim().isEmpty()) {
+            throw new IllegalArgumentException("게시판 유형이 제공되지 않았습니다.");
+        }
 
+        List<String> validPostTypes = Arrays.asList("Review", "Carrot", "Join");
+        if (!validPostTypes.contains(postType)) {
+            throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
+        }
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue, postType);
+        // 엔티티를 DTO로 변환
+        return posts.stream()
+                .map(post -> modelMapper.map(post, PostDTO.class))
+                .collect(Collectors.toList());
+    }
 
 
     @Override

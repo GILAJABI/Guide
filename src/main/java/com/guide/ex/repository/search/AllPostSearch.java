@@ -10,13 +10,9 @@ public interface AllPostSearch {
 
     List<Post> searchPost(String postType);
 
-    Page<Post> searchPostPaging(String postType, Pageable pageable);
+    Page<Post> searchPostPaging(String postType,int size, int page);
 
     List<Post> searchPostContaining(String searchValue, String postType);
-
-//    void searchReviewOne(Long postId);
-//    void searchCarrotOne(Long postId);
-//    void searchJoinOne(Long postId);
 
     Post searchOne(Long postId, String postType);
     void updateViews(Long postId);
