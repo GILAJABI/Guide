@@ -4,156 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>리뷰작성</title>
-    <!--    <link rel="stylesheet" th:href="@{/css/post/reviewWrite.css}">-->
-    <style>
-        body {
-            background-color: #fafafa;
-        }
-
-        @font-face {
-            font-family: 'Pretendard-Regular';
-            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'BMJUA';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        #container {
-            font-family: 'Pretendard-Regular';
-            background-color: white;
-            width: 480px;
-            margin: 80px auto;
-            padding: 10px 60px 20px;
-            border: black;
-            box-shadow: 3px 3px 10px rgb(205, 205, 205);
-            border-radius: 10px;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .star_rating {
-            width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            /* 수정 */
-            justify-content: center;
-            /* 추가 */
-            margin-bottom: 10px;
-        }
-
-        .star_rating .star {
-            width: 25px;
-            height: 25px;
-            margin-right: 10px;
-            display: inline-block;
-            /* background: url('../board/image/star_1.png') no-repeat; */
-            background: url('../../image/star_1.png') no-repeat;
-            background-size: 100%;
-            box-sizing: border-box;
-            cursor: pointer;
-        }
-
-        .star_rating .star.on {
-            background: url('../../image/star_2.png') no-repeat;
-            background-size: 100%;
-        }
-
-        input,
-        textarea {
-            margin: 10px;
-            width: 85%;
-            border-color: #cccccc;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #F4F4F4;
-            color: #CCCCCC;
-            border: 1px solid #cccccc;
-        }
-
-        button {
-            background-color: #FF6392;
-            font-family: 'BMJUA';
-            color: white;
-            border: none;
-            border-radius: 30px;
-            margin: 20px;
-            padding: 15px 30px;
-            box-shadow: 3px 3px 8px rgb(205, 205, 205);
-        }
-
-        .my-image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* 추가 */
-            height: 100px;
-            /* 추가 */
-        }
-
-        .my-image {
-            background-color: #F4F4F4;
-            border: 1px solid #ccc;
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            object-fit: cover;
-            display: flex;
-            /* 추가 */
-            justify-content: center;
-            /* 추가 */
-            align-items: center;
-            /* 추가 */
-        }
-
-        #profile-image {
-            width: 60px;
-            height: 60px;
-        }
-
-        .file-upload-container {
-            /* display: flex;
-            justify-content: space-between;
-            /* 수정
-            align-items: center;
-            추가 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        #select {
-            display: none;
-        }
-
-        .file-upload-label img {
-            width: 30px;
-            height: 30px;
-        }
-
-        .ddd {
-            display: flex;
-            justify-content: center;
-        }
-        .address-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .address-container input[type="text"] {
-            flex: 1;
-            margin-right: 5px;
-        }
-
-    </style>
+    <title>리뷰 등록</title>
+    <link rel="stylesheet" th:href="@{/css/post/write.css}">
 </head>
 <body>
 <div th:include="/include/header.html"></div>
@@ -170,41 +22,32 @@
 
     <input name="title" type="text" placeholder="제목을 입력하세요"> <br>
     <input name="money" type="text" placeholder="대략적인 여행 총 경비"><br>
-    <textarea name="umemo" cols="40" rows="4" placeholder="내용을 입력하세요"></textarea> <br>
-    <!-- <input id="select" type="file" accept="image/png" required="required" onchange='handleImageUpload(event)'
-        style="display: none;" />
-
-    <label for="select" class="file-upload-label">
-        <div class="image-box">
-            <img src="../board/image/camera.png">
-        </div> -->
+    <textarea name="umemo" cols="40" rows="4" placeholder="내용을 입력하세요"></textarea> <br><br>
 
     <div class="ddd">
+        <label for="profile-image">사진 첨부</label>
         <div class="my-image-container">
-
             <div class="my-image">
-
-                <img id="profile-image" th:src="@{/image/camera.png}" alt="프로필이미지">
-            </div>
-            <div class="file-upload-container">
-                <input id="select" type="file" accept="image/png" required="required"
-                       onchange='handleImageUpload(event)'/>
                 <label for="select" class="file-upload-label">
-                    <img src="/image/modify.png" alt="파일 선택">
+                    <img id="profile-image" th:src="@{/image/camera.png}" alt="프로필이미지">
                 </label>
+                <div class="file-upload-container">
+                    <input id="select" type="file" accept="image/png" required="required"
+                           onchange='handleImageUpload(event)'/>
+                </div>
             </div>
-            <br>
+        </div>
+
+        <div class="travel-plan">
+            <label for="start_date">여행 기간</label>
             <p>
-                <label for="start_date">여행 시작일:</label>
                 <input type="date" id="start_date" name="start_date">
-            </p>
-            <p>
-                <label for="end_date">여행 종료일:</label>
                 <input type="date" id="end_date" name="end_date">
             </p>
-
         </div>
     </div>
+
+
     <div class="address-container">
         <input type="text" name="road_address" id="sample6_address" placeholder="위치">
         <button class="btn btn-sm btn-primary" type="button" onclick="sample6_execDaumPostcode()">검색</button>
@@ -212,84 +55,16 @@
 
     <input type="hidden" name="location_x" id="sample6_latitude" value="">
     <input type="hidden" name="location_y" id="sample6_longitude" value="">
-    <br/>
-
     <div id="map" style="width:500px;height:350px;"></div>
     <button type="submit">글쓰기 완료</button>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script th:src="@{/js/post/reviewWrite.js}"></script>
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/js/post/write.js}"></script>
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
-
-<script>
-    var mapContainer = document.getElementById('map'),
-        mapOption = {
-            center: new daum.maps.LatLng(37.537187, 127.005476),
-            level: 12
-        };
-
-    // 지도 객체 미리 생성
-    var map = new daum.maps.Map(mapContainer, mapOption);
-    // 주소-좌표 변환 객체 생성
-    var geocoder = new daum.maps.services.Geocoder();
-    // 마커 미리 생성
-    var marker = new daum.maps.Marker({
-        position: new daum.maps.LatLng(37.537187, 127.005476),
-        map: map
-    });
-
-    function getLatLngFromRoadName(roadName) {
-        geocoder.addressSearch(roadName, function (results, status) {
-            if (status === daum.maps.services.Status.OK) {
-                var result = results[0];
-                var latitude = result.y;
-                var longitude = result.x;
-                document.getElementById("sample6_latitude").value = latitude;
-                document.getElementById("sample6_longitude").value = longitude;
-
-                var coords = new daum.maps.LatLng(latitude, longitude);
-                map.setCenter(coords);
-                marker.setPosition(coords);
-            } else {
-                console.log("주소 검색 실패:", status);
-            }
-        });
-    }
-
-    function sample6_execDaumPostcode() {
-        new daum.Postcode({
-            oncomplete: function (data) {
-
-                var addr = '';
-                var extraAddr = '';
-
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                } else {
-                    addr = data.jibunAddress;
-                }
-
-                if (data.userSelectedType === 'R') {
-                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                        extraAddr += data.bname;
-                    }
-                    if (data.buildingName !== '' && data.apartment === 'Y') {
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    if (extraAddr !== '') {
-                        extraAddr = ' (' + extraAddr + ')';
-                    }
-
-                }
-                var addrs = data.address;
-                document.getElementById("sample6_address").value = addrs;
-                getLatLngFromRoadName(addrs);
-            }
-        }).open();
-    }
-</script>
+<script th:src="@{/js/post/mapFindLoc.js}"></script>
 </body>
 
 </html>
