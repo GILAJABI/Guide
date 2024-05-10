@@ -26,6 +26,10 @@ public class ChatMessage {
     private String chatMsg;
 
     @NotNull
+    @Column(name = "member_name", length = 200)
+    private String memberName;
+
+    @NotNull
     @CreatedDate
     @Column(name = "regist_date")
     private LocalDateTime registDate;
