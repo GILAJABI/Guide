@@ -76,6 +76,16 @@ public class PostController {
 
     }
 
+    @GetMapping("/reviewDetail")
+    public void reviewDetail() {
+
+    }
+
+    @GetMapping("/joinDetail")
+    public void joinDetail(){
+
+    }
+
     @GetMapping("/carrotMain")
     public String carrotMain(Model model,
                              @RequestParam(defaultValue = "1") int page,

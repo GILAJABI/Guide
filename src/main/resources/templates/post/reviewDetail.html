@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/post/reviewDetail.css}">
+<!--    <script th:src="@{/js/post/reviewDetail.js}"></script>-->
+
+</head>
+
+<body>
+
+<div th:include="/include/header.html"></div>
+<div class="container">
+    <header>
+        <div id="selectMenu">
+            <a th:href="@{/post/joinMain}">모집</a>
+            <a th:href="@{/post/reviewMain}">후기</a>
+            <a th:href="@{/post/carrotMain}" style="color:#FF6392">상품</a>
+        </div>
+        <div id="selectMenu2">
+            <div id="sortMenu">
+                <a href="#" class="filter-link">최신순</a>
+                <a href="#" class="filter-link">인기순</a>
+                <a href="#" class="filter-link">많이 본 순</a>
+                <a href="#" class="filter-link">댓글순</a>
+            </div>
+            <div id="use">
+                <form>
+                    <input type="text" name="query" id="searchInp">
+                    <button type="submit" id="searchBtn">
+                        <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
+                    </button>
+                </form>
+                <button type="submit" id="postBtn">+ 올리기</button>
+            </div>
+        </div>
+    </header>
+
+<div class="cont">
+
+    <div class="bottom">
+        <div class="left">
+            <img th:src="@{/image/cat.jpeg}" alt="상품사진">
+<!--            <img th:src="@{/image/cat.png}" alt="검색 버튼">-->
+            <div class="location-map">
+
+                <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35799.901099154966!2d126.99122613009443!3d37.52456387269132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca15aee9ab0cb%3A0x31793fc63e0cf9d3!2z67mE7Yq47Lqg7ZSE!5e0!3m2!1sko!2skr!4v1709707618933!5m2!1sko!2skr"
+                        width="800" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <div class="right">
+
+            <div class="profile">
+                <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">
+                <p>닉네임</p>
+            </div>
+
+
+            <h1>정말 좋은 여행을 갔다 온 사람이 쓴 글</h1>
+
+            <h2>총 경비 | 100,000,000 원</h2>
+            <div class="line">
+                <img id="heartIcon" th:src="@{/image/red.png}" alt="heart" onclick="changeHeartIcon()">
+                <h3 id="likeCount">8</h3>
+                <img th:src="@{/image/eye.png}" alt="eye">
+                <h3>20</h3>
+            </div>
+
+            <hr>
+            <p> 본문...~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </p>
+
+            <div class="comment">
+            </div>
+            <h4 style="color: #c1c1c1;">댓글</h4>
+            <div class="profile">
+                <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">
+                <h4>김시언: 뭐요</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeHeartIcon() {
+        var heartIcon = document.getElementById('heartIcon');
+        var likeCount = document.getElementById('likeCount');
+
+        if (heartIcon.src.includes('red.png')) {
+            heartIcon.src = '../image/greyheart.png';
+            likeCount.textContent = parseInt(likeCount.textContent) - 1;
+        } else {
+            heartIcon.src = '../image/red.png';
+            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+        }
+    }
+</script>
+</div>
+
+</body>
+
+</html>
