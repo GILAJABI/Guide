@@ -35,7 +35,11 @@
                     <p>[[${member.getGenderDescription()}]]</p>
                 </div>
                 <div id="chatImg">
+                    <form action="/chat/create" method="post" >
+                        <button type="submit" class="chat_room">
                     <img th:src="@{/image/chattingBtn.png}" alt="채팅 걸기">
+                        </button>
+                    </form>
                 </div>
             </div>
             <div id="otherCount">

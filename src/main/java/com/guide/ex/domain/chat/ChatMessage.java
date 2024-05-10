@@ -1,5 +1,6 @@
 package com.guide.ex.domain.chat;
 
+import com.guide.ex.domain.member.Member;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -25,6 +26,10 @@ public class ChatMessage {
     private String chatMsg;
 
     @NotNull
+    @Column(name = "member_name", length = 200)
+    private String memberName;
+
+    @NotNull
     @CreatedDate
     @Column(name = "regist_date")
     private LocalDateTime registDate;
@@ -38,7 +43,11 @@ public class ChatMessage {
     }
 
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", insertable=false, updatable=false)
+    private ChatRoom chatroom;
 }

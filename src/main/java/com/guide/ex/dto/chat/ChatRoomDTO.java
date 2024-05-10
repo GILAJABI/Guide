@@ -1,18 +1,17 @@
 package com.guide.ex.dto.chat;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatRoomDTO {
-
-    private String roomId;
-    private String name;
-
-    public static ChatRoomDTO create(String name) {
-        ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
-        chatRoomDTO.roomId = UUID.randomUUID().toString();
-        return chatRoomDTO;
-    }
+    private Long memberId;
+    private Long roomNumber;
 }
