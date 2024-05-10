@@ -11,18 +11,13 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface PostService {
-    void carrotRegister(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
-    void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
-    void joinRegister(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
-    void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
-    void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
-    void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
-    PostDTO PostReadOne(Long memberId, String postType);
-    Page<PostDTO> PostReadAll(String postType, int page, int size);
     void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session);
     void joinRegister(JoinDTO joinDTO, MultipartFile file, HttpSession session);
     void reviewRegister(ReviewDTO reviewDTO, MultipartFile file, HttpSession session);
-    void PostDetailRead(Long memberId, String postType);
-    Page<PostDTO> PostTypeReadAll(String postType,int size, int page);
-    List<PostDTO> PostSelectAll(String searchValue, String postType);
+    void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
+    void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
+    void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
+    void postDetailRead(Long memberId, String postType);
+    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
+    List<PostDTO> postSelectAll(String searchValue, String postType);
 }

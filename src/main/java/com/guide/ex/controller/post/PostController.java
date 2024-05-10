@@ -2,11 +2,15 @@ package com.guide.ex.controller.post;
 
 import com.guide.ex.dto.post.CarrotDTO;
 import com.guide.ex.dto.post.JoinDTO;
+import com.guide.ex.dto.post.PostDTO;
 import com.guide.ex.dto.post.ReviewDTO;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,7 +81,7 @@ public class PostController {
                              @RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "10") int size) {
 
-        Page<PostDTO> post = postService.PostTypeReadAll("Carrot", size, page);
+        Page<PostDTO> post = postService.postTypeReadAll("Carrot", size, page);
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
                 post.getTotalElements(), post.getTotalPages(), post.getNumber());
 

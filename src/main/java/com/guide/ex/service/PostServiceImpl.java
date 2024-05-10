@@ -20,7 +20,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -42,109 +45,110 @@ public class PostServiceImpl implements PostService {
     private final ImageRepository imageRepository;
 
     @Override
-    public void PostDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
-        // 데이터베이스에서 Post 객체를 검색
-        Post post = allPostSearch.searchOne(postId, postType);
-        if (post == null) {
-            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
-        }
-    }
-    @Override
-    public Page<PostDTO> PostTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
-        if (!(postType.contains("Review") || postType.contains("Carrot") || postType.contains("Join"))) {
-            throw new EntityNotFoundException("존재하지 않는 게시판 유형입니다: " + postType);
-        }
+    public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
 
-        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size, page);
-        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-    }
+        Long memberId = (Long) session.getAttribute("member_id");
 
-    @Override
-    public List<PostDTO> PostSelectAll(String searchValue, String postType) {
-        if (searchValue == null || searchValue.trim().isEmpty()) {
-            throw new IllegalArgumentException("검색 값이 제공되지 않았습니다.");
-        }
-        if (postType == null || postType.trim().isEmpty()) {
-            throw new IllegalArgumentException("게시판 유형이 제공되지 않았습니다.");
-        }
-
-        List<String> validPostTypes = Arrays.asList("Review", "Carrot", "Join");
-        if (!validPostTypes.contains(postType)) {
-            throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
-        }
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue, postType);
-        // 엔티티를 DTO로 변환
-        return posts.stream()
-                .map(post -> modelMapper.map(post, PostDTO.class))
-                .collect(Collectors.toList());
-    }
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
 
-    @Override
-    public void carrotRegister(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO) {
-        Member member = memberRepository.findById(postDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + postDTO.getMemberId()));
-
-        Post post = modelMapper.map(postDTO, Post.class);
-        post.setMember(member);
-        postRepository.save(post); // Post 저장
-        log.info("Saved Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
-
-
-        carrotDTO.setPostId(post.getId()); // 저장된 Post의 ID를 가져와서 설정
         Carrot carrot = modelMapper.map(carrotDTO, Carrot.class);
-        carrotRepository.save(carrot); // Carrot 저장
+        carrot.setMember(member);
+        carrotRepository.save(carrot);
 
-        imageDTO.setPostId(post.getId());
+        ImageDTO imageDTO = new ImageDTO();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(carrot.getId());
         PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
-        postImage.setPost(post);
+        postImage.setPost(carrot);
 
-        imageRepository.save(postImage);
-        log.info("Saved Image ID: {}", postImage.getImageId());
-        log.info("Image uploaded with UUID: {} for Post ID: {}", imageDTO.getUuid(), postDTO.getPostId());
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
     }
 
     @Override
-    public void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO) {
-        Member member =  memberRepository.findById(postDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
-        Post post = modelMapper.map(postDTO, Post.class);
-        post.setMember(member);
-        postRepository.save(post); // Post 저장
-        log.info("Saved Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
+    public void joinRegister(JoinDTO joinDTO, MultipartFile file, HttpSession session) {
 
-        reviewDTO.setPostId(post.getId()); // 저장된 Post의 ID를 가져와서 설정
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+
+        Join join = modelMapper.map(joinDTO, Join.class);
+        join.setMember(member);
+        joinRepository.save(join);
+
+        ImageDTO imageDTO = new ImageDTO();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(join.getId());
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(join);
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+    }
+
+    @Override
+    public void reviewRegister(ReviewDTO reviewDTO, MultipartFile file, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+
+
         Review review = modelMapper.map(reviewDTO, Review.class);
+        review.setMember(member);
         reviewRepository.save(review); // Review 저장
 
-        imageDTO.setPostId(post.getId());
+        ImageDTO imageDTO = new ImageDTO();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(review.getId());
         PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
-        postImage.setPost(post);
-        imageRepository.save(postImage);
-        log.info("Saved Image ID: {}", postImage.getImageId());
-        log.info("Image uploaded with UUID: {} for Post ID: {}", imageDTO.getUuid(), postDTO.getPostId());
+        postImage.setPost(review);
 
-    }
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
 
-    @Override
-    public void joinRegister(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO) {
-        Member member =  memberRepository.findById(postDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
-        Post post = modelMapper.map(postDTO, Post.class);
-        post.setMember(member);
-        postRepository.save(post); // Post 저장
-        log.info("Saved Post ID: {}", post.getId()); // 저장된 Post의 ID 로깅
-
-        joinDTO.setPostId(post.getId()); // 저장된 Post의 ID를 가져와서 설정
-        Join join = modelMapper.map(joinDTO, Join.class);
-        joinRepository.save(join); // Join 저장
-
-        imageDTO.setPostId(post.getId());
-        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
-        postImage.setPost(post);
-        imageRepository.save(postImage);
-        log.info("Saved Image ID: {}", postImage.getImageId());
-        log.info("Image uploaded with UUID: {} for Post ID: {}", imageDTO.getUuid(), postDTO.getPostId());
     }
 
     @Override
@@ -259,111 +263,45 @@ public class PostServiceImpl implements PostService {
 
         log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
     }
+
     @Override
-    public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
-
-        Long memberId = (Long) session.getAttribute("member_id");
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
-
-
-        Carrot carrot = modelMapper.map(carrotDTO, Carrot.class);
-        carrot.setMember(member);
-        carrotRepository.save(carrot);
-
-        ImageDTO imageDTO = new ImageDTO();
-        if (file.isEmpty()) {
-            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
-        }
-
-        String originalName = file.getOriginalFilename();
-        String uuid = UUID.randomUUID().toString();
-
-        imageDTO.setFileName(originalName);
-        imageDTO.setUuid(uuid);
-        imageDTO.setPostId(carrot.getId());
-        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
-        postImage.setPost(carrot);
-
-        try {
-            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
-            file.transferTo(savePath);
-            imageRepository.save(postImage);
-        } catch (IOException e) {
-            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+    public void postDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
+        // 데이터베이스에서 Post 객체를 검색
+        Post post = allPostSearch.searchOne(postId, postType);
+        if (post == null) {
+            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
     }
 
     @Override
-    public void joinRegister(JoinDTO joinDTO, MultipartFile file, HttpSession session) {
-
-        Long memberId = (Long) session.getAttribute("member_id");
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
-
-        Join join = modelMapper.map(joinDTO, Join.class);
-        join.setMember(member);
-        joinRepository.save(join);
-
-        ImageDTO imageDTO = new ImageDTO();
-        if (file.isEmpty()) {
-            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+    public Page<PostDTO> postTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
+        if (!(postType.contains("Review") || postType.contains("Carrot") || postType.contains("Join"))) {
+            throw new EntityNotFoundException("존재하지 않는 게시판 유형입니다: " + postType);
         }
 
-        String originalName = file.getOriginalFilename();
-        String uuid = UUID.randomUUID().toString();
-
-        imageDTO.setFileName(originalName);
-        imageDTO.setUuid(uuid);
-        imageDTO.setPostId(join.getId());
-        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
-        postImage.setPost(join);
-
-        try {
-            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
-            file.transferTo(savePath);
-            imageRepository.save(postImage);
-        } catch (IOException e) {
-            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
-        }
+        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size, page);
+        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
     }
 
     @Override
-    public void reviewRegister(ReviewDTO reviewDTO, MultipartFile file, HttpSession session) {
-        Long memberId = (Long) session.getAttribute("member_id");
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
-
-
-        Review review = modelMapper.map(reviewDTO, Review.class);
-        review.setMember(member);
-        reviewRepository.save(review); // Review 저장
-
-        ImageDTO imageDTO = new ImageDTO();
-        if (file.isEmpty()) {
-            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+    public List<PostDTO> postSelectAll(String searchValue, String postType) {
+        if (searchValue == null || searchValue.trim().isEmpty()) {
+            throw new IllegalArgumentException("검색 값이 제공되지 않았습니다.");
+        }
+        if (postType == null || postType.trim().isEmpty()) {
+            throw new IllegalArgumentException("게시판 유형이 제공되지 않았습니다.");
         }
 
-        String originalName = file.getOriginalFilename();
-        String uuid = UUID.randomUUID().toString();
-
-        imageDTO.setFileName(originalName);
-        imageDTO.setUuid(uuid);
-        imageDTO.setPostId(review.getId());
-        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
-        postImage.setPost(review);
-
-        try {
-            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
-            file.transferTo(savePath);
-            imageRepository.save(postImage);
-        } catch (IOException e) {
-            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        List<String> validPostTypes = Arrays.asList("Review", "Carrot", "Join");
+        if (!validPostTypes.contains(postType)) {
+            throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
         }
-
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue, postType);
+        // 엔티티를 DTO로 변환
+        return posts.stream()
+                .map(post -> modelMapper.map(post, PostDTO.class))
+                .collect(Collectors.toList());
     }
+
 
 }
