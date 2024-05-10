@@ -1,5 +1,6 @@
 package com.guide.ex.domain.post;
 
+import com.guide.ex.domain.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -37,11 +38,12 @@ public class Comment{
     @JoinColumn(name = "post_id")
     private Post post;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    public void change(String s) {
-        this.content = s;
+    public void change(String content) {
+        this.content = content;
         this.modifyDate = LocalDateTime.now();
     }
 }

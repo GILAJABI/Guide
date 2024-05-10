@@ -60,7 +60,7 @@ public class PostSearchTests {
         int size = 10;
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        Page<Post> postPage = allPostSearch.searchPostPaging(postType, pageRequest);
+        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size,page);
 
         assertNotNull(postPage);
         assertNotNull(postPage.getContent());

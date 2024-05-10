@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -44,8 +45,10 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
 
     @Override
-    public Page<Post> searchPostPaging(String postType, Pageable pageable) {    // 게시판 유형에 따른 모든 게시글 검색
+    public Page<Post> searchPostPaging(String postType, int size, int page) {    // 게시판 유형에 따른 모든 게시글 검색
         QPost post = QPost.post;
+
+        Pageable pageable = PageRequest.of(page - 1, size);
 
         JPAQuery<Post> query = new JPAQuery<>(entityManager);
 
@@ -65,48 +68,21 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
         QPost post = QPost.post;
         JPAQuery<Post> query = new JPAQuery<>(entityManager);
-
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
         // 게시판 유형에 맞는 게시글만 필터링
         booleanBuilder.and(post.postType.eq(postType));
-        if(searchValue != null && !searchValue.isEmpty()) {
-            log.info("존재하지 않는 게시글입니다.");
+        if (searchValue != null && !searchValue.trim().isEmpty()) {
+            booleanBuilder.andAnyOf(
+                    post.title.contains(searchValue),
+                    post.content.contains(searchValue)
+            );
         }
 
-        // 제목이나 내용에 검색어를 포함하는 게시글 검색
-        booleanBuilder.andAnyOf(
-                post.title.contains(searchValue),
-                post.content.contains(searchValue)
-        );
-
         query.select(post).from(post).where(booleanBuilder);
-
         return query.fetch();
     }
 
-
-//    public void searchReviewOne(Long postId) {
-//        // 조회수 증가 -> 게시글 조회
-//        updateViews(postId);
-//        Post post = findPostById(postId, "Review");
-//
-//        // 변경된 게시글 정보를 다시 조회합니다.
-//    }
-//    public void searchCarrotOne(Long postId) {
-//        // 조회수 증가 -> 게시글 조회
-//        updateViews(postId);
-//        Post post = findPostById(postId, "Carrot");
-//
-//        // 변경된 게시글 정보를 다시 조회합니다.
-//    }
-//    public void searchJoinOne(Long postId) {
-//        // 조회수 증가 -> 게시글 조회
-//        updateViews(postId);
-//        Post post = findPostById(postId, "Join");
-//
-//        // 변경된 게시글 정보를 다시 조회합니다.
-//    }
 
     @Transactional
     @Override

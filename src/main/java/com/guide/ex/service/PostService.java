@@ -16,7 +16,7 @@ public interface PostService {
     void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
 
-    PostDTO PostReadOne(Long memberId, String postType);
-    Page<PostDTO> PostReadAll(String postType, int page, int size);
-
+    void PostDetailRead(Long memberId, String postType);
+    Page<PostDTO> PostTypeReadAll(String postType,int size, int page);
+    List<PostDTO> PostSelectAll(String searchValue, String postType);
 }
