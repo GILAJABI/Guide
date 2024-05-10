@@ -47,19 +47,20 @@
 
             <div class="image-section">
                 <!-- Null-safe image source -->
-<!--                <img th:src="${post.getImageDTO(). != null ? '/images/' + post.imageDTO.getUuid() : '/images/default.jpg'}" alt="사용자가 게시한 이미지" />-->
+                <img th:src="${post.getImageDTO() != null ? '/images/' + post.imageDTO.getUuid() : '/images/default.jpg'}" alt="사용자가 게시한 이미지" />
             </div>
 <!--            <div class="text-section">-->
-<!--                <span th:text="${post.getTitle()}">판매 물품 제목</span>-->
-<!--                <div class="additional-text">-->
+                <span th:text="${post.getTitle()}">판매 물품 설명</span>
+                <div class="additional-text">
 <!--                    <p th:text="${#dates.format(post.getRegisterDate(), 'yyyy-MM-dd')}">게시날짜</p>-->
+<!--                    <p  th:text="${post.getContent()}">판매 물품 설명</p>-->
 <!--                    <p th:text="${post.getLikeCount()} + ' likes'">좋아요수</p>-->
 <!--                    <p th:text="${post.getViews()} + ' views'">조회수</p>-->
-<!--                </div>-->
+                </div>
 <!--            </div>-->
 
             <div class="text-section">
-                <span class="board-title" th:text="${post.getTitle()}">판매 물품 제목</span>
+                <span class="board-title" th:text="${post.getContent()}">판매 물품 제목</span>
                 <div class="additional-text">
 <!--                    <p th:text="${#dates.format(post.getRegisterDate(), 'yyyy-MM-dd')}">게시날짜</p>-->
 <!--                    <span th:text="${post.ImageDTO()}"></span>-->
