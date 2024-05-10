@@ -1,0 +1,175 @@
+.container {
+    max-width: 1000px;
+    margin: 86px auto;
+    color: #363636;
+    background-color: #fafafa;
+}
+
+header {
+    max-width: 1000px;
+}
+
+#selectMenu {
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    margin-left: 20px;
+}
+
+#selectMenu > a {
+    font-family: 'BMJUA';
+    font-size: 21px;
+    text-decoration: none;
+    color: #363636;
+}
+
+#selectMenu2 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
+}
+
+#sortMenu {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    color: #363636;
+}
+
+#sortMenu > a {
+    font-family: 'BMJUA';
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.filter-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.1s ease;
+    height: 40px;
+    padding: 0 20px;
+}
+
+.filter-link:hover, .filter-link:focus, .filter-link:active {
+    background-color: #FF6392;
+    color: #fafafa;
+}
+
+.filter-link.active {
+    background-color: #FF6392;
+    color: #fafafa;
+}
+
+#use {
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    width: 176px;
+}
+
+#searchInp {
+    width: 140px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#searchBtn {
+    width: 36px;
+    height: 40px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+#postBtn {
+    width: 140px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #FF6392;
+    color: #fafafa;
+    font-family: 'BMJUA';
+    font-size: 20px;
+}
+
+.reviewBox {
+    display: flex;
+    width: 100%;
+    margin: 30px auto;
+    border-radius: 40px;
+    box-shadow: 5px 5px 8px rgb(228, 228, 228);
+    overflow: hidden;
+}
+
+.photo {
+    flex: 0 0 270px;
+    height: 243px;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    overflow: hidden;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.description {
+    flex-grow: 1;
+    display: flex; /* 내부 요소들을 행으로 배치 */
+    flex-direction: column; /* 내부 요소들을 세로로 배치 */
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    overflow-y: auto;
+}
+
+#grade {
+    color: #8D8D8D;
+    background-color: #f0f0f0;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.content {
+    background-color: #f0f0f0;
+}
+
+.rating {
+    width: 1em;
+    height: 1em;
+    margin-right: 10px;
+    align-self: flex-start;
+    background-color: #f0f0f0;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewDTO {
+public class ReviewDTO extends PostDTO{
 
     private Long postId;
     private long grade;

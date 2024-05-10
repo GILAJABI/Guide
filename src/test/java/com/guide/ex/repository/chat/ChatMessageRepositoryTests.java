@@ -29,7 +29,7 @@ public class ChatMessageRepositoryTests {
 
         LocalDateTime now = LocalDateTime.now();
 
-        ChatRoom chatRoom = ChatRoom.builder().roomId(1L).build();
+        ChatRoom chatRoom = ChatRoom.builder().roomId(1).build();
 
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatMsg("hello")

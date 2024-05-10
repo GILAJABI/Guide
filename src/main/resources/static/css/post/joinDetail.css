@@ -1,0 +1,131 @@
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Pretendard-Regular';
+    color: #363636;
+}
+
+.container {
+    max-width: 800px;
+    margin: 86px auto;
+    color: #363636;
+    background-color: #fafafa;
+}
+.details {
+    min-height: 500px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px lightgrey;
+    overflow: hidden;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.details img {
+    width: 800px;
+    height: 400px;
+    object-fit: cover;
+}
+
+.description {
+    text-align: left;
+    width: 100%;
+}
+
+#content {
+    padding: 30px;
+}
+
+#title {
+    margin-top: 0px;
+    font-family: 'BMJUA';
+    font-size: 21px;
+}
+
+.info {
+    color: #a6a6a6;
+    display: flex;
+    align-items: center;
+}
+
+.info img {
+    filter: opacity(0.5) drop-shadow(0 0 0 #000000);
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+#position,
+#number,
+#cal
+{
+    font-family: 'Pretendard-Regular';
+    margin: 20px;
+    margin-left: 5px;
+}
+
+#content2 {
+    font-family: 'Pretendard-Regular';
+    margin: 20px;
+    margin-left: 5px;
+}
+
+#commentH {
+    font-family: 'BMJUA';
+    font-size: 21px;
+    color: #FF6392;
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comment .profile-info {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.comment img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 5px;
+}
+
+.comment h4 {
+    /* margin: 10px;˜∫ */
+    margin-left: 5px;
+}
+
+.profile-info {
+    display: block;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.nickname {
+    margin: 0;
+    font-weight: normal;
+}
+

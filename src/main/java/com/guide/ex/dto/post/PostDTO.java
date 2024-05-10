@@ -42,7 +42,6 @@ public class PostDTO {
     private int commentCount;
 
     private String postType;
-
-    @NotNull
+    
     private Long memberId;
 }

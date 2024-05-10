@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'BMJUA';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
@@ -12,7 +13,7 @@
     font-style: normal;
 }
 
-.container {
+.cont {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -129,6 +130,7 @@ h3 {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background: url('../image/cat.jpeg') no-repeat;
 }
 
 p {
@@ -147,6 +149,7 @@ p {
     align-items: center;
     margin-right: 10px;
     /* 프로필 정보와 시간 사이의 간격 */
+    margin-right: 10px;
 }
 
 .profile-pic {
@@ -180,3 +183,4 @@ p {
     margin: 0; /* 댓글의 기본 마진 제거 */
     margin-left: 5px; /* 프로필 정보와의 간격 조정 */
 }
+

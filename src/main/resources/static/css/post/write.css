@@ -79,20 +79,30 @@ button {
     box-shadow: 3px 3px 8px rgb(205, 205, 205);
 }
 
+button:hover {
+    cursor: pointer;
+    background-color: #FF83A8;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
 .my-image-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* 추가 */
-    height: 100px;
-    /* 추가 */
+    /*height: 100px;*/
+}
+
+.my-image-container label {
+    display: block;
+    margin-bottom: 5px;
 }
 
 .my-image {
     background-color: #F4F4F4;
     border: 1px solid #ccc;
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     border-radius: 10px;
     position: relative;
     overflow: hidden;
@@ -106,8 +116,8 @@ button {
 }
 
 #profile-image {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
 }
 
 .file-upload-container {
@@ -132,5 +142,42 @@ button {
 
 .ddd {
     display: flex;
-    justify-content: center;
+}
+
+.my-image-container {
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+    flex: 1.5; /* Take 2/3 of the available space */
+}
+
+.travel-plan {
+    flex: 1; /* Take 1/3 of the available space */
+}
+
+
+.travel-plan p {
+    margin-bottom: 10px;
+}
+
+.address-container {
+    display: flex;
+    align-items: center;
+}
+
+.address-container input[type="text"] {
+    flex: 1;
+    margin-right: 5px;
+}
+.input-group {
+    padding-right: 23px;
+    padding-left: 15px;
+    display: flex; /* 입력 필드를 가로로 나란히 배치하기 위해 Flexbox 레이아웃을 사용합니다. */
+}
+
+.input-group input {
+    flex: 1; /* 입력 필드가 동일한 너비를 갖도록 설정합니다. */
+    margin-right: 10px; /* 입력 필드 사이의 간격을 설정합니다. */
+}
+
+.input-group input:last-child {
+    margin-right: 0; /* 마지막 입력 필드의 오른쪽 간격을 제거합니다. */
 }
