@@ -62,7 +62,7 @@
                 <span class="board-title" th:text="${post.getTitle()}">판매 물품 제목</span>
                 <div class="additional-text">
 <!--                    <p th:text="${#dates.format(post.getRegisterDate(), 'yyyy-MM-dd')}">게시날짜</p>-->
-                    <span th:text="${post.ImageDTO.getUuid()}"></span>
+<!--                    <span th:text="${post.ImageDTO()}"></span>-->
                     <p>좋아요수 [[${post.getLikeCount()}]]</p>
                     <p>조회수 [[${post.getViews()}]]</p>
                 </div>

@@ -81,7 +81,7 @@ public class PostController {
                              @RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "10") int size) {
 
-        Page<PostDTO> post = postService.postTypeReadAll("Carrot", size, page);
+        Page<CarrotDTO> post = postService.carrotTypeReadAll(size, page);
         System.out.println("-----------------------");
         System.out.println(post.getContent());
         System.out.println("-----------------------");
@@ -96,8 +96,6 @@ public class PostController {
 
         model.addAttribute("posts", post);
         model.addAttribute("currentPage", page + 1);
-        model.addAttribute("totalPages", post);
-
     }
 
     @GetMapping("/joinMain")
