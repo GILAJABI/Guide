@@ -1,5 +1,6 @@
 package com.guide.ex.service;
 
+import com.guide.ex.domain.post.Join;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
@@ -18,6 +19,10 @@ public interface PostService {
     void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
     void postDetailRead(Long memberId, String postType);
-    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
+//    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
     List<PostDTO> postSelectAll(String searchValue, String postType);
+
+    Page<CarrotDTO> carrotTypeReadAll(int size, int page);
+    Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable);
+    Page<JoinDTO> joinTypeReadAll(String searchValue, String postType, Pageable pageable);
 }
