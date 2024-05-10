@@ -2,9 +2,11 @@ $(document).ready(function () {
     $('.star_rating .star').click(function () {
         $(this).addClass('on').prevAll('.star').addClass('on');
         $(this).nextAll('.star').removeClass('on');
+
+        var grade = $(this).attr('value'); // 클릭한 별점의 값
+        $('#grade').val(grade); // hidden input에 별점 값 설정
     });
 });
-
 // 첨부파일
 function handleImageUpload(event) {
     const selectedFile = event

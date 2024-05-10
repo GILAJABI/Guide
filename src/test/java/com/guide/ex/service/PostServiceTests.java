@@ -183,9 +183,6 @@ public class PostServiceTests {
         log.info("ReviewDTO: {}", reviewDTO);
         log.info("ImageDTO: {}", imageDTO);
 
-        postService.reviewModify(postDTO, reviewDTO, imageDTO);
-    }
-
     @Test
     public void testJoinModify() {      // 모집 게시판 수정
         PostDTO postDTO = PostDTO.builder()
@@ -197,24 +194,6 @@ public class PostServiceTests {
                 .content("수정된 내용")
                 .build();
 
-        JoinDTO joinDTO = JoinDTO.builder()
-                .postId(26L)
-                .expense(702000)
-                .numPeople(2)
-                .startTravelDate(LocalDateTime.now())
-                .endTravelDate(LocalDateTime.now().plusDays(10))
-                .build();
-
-        ImageDTO imageDTO = ImageDTO.builder()
-                .uuid("c://https://www.BixBox.com")
-                .ord(5)
-                .fileName("BixBox.html")
-                .build();
-
-        postService.joinModify(postDTO, joinDTO, imageDTO);
-    }
-
-// -------------------------------------------------------------------------
     @Test
     public void testSearchPostOne() {       // 게시글 상세 검색
 //        allPostSearch.searchOne(60L,"Review");
@@ -241,7 +220,6 @@ public class PostServiceTests {
         postPage.forEach(postDTO ->
                 log.info("postDTO: {}", postDTO));
     }
-//    -----------------------위의 까지 3개의 테스트 코드가 Service -> Repository---------------------------------
 
 
 

@@ -1,16 +1,20 @@
 package com.guide.ex.controller.post;
 
-import com.guide.ex.dto.post.PostDTO;
+import com.guide.ex.dto.post.CarrotDTO;
+import com.guide.ex.dto.post.JoinDTO;
+import com.guide.ex.dto.post.ReviewDTO;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @Log4j2
@@ -21,23 +25,48 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
-
     @GetMapping("/carrotWrite")
-    public void carrotWrite() {
+    public String carrotWtire(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/carrotWrite";
     }
-    @GetMapping("/joinWrite")
-    public void joinWrite() {
 
+    @PostMapping("/carrotWrite")
+    public String carrotWtireInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
+        postService.carrotRegister(carrotDTO, file, session);
+        return "redirect:/main";
+    }
+
+    @GetMapping("/joinWrite")
+    public String joinWrite(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/joinWrite";
+    }
+
+    @PostMapping("/joinWrite")
+    public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
+        postService.joinRegister(joinDTO, file, session);
+        return "redirect:/main";
     }
 
     @GetMapping("/reviewWrite")
-    public void reviewWrite() {
-
+    public String reviewWrite(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/reviewWrite";
     }
-//////////////////////////
+
+    @PostMapping("/reviewWrite")
+    public String reviewWriteInput(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
+        postService.reviewRegister(reviewDTO, file, session);
+        return "redirect:/main";
+    }  
+  
     @GetMapping("/carrotDetail")
     public void carrotDetail() {
 
@@ -64,11 +93,6 @@ public class PostController {
 
         return "post/carrotMain";
     }
-
-
-
-
-
 
     @GetMapping("/joinMain")
     public void joinMain() {

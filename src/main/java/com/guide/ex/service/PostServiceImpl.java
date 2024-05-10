@@ -6,19 +6,21 @@ import com.guide.ex.dto.post.*;
 import com.guide.ex.repository.member.MemberRepository;
 import com.guide.ex.repository.post.*;
 import com.guide.ex.repository.search.AllPostSearchImpl;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 
 @Service
@@ -26,6 +28,9 @@ import java.util.stream.Collectors;
 @Log4j2
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
+    @Value("${com.guide.upload.path}")
+    private String uploadPath;
 
     private final ModelMapper modelMapper;
     private final PostRepository postRepository;
@@ -254,4 +259,111 @@ public class PostServiceImpl implements PostService {
 
         log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
     }
+    @Override
+    public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
+
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+
+
+        Carrot carrot = modelMapper.map(carrotDTO, Carrot.class);
+        carrot.setMember(member);
+        carrotRepository.save(carrot);
+
+        ImageDTO imageDTO = new ImageDTO();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(carrot.getId());
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(carrot);
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+    }
+
+    @Override
+    public void joinRegister(JoinDTO joinDTO, MultipartFile file, HttpSession session) {
+
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+
+        Join join = modelMapper.map(joinDTO, Join.class);
+        join.setMember(member);
+        joinRepository.save(join);
+
+        ImageDTO imageDTO = new ImageDTO();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(join.getId());
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(join);
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+    }
+
+    @Override
+    public void reviewRegister(ReviewDTO reviewDTO, MultipartFile file, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+
+
+        Review review = modelMapper.map(reviewDTO, Review.class);
+        review.setMember(member);
+        reviewRepository.save(review); // Review 저장
+
+        ImageDTO imageDTO = new ImageDTO();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(review.getId());
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(review);
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+
+    }
+
 }
