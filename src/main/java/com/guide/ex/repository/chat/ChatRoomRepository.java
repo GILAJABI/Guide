@@ -8,4 +8,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //    String getCurrentTime();
 //
 //    void getTime();
+
 }
