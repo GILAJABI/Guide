@@ -1,12 +1,10 @@
 package com.guide.ex.controller.post;
 
-import com.guide.ex.domain.post.Carrot;
-import com.guide.ex.dto.post.*;
-import com.guide.ex.service.MemberService;
+import com.guide.ex.dto.post.CarrotDTO;
+import com.guide.ex.dto.post.JoinDTO;
+import com.guide.ex.dto.post.ReviewDTO;
 import com.guide.ex.service.PostService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
+
 @Controller
+@Log4j2
 @RequestMapping("/post")
 @RequiredArgsConstructor
 public class PostController {
@@ -26,79 +26,73 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/carrotWrite")
-    public void carrotWtire() {
-
+    public String carrotWtire(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/carrotWrite";
     }
 
     @PostMapping("/carrotWrite")
     public String carrotWtireInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
-
-        System.out.println("========================Connect controller==============================");
-        System.out.println(carrotDTO.getTitle());
-        System.out.println(carrotDTO.getPrice());
-        System.out.println(carrotDTO.getContent());
-        System.out.println(carrotDTO.getContent());
-        System.out.println(carrotDTO.getLocationX());
-        System.out.println(carrotDTO.getLocationY());
-        System.out.println("========================================================================");
-
         postService.carrotRegister(carrotDTO, file, session);
-
         return "redirect:/main";
     }
 
     @GetMapping("/joinWrite")
-    public void joinWrite() {
-
+    public String joinWrite(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/joinWrite";
     }
 
     @PostMapping("/joinWrite")
     public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
-
-        System.out.println("========================Connect joinWrite controller==============================");
-        System.out.println(joinDTO.getTitle());
-        System.out.println(joinDTO.getExpense());
-        System.out.println(joinDTO.getNumPeople());
-        System.out.println(joinDTO.getContent());
-        System.out.println(joinDTO.getLocationX());
-        System.out.println(joinDTO.getLocationY());
-        System.out.println("========================================================================");
         postService.joinRegister(joinDTO, file, session);
         return "redirect:/main";
     }
 
     @GetMapping("/reviewWrite")
-    public void reviewWrite() {
-
+    public String reviewWrite(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/reviewWrite";
     }
 
     @PostMapping("/reviewWrite")
     public String reviewWriteInput(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
-        System.out.println("========================Connect joinWrite controller==============================");
-        System.out.println(reviewDTO.getTitle());
-        System.out.println(reviewDTO.getExpense());
-        System.out.println(reviewDTO.getGrade());
-        System.out.println(reviewDTO.getContent());
-        System.out.println(reviewDTO.getLocationX());
-        System.out.println(reviewDTO.getLocationY());
-        System.out.println("========================================================================");
         postService.reviewRegister(reviewDTO, file, session);
-
         return "redirect:/main";
-    }
-
-    //////////////////////////`
+    }  
+  
     @GetMapping("/carrotDetail")
     public void carrotDetail() {
 
     }
 
-
     @GetMapping("/carrotMain")
-    public void carrotMain() {
+    public String carrotMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "10") int size) {
 
+        Page<PostDTO> post = postService.PostTypeReadAll("Carrot", size, page);
+        log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
+                post.getTotalElements(), post.getTotalPages(), post.getNumber());
+
+        if (!post.hasContent()) {
+            log.warn("No content available for page {}", page + 1);
+            model.addAttribute("message", "No posts available");
+            return "post/carrotMain";
+        }
+
+        model.addAttribute("posts", post);
+        model.addAttribute("currentPage", page + 1);
+        model.addAttribute("totalPages", post);
+
+        return "post/carrotMain";
     }
-
 
     @GetMapping("/joinMain")
     public void joinMain() {

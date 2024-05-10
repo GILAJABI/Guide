@@ -42,26 +42,43 @@ public class PostServiceImpl implements PostService {
     private final ImageRepository imageRepository;
 
     @Override
-    public PostDTO PostReadOne(Long postId, String postType) {
+    public void PostDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
         // 데이터베이스에서 Post 객체를 검색
         Post post = allPostSearch.searchOne(postId, postType);
         if (post == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
-        // Post 객체를 PostDTO로 변환
-        return modelMapper.map(post, PostDTO.class);
     }
-
     @Override
-    public Page<PostDTO> PostReadAll(String postType, int page, int size) {
+    public Page<PostDTO> PostTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
         if (!(postType.contains("Review") || postType.contains("Carrot") || postType.contains("Join"))) {
             throw new EntityNotFoundException("존재하지 않는 게시판 유형입니다: " + postType);
         }
 
-//        Page<Post> postPage = allPostSearch.searchPostPaging(postType, page, size);
-//        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-        return null;
+        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size, page);
+        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
     }
+
+    @Override
+    public List<PostDTO> PostSelectAll(String searchValue, String postType) {
+        if (searchValue == null || searchValue.trim().isEmpty()) {
+            throw new IllegalArgumentException("검색 값이 제공되지 않았습니다.");
+        }
+        if (postType == null || postType.trim().isEmpty()) {
+            throw new IllegalArgumentException("게시판 유형이 제공되지 않았습니다.");
+        }
+
+        List<String> validPostTypes = Arrays.asList("Review", "Carrot", "Join");
+        if (!validPostTypes.contains(postType)) {
+            throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
+        }
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue, postType);
+        // 엔티티를 DTO로 변환
+        return posts.stream()
+                .map(post -> modelMapper.map(post, PostDTO.class))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public void carrotRegister(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO) {
@@ -89,7 +106,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void reviewRegister(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO) {
-        Member member = memberRepository.findById(postDTO.getMemberId())
+        Member member =  memberRepository.findById(postDTO.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
         Post post = modelMapper.map(postDTO, Post.class);
         post.setMember(member);
@@ -111,7 +128,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void joinRegister(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO) {
-        Member member = memberRepository.findById(postDTO.getMemberId())
+        Member member =  memberRepository.findById(postDTO.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found with id : " + postDTO.getMemberId()));
         Post post = modelMapper.map(postDTO, Post.class);
         post.setMember(member);
@@ -242,14 +259,6 @@ public class PostServiceImpl implements PostService {
 
         log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
     }
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                       게시판 등록 수정본 + FILE UPLOAD
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @Override
     public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
 
@@ -356,12 +365,5 @@ public class PostServiceImpl implements PostService {
         }
 
     }
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                       게시판 등록 수정본 + FILE UPLOAD
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
