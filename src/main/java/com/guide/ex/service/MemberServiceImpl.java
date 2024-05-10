@@ -9,10 +9,15 @@ import com.guide.ex.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -22,10 +27,11 @@ import java.util.*;
 @Transactional
 public class MemberServiceImpl implements MemberService {
 
+    @Value("${com.guide.upload.path}")
+    private String uploadPath;
+
     private final ModelMapper modelMapper;
-
     private final MemberRepository memberRepository;
-
     private final MemberProfileRepository memberProfileRepository;
 
     // 회원 등록 작업(회원가입)
@@ -45,9 +51,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean login(String uid, String pwd) {
         Member member = memberRepository.findByUid(uid);
-        System.out.println("=================================");
-        System.out.println(member.isBan());
-        System.out.println("=================================");
+
         if (member != null && !member.isBan()) {
             String hashedPassword = hashPassword(pwd, member.getSalt());
             if (hashedPassword.equals(member.getPwd())) {
@@ -66,30 +70,44 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isIdAlreadyExists(String uid) {
         Member member = memberRepository.findByUid(uid);
-        if(member != null)
+        if (member != null)
             return true;
         return false;
     }
 
     @Override
-    public void fileUpload(MemberProfileDTO memberProfileDTO) {
-        Optional<Member> optionalMember = memberRepository.findById(memberProfileDTO.getMemberId());
-        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    public void fileUpload(MemberProfileDTO dto, MultipartFile file) {
 
-        MemberProfile memberProfile = MemberProfile.builder()
-                .uuid(memberProfileDTO.getUuid())
-                .fileName(memberProfileDTO.getFileName())
-                .content(memberProfileDTO.getContent())
-                .travelType(memberProfileDTO.getTravelType())
-                .member(member)
-                .build();
+        if (file.isEmpty()) {
+            throw new RuntimeException("업로드된 파일이 비어 있습니다.");
+        }
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
 
-        memberProfileRepository.save(memberProfile);
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            dto.setUuid(uuid);
+            dto.setFileName(originalName);
+
+            MemberProfile memberProfile = modelMapper.map(dto, MemberProfile.class);
+
+            Optional<Member> result = memberRepository.findById(dto.getMemberId());
+            Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+
+            memberProfile.setMember(member);
+            memberProfileRepository.save(memberProfile);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
     }
 
     private String generateSalt() {
         return UUID.randomUUID().toString();
     }
+
     private String hashPassword(String password, String salt) {
         String saltedPassword = password + salt;
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
@@ -146,26 +164,6 @@ public class MemberServiceImpl implements MemberService {
         return memberDTOList;
     }
 
-// 프로필 수정 작업
-//    @Override
-//    public void profileModify(MemberDTO memberDTO, MemberProfileDTO memberProfileDTO) {
-//        // MemberProfile 엔티티 조회 및 변경
-//        MemberProfile memberProfile = memberProfileRepository.findById(memberProfileDTO.getMemberProfileId())
-//                .orElseThrow(() -> new RuntimeException("MemberProfile not found"));
-//        memberProfile.change(
-//                memberProfileDTO.getUuid(),
-//                memberProfileDTO.getFileName(),
-//                memberProfileDTO.getContent(),
-//                memberProfileDTO.getTravelType()
-//        );
-//        memberProfileRepository.save(memberProfile);
-        // Member 엔티티 조회 및 변경
-//        Member member = memberRepository.findById(memberDTO.getMemberId())
-//                .orElseThrow(() -> new RuntimeException("Member not found"));
-//        member.change(memberDTO.getName());
-//        memberRepository.save(member);
-//    }
-
     @Override
     public void profileModify(MemberProfileDTO memberProfileDTO) {
         // MemberProfile 엔티티 조회 및 변경
@@ -184,7 +182,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean setProfileSession(Long member_id) {
         MemberDTO member = memberReadOne(member_id);
-        if (member.getProfileInfo() != null){
+        if (member.getProfileInfo() != null) {
             return true;
         }
         return false;
@@ -196,16 +194,5 @@ public class MemberServiceImpl implements MemberService {
 //        memberRepository.deleteById(memberId);
 //    }
 
-//
-//    //아래 함수는 DTO로 ModelMapper를 활용해 수정
-//    @Override
-//    public MemberProfile memberInfo(Long member_id) {
-//        Optional<Member> optionalMember = memberRepository.findById(member_id);
-//        Member member = optionalMember.orElseThrow(() -> new IllegalArgumentException("Member not found"));
-//
-//        Optional<MemberProfile> optionalMemberProfile = memberProfileRepository.findByMember(member);
-//        MemberProfile memberProfile = optionalMemberProfile.orElseThrow(() -> new IllegalArgumentException("Member not found"));
-//        return memberProfile;
-//    }
 
 }
