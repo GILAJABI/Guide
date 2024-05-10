@@ -290,25 +290,28 @@ div#chat {
     flex-direction: column;
 }
 
-#chat_list > div {
-    display: inline-flex;
-    justify-content: flex-end;
-}
-
-#chat_list > div.you {
-    justify-content: flex-start;
-}
-
-#chat_list span {
+.my_msg {
     padding: 8px 14px;
-    background-color: #88D498;
+    background-color: #ff6392;
     border-radius: 14px;
-    display: inline-block;
+    color: #fafafa;
+    /*display: inline-block;*/
     margin-bottom: 5px;
     font-size: 15px;
     font-weight: 500;
+    align-self: flex-end;
+}
 
-
+.other_msg {
+    padding: 8px 14px;
+    background-color: #F6F6F6;
+    border-radius: 14px;
+    border: 1px solid #363636;
+    /*display: inline-block;*/
+    margin-bottom: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    align-self: flex-start;
 }
 
 @font-face {

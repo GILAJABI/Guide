@@ -25,7 +25,9 @@
 </header>
 
 <form id="chatForm">
-<div id="chat_list"></div>
+<div id="chat_list">
+<!--    <div id="chat_msg"></div>-->
+</div>
 <div class="chat_input">
     <label for="chat_content"></label><input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
     <button type="submit" id="chat_btn">
@@ -35,5 +37,13 @@
 </form>
 
 </body>
+<script>
+    let session_member_id= [[${session_member_id}]]
+    let session_member_name= `[[${member_name}]]`
+
+    console.log("===================coookie===================")
+    console.log(session_member_id)
+    console.log(session_member_name)
+</script>
 <script th:src="@{/js/chat/chat.js}"></script>
 </html>
