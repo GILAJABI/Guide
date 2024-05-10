@@ -1,6 +1,12 @@
+*{
+    color: #363636;
+}
+
 .container {
     max-width: 1000px;
     margin: 86px auto;
+    color: #363636;
+    background-color: #fafafa;
 }
 
 header {
@@ -18,6 +24,7 @@ header {
     font-family: 'BMJUA';
     font-size: 21px;
     text-decoration: none;
+    color: #363636;
 }
 
 #selectMenu2 {
@@ -30,6 +37,7 @@ header {
     display: flex;
     justify-content: space-between;
     width: 400px;
+    color: #363636;
 }
 
 #sortMenu > a {
@@ -72,7 +80,7 @@ form {
     width: 176px;
 }
 
-#serchInp {
+#searchInp {
     width: 140px;
     height: 40px;
     background-color: #f0f0f0;
@@ -104,77 +112,74 @@ form {
 }
 
 section {
-    width: 1000px;
+    position: relative;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
 }
 
-.carrotBox {
-    width: 300px;
-    height: 310px;
-    border: none;
-    box-shadow: 10px 10px 10px rgb(227, 227, 227);
-    border-radius: 10px;
-    margin: 10px;
+.box {
+    position: relative;
+    display: inline-block;
+    width: 290px;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 20px;
+    box-shadow: 4px 4px 10px lightgray;
 }
 
-.image-section {
-    width: 100%;
-    height: 60%;
-}
-
-.image-section img {
+.box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 }
 
-.text-section {
-    height: 40%;
-    align-items: flex-start;
-    justify-content: center;
-    text-align: left;
-    padding: 15px 15px;
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    border-radius: 20px;
+}
+
+.title,
+.text {
+    position: absolute;
+    left: 10px;
+    color: #fafafa;
+    font-size: 20px;
+}
+
+.title {
+    font-family: 'Pretendard-Bold';
+    font-size: 21px;
+    bottom: 30px;
+    margin: 15px;
+}
+
+.text {
+    font-family: 'Pretendard-Regular';
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
     color: white;
+    font-size: 20px;
+    margin-left: 15px;
 }
 
-.text-section span {
-    font-family: 'BMJUA';
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.text img {
+    height: 20px;
+    width: auto;
+    vertical-align: middle;
+    margin-top: -3px;
 }
 
-.text-section p {
-    margin-bottom: 5px;
-    font-family: 'BMJUA';
-    font-size: 18px;
-    margin-top: 5px;
-}
-
-.additional-text {
-    justify-content: end;
-    display: flex;
-    align-items: center;
-    color: grey;
-    font-family: 'Pretendard-Regular';
-    font-size: 14px;
-    margin-left: 8px;
-    margin-top: 30px;
-}
-
-.additional-text > p {
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    color: grey;
-    font-family: 'Pretendard-Regular';
-    font-size: 14px;
-    margin-left: 5px;
+.space {
+    margin-right: 10px;
+    color: #fafafa;
 }
 
 @font-face {

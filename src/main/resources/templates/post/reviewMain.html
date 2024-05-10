@@ -1,108 +1,72 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
-<style>
-    @font-face {
-            font-family: 'Pretendard-Regular';
-            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
-        }
-    .container {
-        display: flex;
-        width: 80%;
-        margin: 30px auto;
-        border-radius: 40px;
-        box-shadow: 5px 5px 8px rgb(228, 228, 228);
-        overflow: hidden; /* .photo의 이미지가 넘치지 않도록 함 */
-    }
-
-    .photo {
-        flex: 0 0 270px; /* 너비를 고정 */
-        height: 243px; /* 높이를 고정 */
-        border-top-left-radius: 40px;
-        border-bottom-left-radius: 40px;
-        overflow: hidden; /* 이미지가 넘치는 것을 방지 */
-    }
-
-    .photo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* 이미지가 컨테이너를 덮도록 설정, 비율은 유지하면서 */
-    }
-
-    .description {
-        flex-grow: 1;
-        display: flex; /* 내부 요소들을 행으로 배치 */
-        flex-direction: column; /* 내부 요소들을 세로로 배치 */
-        padding: 20px;
-        background-color: #f0f0f0;
-        border-top-right-radius: 40px;
-        border-bottom-right-radius: 40px;
-        overflow-y: auto; /* 내용이 길어지면 스크롤 */
-    }
-
-    h4 {
-        color: #8D8D8D;
-        margin: 0;
-        margin-bottom: 10px; /* h4 아래 여백 추가 */
-    }
-
-    .rating {
-        width: 1em; /* h4 요소의 폰트 크기와 동일하게 */
-        height: 1em;
-        margin-right: 10px; /* rating 이미지 오른쪽 여백 추가 */
-        align-self: flex-start; /* rating 이미지를 세로 정렬 */
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>후기-메인</title>
+    <link rel="stylesheet" th:href="@{/css/post/reviewMain.css}">
 </head>
+
 <body>
-
+<div th:include="/include/header.html"></div>
 <div class="container">
-    <div class="photo">
-        <img th:src="@{/image/dog.jpeg}" alt="강아지 사진">
-    </div>
-    <div class="description">
-        <div style="display: flex; align-items: center;">
-            <img class="rating" th:src="@{/image/star_3.png}" alt="별점">
-            <h4>별점이랑 머 그런거..</h4>
-            <h4>ddd</h4>
+    <header>
+        <div id="selectMenu">
+            <a th:href="@{/post/joinMain}">모집</a>
+            <a th:href="@{/post/reviewMain}" style="color:#FF6392">후기</a>
+            <a th:href="@{/post/carrotMain}">상품</a>
         </div>
-        <h2>여기에 설명을 작성하세요.</h2>
-        <h3>널 우연히 마주친 척할래 못 본 척 지나갈래 You’re so fine Gotta gotta get to know ya 나와 나와 걸어가 줘 지금 돌아서면 I need ya, need ya, need ya To look at me back Hey 다 들켰었나</h3>
-    </div>
-</div>
-
-<div class="container">
-    <div class="photo">
-        <img th:src="@{/image/cat.jpeg}" alt="강아지 사진">
-    </div>
-    <div class="description">
-        <div style="display: flex; align-items: center;">
-            <img class="rating" th:src="@{/image/star_3.png}" alt="별점">
-            <h4>별점이랑 머 그런거..</h4>
+        <div id="selectMenu2">
+            <div id="sortMenu">
+                <a href="#" class="filter-link">최신순</a>
+                <a href="#" class="filter-link">인기순</a>
+                <a href="#" class="filter-link">많이 본 순</a>
+                <a href="#" class="filter-link">댓글순</a>
+            </div>
+            <div id="use">
+                <form>
+                    <input type="text" name="query" id="searchInp">
+                    <button type="submit" id="searchBtn">
+                        <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
+                    </button>
+                </form>
+                <button type="submit" id="postBtn"> + 올리기</button>
+            </div>
         </div>
-        <h2>여기에 설명을 작성하세요.</h2>
-        <h3>널 우연히 마주친 척할래 못 본 척 지나갈래 You’re so fine Gotta gotta get to know ya 나와 나와 걸어가 줘 지금 돌아서면 I need ya, need ya, need ya To look at me back Hey 다 들켰었나</h3>
-    </div>
-</div>
-
-<div class="container">
-    <div class="photo">
-        <img th:src="@{/image/art_16378855673824_4f85c7.jpg}" alt="강아지 사진">
-    </div>
-    <div class="description">
-        <div style="display: flex; align-items: center;">
-            <img class="rating" th:src="@{/image/star_3.png}" alt="별점">
-            <h4>별점이랑 머 그런거..</h4>
+    </header>
+    <section>
+        <div class="reviewBox">
+            <div class="photo">
+                <img th:src="@{/image/dog.jpeg}" alt="후기 사진">
+            </div>
+            <div class="description">
+                <div style="display: flex; align-items: center; background-color: #f0f0f0">
+                    <img class="rating" th:src="@{/image/star_3.png}" alt="별점">
+                    <span id="grade"></span>
+                </div>
+                <div class="content">
+                    <p id="title">제목</p>
+                    <p id="content">내용</p>
+                </div>
+            </div>
         </div>
-        <h2>여기에 설명을 작성하세요.</h2>
-        <h3>널 우연히 마주친 척할래 못 본 척 지나갈래 You’re so fine Gotta gotta get to know ya 나와 나와 걸어가 줘 지금 돌아서면 I need ya, need ya, need ya To look at me back Hey 다 들켰었나</h3>
-    </div>
-</div>
 
+        <div class="reviewBox">
+            <div class="photo">
+                <img th:src="@{/image/dog.jpeg}" alt="후기 사진">
+            </div>
+            <div class="description">
+                <div style="display: flex; align-items: center; background-color: #f0f0f0">
+                    <img class="rating" th:src="@{/image/star_3.png}" alt="별점">
+                    <h4>별점</h4>
+                </div>
+                <h2>제목</h2>
+                <h3>내용</h3>
+            </div>
+        </div>
+    </section>
+</div>
+</div>
 </body>
 </html>
