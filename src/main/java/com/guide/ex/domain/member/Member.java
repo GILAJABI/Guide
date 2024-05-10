@@ -73,7 +73,8 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessages;
-    private List<Comment> comments;
+
+//    private List<Comment> comments;
 
     // 새로운 회원이 추가될 때 rating 필드의 기본값 설정
     @PrePersist
