@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -250,4 +252,11 @@ public class PostInsertTests {
 //                .build();
 //
 //    }
+
+    @Test
+    @Transactional
+    public void testSelectCarrot() {
+        List<Carrot> carrotList = testCarrot.findAllCarrotsWithPostDetails();
+        log.info(carrotList);
+    }
 }
