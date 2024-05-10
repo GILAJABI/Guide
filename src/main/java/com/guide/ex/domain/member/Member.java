@@ -1,7 +1,9 @@
 package com.guide.ex.domain.member;
 
 import com.guide.ex.domain.BaseEntity;
-    import com.guide.ex.domain.post.Post;
+import com.guide.ex.domain.chat.ChatMessage;
+import com.guide.ex.domain.chat.ChatRoom;
+import com.guide.ex.domain.post.Post;
 import com.guide.ex.util.YearAttributeConverter;
 import lombok.*;
 
@@ -64,6 +66,12 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRoom> chatRooms;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatMessage> chatMessages;
 
     // 새로운 회원이 추가될 때 rating 필드의 기본값 설정
     @PrePersist

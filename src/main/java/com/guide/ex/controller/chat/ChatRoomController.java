@@ -1,29 +1,24 @@
 package com.guide.ex.controller.chat;
 
-import com.guide.ex.domain.chat.ChatRoom;
-import com.guide.ex.repository.chat.ChatRoomRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import com.guide.ex.dto.chat.ChatRoomDTO;
+import com.guide.ex.service.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
 public class ChatRoomController {
 
-    private final ChatRoomRepository chatRoomRepository;
+    @Autowired
+    private ChatService chatService;
 
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    public List<ChatRoom> getAllRooms() {
-        return chatRoomRepository.findAll();
-    }
+    @PostMapping("/chat/create")
+    public String createChatRoom(@RequestBody ChatRoomDTO chatRoomDTO) {
+        // 채팅방 생성 로직 호출
+        Long createdRoomId = chatService.createChatRoom(chatRoomDTO);
 
-    // 채팅방 생성
-    @PostMapping("/room")
-    public ChatRoom createRoom(@RequestParam Long roomNumber) {
-        return null;
-//                chatRoomRepository.save(new ChatRoom(null, null, roomNumber));
+        // 생성된 채팅방 페이지로 리다이렉트
+        return "redirect:/chat/chatRoom.html?roomId=" + createdRoomId;
     }
 }
