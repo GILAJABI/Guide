@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,7 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDTO {
+    private Long commentId;
 
+    @NotEmpty
     private String content;
 
     @CreatedDate
@@ -23,5 +27,9 @@ public class CommentDTO {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
+    @NotNull
+    private Long postId;
 
+    @NotNull
+    private Long memberId;
 }
