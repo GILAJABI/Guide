@@ -1,0 +1,192 @@
+.container {
+    max-width: 1000px;
+    margin: 86px auto;
+}
+
+header {
+    max-width: 1000px;
+}
+
+#selectMenu {
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    margin-left: 20px;
+}
+
+#selectMenu > a {
+    font-family: 'BMJUA';
+    font-size: 21px;
+    text-decoration: none;
+}
+
+#selectMenu2 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
+}
+
+#sortMenu {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+}
+
+#sortMenu > a {
+    font-family: 'BMJUA';
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.filter-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.1s ease;
+    height: 40px;
+    padding: 0 20px;
+}
+
+.filter-link:hover, .filter-link:focus, .filter-link:active {
+    background-color: #FF6392;
+    color: #fafafa;
+}
+
+.filter-link.active {
+    background-color: #FF6392;
+    color: #fafafa;
+}
+
+#use {
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    width: 176px;
+}
+
+#serchInp {
+    width: 140px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#searchBtn {
+    width: 36px;
+    height: 40px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+#postBtn {
+    width: 140px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #FF6392;
+    color: #fafafa;
+    font-family: 'BMJUA';
+    font-size: 20px;
+}
+
+section {
+    width: 1000px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.carrotBox {
+    width: 300px;
+    height: 310px;
+    border: none;
+    box-shadow: 10px 10px 10px rgb(227, 227, 227);
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.image-section {
+    width: 100%;
+    height: 60%;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.text-section {
+    height: 40%;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    padding: 15px 15px;
+    color: white;
+}
+
+.text-section span {
+    font-family: 'BMJUA';
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.text-section p {
+    margin-bottom: 5px;
+    font-family: 'BMJUA';
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.additional-text {
+    justify-content: end;
+    display: flex;
+    align-items: center;
+    color: grey;
+    font-family: 'Pretendard-Regular';
+    font-size: 14px;
+    margin-left: 8px;
+    margin-top: 30px;
+}
+
+.additional-text > p {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    color: grey;
+    font-family: 'Pretendard-Regular';
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
