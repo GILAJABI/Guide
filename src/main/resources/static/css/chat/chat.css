@@ -85,10 +85,9 @@
     display: flex; /* 플렉스박스 적용 */
     justify-content: space-between; /* 자식 요소들 사이의 공간을 최대로 */
     align-items: flex-start; /* 자식 요소들을 상단에 정렬 */
-    background-color: white;
     padding: 30px;
     border: none;
-    width: 950px;
+    width: 280px;
     height: 538px;
     border-radius: 20px;
     position: fixed;
@@ -144,7 +143,7 @@ div#name {
     margin-top: 20px;
 }
 
-#modify {
+#chatImg {
     display: flex;
     justify-content: center;
     align-items: center;
