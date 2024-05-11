@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -273,15 +274,14 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    @Override
-    public Page<PostDTO> postTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
-        if (!(postType.contains("Review") || postType.contains("Carrot") || postType.contains("Join"))) {
-            throw new EntityNotFoundException("존재하지 않는 게시판 유형입니다: " + postType);
-        }
-
-        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size, page);
-        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-    }
+//    @Override
+//    public Page<CarrotDTO> postTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
+//        Page<Carrot> postPage = allPostSearch.searchPostPaging(size, page);
+//        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
+//
+//        return  null;
+//
+//    }
 
     @Override
     public List<PostDTO> postSelectAll(String searchValue, String postType) {
@@ -301,6 +301,22 @@ public class PostServiceImpl implements PostService {
         return posts.stream()
                 .map(post -> modelMapper.map(post, PostDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<CarrotDTO> carrotTypeReadAll(int size, int page) {
+        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page);
+        return postPage.map(post -> modelMapper.map(post, CarrotDTO.class));
+    }
+
+    @Override
+    public Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public Page<JoinDTO> joinTypeReadAll(String searchValue, String postType, Pageable pageable) {
+        return null;
     }
 
 

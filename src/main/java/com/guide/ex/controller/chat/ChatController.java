@@ -1,7 +1,5 @@
 package com.guide.ex.controller.chat;
 
-import com.guide.ex.domain.chat.ChatMessage;
-import com.guide.ex.domain.chat.ChatRoom;
 import com.guide.ex.dto.chat.ChatMessageDTO;
 import com.guide.ex.repository.chat.ChatMessageRepository;
 import com.guide.ex.repository.chat.ChatRoomRepository;

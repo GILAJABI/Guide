@@ -76,26 +76,36 @@ public class PostController {
 
     }
 
-    @GetMapping("/carrotMain")
-    public String carrotMain(Model model,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "10") int size) {
+    @GetMapping("/reviewDetail")
+    public void reviewDetail() {
 
-        Page<PostDTO> post = postService.postTypeReadAll("Carrot", size, page);
+    }
+
+    @GetMapping("/joinDetail")
+    public void joinDetail(){
+
+    }
+
+    @GetMapping("/carrotMain")
+    public void carrotMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+
+        Page<CarrotDTO> post = postService.carrotTypeReadAll(size, page);
+        System.out.println("-----------------------");
+        System.out.println(post.getContent());
+        System.out.println("-----------------------");
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
                 post.getTotalElements(), post.getTotalPages(), post.getNumber());
 
-        if (!post.hasContent()) {
-            log.warn("No content available for page {}", page + 1);
-            model.addAttribute("message", "No posts available");
-            return "post/carrotMain";
-        }
+//        if (!post.hasContent()) {
+//            log.warn("No content available for page {}", page + 1);
+//            model.addAttribute("message", "No posts available");
+//            return "post/carrotMain";
+//        }
 
         model.addAttribute("posts", post);
         model.addAttribute("currentPage", page + 1);
-        model.addAttribute("totalPages", post);
-
-        return "post/carrotMain";
     }
 
     @GetMapping("/joinMain")

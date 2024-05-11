@@ -1,5 +1,6 @@
 package com.guide.ex.repository.search;
 
+import com.guide.ex.domain.post.Carrot;
 import com.guide.ex.domain.post.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,8 @@ public interface AllPostSearch {
     Page<Post> searchPostPaging(String postType,int size, int page);
 
     List<Post> searchPostContaining(String searchValue, String postType);
+
+    Page<Carrot> searchCarrotPaging(int size, int page);
 
     Post searchOne(Long postId, String postType);
     void updateViews(Long postId);

@@ -36,7 +36,7 @@ public class PostServiceTests {
     }
     @Test
     public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
-        Page<PostDTO> postPage = postService.postTypeReadAll("Carrot", 6, 5);
+        Page<CarrotDTO> postPage = postService.carrotTypeReadAll(6, 5);
         log.info("postPage: {}", postPage);
         log.info("postPage.getTotalElements(): {}", postPage.getTotalElements());
         log.info("postPage.getTotalPages(): {}", postPage.getTotalPages());

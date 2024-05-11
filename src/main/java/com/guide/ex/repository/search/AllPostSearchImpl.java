@@ -1,7 +1,7 @@
 package com.guide.ex.repository.search;
 
-import com.guide.ex.domain.post.Post;
-import com.guide.ex.domain.post.QPost;
+import com.guide.ex.domain.member.QMember;
+import com.guide.ex.domain.post.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -63,6 +63,30 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         List<Post> posts = query.fetch();
 
         return new PageImpl<>(posts, pageable, total);
+    }
+
+    @Override
+    public Page<Carrot> searchCarrotPaging(int size, int page) {    // 당근 게시판 모든 게시글 검색
+        QCarrot carrot = QCarrot.carrot; // QCarrot 인스턴스 생성
+        QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
+        QMember member = QMember.member; // Member의 QueryDSL 메타모델
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        JPAQuery<Carrot> query = new JPAQuery<>(entityManager);
+        query.from(carrot)
+                .join(carrot.member, member).fetchJoin() // Member와 페치 조인
+                .leftJoin(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
+                .where(carrot.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
+                .where(carrot.postType.eq("Carrot")); // Carrot 타입만 검색
+
+        long total = query.fetchCount(); // 전체 아이템 수 가져오기
+
+        List<Carrot> carrots = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch(); // 페이지 정보 적용하여 데이터 가져오기
+
+        return new PageImpl<>(carrots, pageable, total);
     }
 
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
