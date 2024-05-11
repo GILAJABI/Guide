@@ -89,7 +89,7 @@ public class PostController {
     @GetMapping("/carrotMain")
     public void carrotMain(Model model,
                              @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
+                             @RequestParam(defaultValue = "12") int size) {
 
         Page<CarrotDTO> post = postService.carrotTypeReadAll(size, page);
         System.out.println("-----------------------");
