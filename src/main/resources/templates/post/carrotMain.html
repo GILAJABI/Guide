@@ -17,6 +17,9 @@
         .carrotBox {
             margin-bottom: 20px;
         }
+        #dateCSS {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -60,14 +63,34 @@
             <div class="text-section">
                 <span class="board-title" th:text="${post.title}">판매 물품 제목</span>
                 <div class="additional-text">
+                    <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
                     <p th:text="${post.likeCount} + ' likes'">좋아요수</p>
                     <p th:text="${post.views} + ' views'">조회수</p>
                 </div>
             </div>
         </div>
     </section>
-    <footer>
+    <footer class="float-end">
+        <ul class="pagination flex-wrap">
+
+            <li class="page-item" th:if="${startPage}">
+                <a class="page-link" th:data-num = "${currentPage - 1}">Previous</a>
+            </li>
+
+            <th:block th:each="i: ${#numbers.sequence(startPage, endPage)}">
+                <li th:class="${page == i}?'page-item active':'page-item'">
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+
+            <li class="page-item" th:if="${#currentPage}">
+                <a class="page-link" th:data-num="${currentPage + 1}">Next</a>
+            </li>
+
+
+        </ul>
         <!-- Footer could also include pagination if necessary -->
+
     </footer>
 </div>
 </body>

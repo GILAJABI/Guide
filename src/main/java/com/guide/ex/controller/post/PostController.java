@@ -89,7 +89,7 @@ public class PostController {
     @GetMapping("/carrotMain")
     public void carrotMain(Model model,
                              @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "12") int size) {
+                             @RequestParam(defaultValue = "6") int size) {
 
         Page<CarrotDTO> post = postService.carrotTypeReadAll(size, page);
         System.out.println("-----------------------");
@@ -104,6 +104,9 @@ public class PostController {
 //            return "post/carrotMain";
 //        }
 
+
+        model.addAttribute("startPage", page);
+        model.addAttribute("endPage", post.getTotalPages());
         model.addAttribute("posts", post);
         model.addAttribute("currentPage", page + 1);
     }
