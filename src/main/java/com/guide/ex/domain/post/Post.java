@@ -52,8 +52,8 @@ public class Post {
     @Builder.Default
     private int views = 0;
 
-    @Builder.Default
-    private int commentCount = 0;
+//    @Builder.Default
+//    private int commentCount = 0;
 
     private String postType;
 
