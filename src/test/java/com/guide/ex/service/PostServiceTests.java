@@ -1,5 +1,6 @@
 package com.guide.ex.service;
 
+import com.guide.ex.domain.post.Carrot;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.post.*;
 import com.guide.ex.repository.search.AllPostSearch;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.swagger2.mappers.ModelMapper;
 
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class PostServiceTests {
     @Qualifier("allPostSearchImpl")
     @Autowired
     private AllPostSearch allPostSearch;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Test
     public void testSearchPostOne() {       // 게시글 상세 검색
@@ -58,7 +63,7 @@ public class PostServiceTests {
 
     @Test
     public void testSearchPostAll() {
-        Page<Post> postPage = allPostSearch.searchPostPaging("Carrot", 4,6);
+        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(6, 1);
 
         System.out.println("페이징 결과:");
         System.out.println("전체 항목 수: " + postPage.getTotalElements());
@@ -66,9 +71,14 @@ public class PostServiceTests {
         System.out.println("전체 페이지 수: " + postPage.getTotalPages());
         System.out.println("현재 페이지 번호: " + postPage.getNumber());
         System.out.println("페이징된 결과: ");
-        postPage.getContent().forEach(post -> {
-            System.out.println("POST ID: " + post.getPostId());
-            // 필요한 다른 속성들도 출력
+
+        postPage.getContent().forEach(carrot -> {
+            System.out.println("POST ID: " + carrot.getPostId());
+            carrot.getPostImages().forEach(image -> {
+                System.out.println("Image ID: " + image.getImageId());
+                System.out.println("Image UUID: " + image.getUuid());
+                System.out.println("Image File Name: " + image.getFileName());
+            });
         });
     }
 
