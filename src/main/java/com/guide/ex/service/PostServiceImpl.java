@@ -306,8 +306,31 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<CarrotDTO> carrotTypeReadAll(int size, int page) {
         Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page);
-        return postPage.map(post -> modelMapper.map(post, CarrotDTO.class));
+
+        return postPage.map(carrot -> {
+            CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
+            List<ImageDTO> imageDTOs = carrot.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + carrot.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + carrot.getId() + ": " + imageDTOs.size());
+            }
+
+            carrotDTO.setImageDTOs(imageDTOs);
+            return carrotDTO;
+        });
     }
+
+
 
     @Override
     public Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable) {

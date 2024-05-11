@@ -7,8 +7,18 @@
     <link rel="stylesheet" th:href="@{/css/post/carrotMain.css}">
     <script th:src="@{/js/post/carrotMain.js}"></script>
     <style>
-        .board-title{
+        .board-title {
             color: black;
+        }
+        .image-section img {
+            width: 100%;
+            height: auto;
+        }
+        .carrotBox {
+            margin-bottom: 20px;
+        }
+        #dateCSS {
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -41,37 +51,41 @@
     </header>
     <section>
         <div th:each="post : ${posts}" class="carrotBox">
-<!--            <span th:text="${post.getContent()}"></span>-->
-
-
-
             <div class="image-section">
-                <!-- Null-safe image source -->
-                <img th:src="${post.getImageDTO() != null ? '/images/' + post.imageDTO.getUuid() : '/images/default.jpg'}" alt="사용자가 게시한 이미지" />
+                <!-- Display the first image if available, otherwise show default image -->
+                <img th:if="${post.imageDTOs != null && !post.imageDTOs.isEmpty()}"
+                     th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"
+                     alt="사용자가 게시한 이미지"
+                     th:onerror="@{/images/default.jpg}">
+                <img th:if="${post.imageDTOs == null || post.imageDTOs.isEmpty()}"
+                     src="@{/images/default.jpg}" alt="Default Image">
             </div>
-<!--            <div class="text-section">-->
-                <span th:text="${post.getTitle()}">판매 물품 설명</span>
-                <div class="additional-text">
-<!--                    <p th:text="${#dates.format(post.getRegisterDate(), 'yyyy-MM-dd')}">게시날짜</p>-->
-<!--                    <p  th:text="${post.getContent()}">판매 물품 설명</p>-->
-<!--                    <p th:text="${post.getLikeCount()} + ' likes'">좋아요수</p>-->
-<!--                    <p th:text="${post.getViews()} + ' views'">조회수</p>-->
-                </div>
-<!--            </div>-->
-
             <div class="text-section">
-                <span class="board-title" th:text="${post.getContent()}">판매 물품 제목</span>
+                <span class="board-title" th:text="${post.title}">판매 물품 제목</span>
                 <div class="additional-text">
-<!--                    <p th:text="${#dates.format(post.getRegisterDate(), 'yyyy-MM-dd')}">게시날짜</p>-->
-<!--                    <span th:text="${post.ImageDTO()}"></span>-->
-                    <p>좋아요수 [[${post.getLikeCount()}]]</p>
-                    <p>조회수 [[${post.getViews()}]]</p>
+                    <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
+                    <p th:text="${post.likeCount} + ' likes'">좋아요수</p>
+                    <p th:text="${post.views} + ' views'">조회수</p>
                 </div>
             </div>
         </div>
     </section>
-    <footer>
-        <!-- Footer could also include pagination if necessary -->
+    <footer class="float-end">
+        <ul class="pagination flex-wrap">
+            <li class="page-item" th:if="${posts.hasPrevious()}">
+                <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number - 1}, size=${posts.size})}">Previous</a>
+            </li>
+
+            <th:block th:each="i : ${#numbers.sequence(1, posts.totalPages)}">
+                <li th:class="${posts.number + 1 == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{/post/carrotMain(page=${i - 1}, size=${posts.size})}" th:text="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+
+            <li class="page-item" th:if="${posts.hasNext()}">
+                <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number + 2}, size=${posts.size})}">Next</a>
+            </li>
+        </ul>
     </footer>
 </div>
 </body>

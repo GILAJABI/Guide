@@ -104,6 +104,9 @@ public class PostController {
 //            return "post/carrotMain";
 //        }
 
+
+        model.addAttribute("startPage", page);
+        model.addAttribute("endPage", post.getTotalPages());
         model.addAttribute("posts", post);
         model.addAttribute("currentPage", page + 1);
     }
