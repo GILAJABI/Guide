@@ -41,7 +41,7 @@ public class PostSearchTests {
                 Join join = (Join) post;
                 log.info("Join 엔티티의 정보:");
                 log.info("post_id: " + join.getPostId());
-                log.info("comment_count: " + join.getCommentCount());
+//                log.info("comment_count: " + join.getCommentCount());
                 log.info("content: " + join.getContent());
                 // 나머지 필드들도 필요한 대로 출력
                 log.info("numPeople: " + join.getNumPeople());
