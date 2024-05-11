@@ -72,25 +72,20 @@
     </section>
     <footer class="float-end">
         <ul class="pagination flex-wrap">
-
-            <li class="page-item" th:if="${startPage}">
-                <a class="page-link" th:data-num = "${currentPage - 1}">Previous</a>
+            <li class="page-item" th:if="${posts.hasPrevious()}">
+                <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number - 1}, size=${posts.size})}">Previous</a>
             </li>
 
-            <th:block th:each="i: ${#numbers.sequence(startPage, endPage)}">
-                <li th:class="${page == i}?'page-item active':'page-item'">
-                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+            <th:block th:each="i : ${#numbers.sequence(1, posts.totalPages)}">
+                <li th:class="${posts.number + 1 == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{/post/carrotMain(page=${i - 1}, size=${posts.size})}" th:text="${i}">[[${i}]]</a>
                 </li>
             </th:block>
 
-            <li class="page-item" th:if="${#currentPage}">
-                <a class="page-link" th:data-num="${currentPage + 1}">Next</a>
+            <li class="page-item" th:if="${posts.hasNext()}">
+                <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number + 2}, size=${posts.size})}">Next</a>
             </li>
-
-
         </ul>
-        <!-- Footer could also include pagination if necessary -->
-
     </footer>
 </div>
 </body>
