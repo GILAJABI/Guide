@@ -17,8 +17,8 @@ public class CommentServiceTests {
     public void testRegister() {
         CommentDTO commentDTO = CommentDTO.builder()
                 .commentContent("CommentDTO Text")
-                .postId(1L)
-                .memberId(2L)
+                .postId(4L)
+                .memberId(3L)
                 .build();
 
         log.info(commentService.register(commentDTO));

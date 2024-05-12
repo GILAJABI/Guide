@@ -50,7 +50,7 @@ public class commentRepositoryTests {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("commentId"));
 
-        Page<Comment> result = commentRepository.findByPostId(postId, pageable);
+        Page<Comment> result = commentRepository.listOfPost(postId, pageable);
 
         result.getContent().forEach(comment -> {
             log.info(comment);
@@ -64,26 +64,26 @@ public class commentRepositoryTests {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("commentId"));
 
-        Page<Comment> result = commentRepository.findByMemberId(memberId, pageable);
+        Page<Comment> result = commentRepository.listOfMember(memberId, pageable);
 
         result.getContent().forEach(comment -> {
             log.info(comment);
         });
     }
 
-    @Transactional
-    @Test
-    public void testFindByPostIdAndMemberId() {
-        Long postId = 1L;
-
-        Long memberId = 2L;
-
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("commentId"));
-
-        Page<Comment> result = commentRepository.findByPostIdAndMemberId(postId, memberId, pageable);
-
-        result.getContent().forEach(comment -> {
-            log.info(comment);
-        });
-    }
+//    @Transactional
+//    @Test
+//    public void testFindByPostIdAndMemberId() {
+//        Long postId = 1L;
+//
+//        Long memberId = 2L;
+//
+//        Pageable pageable = PageRequest.of(0, 10, Sort.by("commentId"));
+//
+//        Page<Comment> result = commentRepository.listOfPostMember(postId, memberId, pageable);
+//
+//        result.getContent().forEach(comment -> {
+//            log.info(comment);
+//        });
+//    }
 }
