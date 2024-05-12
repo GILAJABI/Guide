@@ -1,7 +1,9 @@
 package com.guide.ex.controller.post;
 
 import com.guide.ex.domain.post.Post;
+import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
+import com.guide.ex.repository.search.AllPostSearchImpl;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -26,9 +32,9 @@ public class PostController {
 
     @Autowired
     private PostService postService;
-
     @Autowired
     private CommentService commentService;
+
 
     @GetMapping("/carrotWrite")
     public String carrotWtire(HttpSession session) {
@@ -39,7 +45,7 @@ public class PostController {
     }
 
     @PostMapping("/carrotWrite")
-    public String carrotWtireInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
+    public String carrotWriteInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
         postService.carrotRegister(carrotDTO, file, session);
         return "redirect:/main";
     }
@@ -73,9 +79,22 @@ public class PostController {
     }
 
     @GetMapping("/carrotDetail")
-    public void carrotDetail() {
+    public String carrotDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId, "Carrot");
+        CarrotDTO carrotDTO = new CarrotDTO();
+        int price = carrotDTO.getPrice();
+        List<ImageDTO> imageDTOS =  carrotDTO.getImageDTOs();
 
+        MemberDTO memberDTO = new MemberDTO();
+        String name = memberDTO.getName();
+        model.addAttribute("post", post);
+        model.addAttribute("price", price);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/carrotDetail";
     }
+
+
 
     @GetMapping("/reviewDetail")
     public void reviewDetail() {
@@ -83,34 +102,23 @@ public class PostController {
     }
 
     @GetMapping("/joinDetail")
-    public void joinDetail() {
+    public void joinDetail(){
 
     }
 
     @GetMapping("/carrotMain")
-    public void carrotMain(Model model,
-                           @RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "6") int size) {
-
-        Page<CarrotDTO> post = postService.carrotTypeReadAll(size, page);
+    public String carrotMain(@Valid Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
         System.out.println("-----------------------");
-        System.out.println(post.getContent());
+        System.out.println(posts.getContent());
         System.out.println("-----------------------");
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
-                post.getTotalElements(), post.getTotalPages(), post.getNumber());
+                posts.getTotalElements(), posts.getTotalPages(), posts.getNumber());
 
-//        if (!post.hasContent()) {
-//            log.warn("No content available for page {}", page + 1);
-//            model.addAttribute("message", "No posts available");
-//            return "post/carrotMain";
-//        }
-
-
-        model.addAttribute("startPage", page);
-        model.addAttribute("endPage", post.getTotalPages());
-        model.addAttribute("posts", post);
-        model.addAttribute("currentPage", page + 1);
+        model.addAttribute("posts", posts);
+        return "post/carrotMain";  // View name for Thymeleaf template
     }
+
 
     @GetMapping("/joinMain")
     public void joinMain() {
@@ -120,10 +128,6 @@ public class PostController {
     @GetMapping("/reviewMain")
     public void reviewMain() {
 
-    }
-
-    @GetMapping("/comment")
-    public void comment() {
     }
 
     @PostMapping("/joinDetail")
@@ -144,5 +148,5 @@ public class PostController {
         }
         return "redirect:/post/joinDetail";
     }
-}
 
+}

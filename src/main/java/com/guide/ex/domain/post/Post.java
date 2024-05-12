@@ -18,7 +18,7 @@ import java.util.List;
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@ToString
+//@ToString
 public class Post {
 
     @Id
@@ -52,8 +52,8 @@ public class Post {
     @Builder.Default
     private int views = 0;
 
-//    @Builder.Default
-//    private int commentCount = 0;
+    @Builder.Default
+    private int commentCount = 0;
 
     private String postType;
 

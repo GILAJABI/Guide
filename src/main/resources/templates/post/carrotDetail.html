@@ -54,22 +54,23 @@
 
             <div class="right">
 
-                <h1>상품설명</h1>
-                <h2>가격</h2>
+                <h1 th:text="'제목 : ' + ${post.title}">상품설명</h1>
+                <h2 th:text="'가격 : ' + ${post.price} + '원'">가격</h2>
+                <h2 th:text="'거래 상태 : ' + ${post.status==false ? '판매중' : '판매완료'}">상태</h2>
                 <div class="line">
                     <!-- 프로필 정보 추가 -->
                     <div class="profile-info">
-                        <img th:src="@{/image/profile.jpg}" alt="프로필 사진" class="profile-pic">
+<!--                        <img th:if="${post.getPostImages() != null && !post.imageDTOs.isEmpty()}"-->
+<!--                             th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"-->
+<!--                             alt="사용자가 게시한 이미지"-->
+<!--                             th:onerror="@{/images/default.jpg}">-->
                         <h3 class="nickname">닉네임</h3>
                     </div>
-                    <h3>시간</h3>
-<!--                    <img th:src="@{/image/empty.png}" class="line-item">-->
-<!--                    <img class="line-item" th:src="@{/image/empty.png}">-->
-<!--                    <img th:src="@{/image/empty.png}">-->
-
-                    <h3 class="line-item">좋아요</h3>
+                    <h3>작성 날짜</h3>
+                    <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
+                    <h3 class="line-item" th:text="${post.likeCount} + ' likes'">좋아요</h3>
                     <img th:src="@{/image/eye.png}" class="line-item">
-                    <h3 class="line-item">조회수</h3>
+                    <h3 class="line-item" th:text="${post.views} + ' views'">조회수</h3>
                 </div>
 
 
@@ -77,8 +78,7 @@
                     <h3>상품 상태 | 새상품</h3>
                 </div>
                 <hr>
-                <p>100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년
-                    됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ 100년 됐지만 새상품인 아이폰입니다~ 작동 잘 됩니다~ </p>
+                <p th:text="${post.content}"></p>
 
                 <div class="comment">
 
@@ -87,7 +87,7 @@
                     <div class="profile-info">
                         <img th:src="@{/image/profile.jpg}" alt="프로필 사진" class="profile-pic">
                         <h4 class="nickname">닉네임</h4>
-                        <h4>: 안사요</h4>
+                        <h4>댓글 : </h4>
                     </div>
 
                 </div>

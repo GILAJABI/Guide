@@ -37,7 +37,7 @@ public class PostServiceTests {
     @Test
     public void testSearchPostOne() {       // 게시글 상세 검색
 //        allPostSearch.searchOne(60L,"Review");
-        postService.postDetailRead(60L,"Review");
+        postService.postDetailRead(1L,"Carrot");
     }
     @Test
     public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
