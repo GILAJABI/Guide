@@ -35,6 +35,7 @@ public class CommentServiceImpl implements CommentService{
 
     private final ModelMapper modelMapper;
 
+    // 댓글 등록 처리
     @Override
     public Long register(CommentDTO commentDTO) {
         Comment comment = modelMapper.map(commentDTO, Comment.class);
@@ -87,16 +88,21 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public PageResponseDTO<CommentDTO> getListOfPost(Long postId, PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0 ? 0 : pageRequestDTO.getPage() - 1,
+                pageRequestDTO.getSize());
 
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <=0? 0: pageRequestDTO.getPage() -1,
-                pageRequestDTO.getSize(),
-                Sort.by("commentId").ascending());
+        Page<Comment> result = commentRepository.listOfPost(postId, pageable);
 
-        Page<Comment> result = commentRepository.findByPostId(postId, pageable);
-
-        List<CommentDTO> dtoList =
-                result.getContent().stream().map(reply -> modelMapper.map(reply, CommentDTO.class))
-                        .collect(Collectors.toList());
+        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> {
+            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
+            if (comment.getPost() != null) {
+                commentDTO.setPostId(comment.getPost().getId());
+            }
+            if (comment.getMember() != null) {
+                commentDTO.setMemberId(comment.getMember().getId());
+            }
+            return commentDTO;
+        }).collect(Collectors.toList());
 
         return PageResponseDTO.<CommentDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
@@ -104,4 +110,57 @@ public class CommentServiceImpl implements CommentService{
                 .total((int)result.getTotalElements())
                 .build();
     }
+
+
+    @Override
+    public PageResponseDTO<CommentDTO> getListOfMember(Long memberId, PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <=0? 0: pageRequestDTO.getPage() -1,
+                pageRequestDTO.getSize());
+
+        Page<Comment> result = commentRepository.listOfMember(memberId, pageable);
+
+        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> {
+            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
+            if (comment.getPost() != null) {
+                commentDTO.setPostId(comment.getPost().getId());
+            }
+            if (comment.getMember() != null) {
+                commentDTO.setMemberId(comment.getMember().getId());
+            }
+            return commentDTO;
+        }).collect(Collectors.toList());
+
+        return PageResponseDTO.<CommentDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+//    @Override
+//    public PageResponseDTO<CommentDTO> getListOfPostMember(Long postId, Long memberId, PageRequestDTO pageRequestDTO) {
+//        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <=0? 0: pageRequestDTO.getPage() -1,
+//                pageRequestDTO.getSize(),
+//                Sort.by("postId").ascending());
+//
+//        Page<Comment> result = commentRepository.listOfPostMember(postId, memberId, pageable);
+//
+//        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> {
+//            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
+//            if (comment.getPost() != null) {
+//                commentDTO.setPostId(comment.getPost().getId());
+//            }
+//            if (comment.getMember() != null) {
+//                commentDTO.setMemberId(comment.getMember().getId());
+//            }
+//            return commentDTO;
+//        }).collect(Collectors.toList());
+//
+//        return PageResponseDTO.<CommentDTO>withAll()
+//                .pageRequestDTO(pageRequestDTO)
+//                .dtoList(dtoList)
+//                .total((int)result.getTotalElements())
+//                .build();
+//    }
+
 }
