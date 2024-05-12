@@ -2,17 +2,21 @@ package com.guide.ex.repository.post;
 
 import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.*;
-import com.guide.ex.dto.post.PostDTO;
+import com.guide.ex.repository.member.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -35,6 +39,14 @@ public class PostInsertTests {
 
     @Autowired
     private ReviewRepository testReview;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+
 
 //    @Test
 //    public void carrotSearch1() {
@@ -258,5 +270,45 @@ public class PostInsertTests {
     public void testSelectCarrot() {
         List<Carrot> carrotList = testCarrot.findAllCarrotsWithPostDetails();
         log.info(carrotList);
+    }
+
+    @Test
+    @Transactional
+    public void memberPostTests() {
+        Optional<Member> result = memberRepository.findById(3L);
+        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+
+        Optional<List<Post>> memberPostsResult = postRepository.findAllByMember(member);
+        List<Post> memberPosts = null;
+
+        if (memberPostsResult.isPresent()) {
+            memberPosts = memberPostsResult.get();
+        }
+
+        for (Post post : memberPosts) {
+            System.out.println("게시물 번호: " + post.getPostId());
+            System.out.println("게시물 제목: " + post.getTitle());
+            System.out.println("게시물 타입: " + post.getPostType());
+            System.out.println("===================================");
+        }
+
+    }
+
+    @Test
+    @Transactional
+    public void memberPostPagingTests() {
+        Optional<Member> result = memberRepository.findById(3L);
+        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+
+        Pageable pageable = PageRequest.of(0, 5); // Get the first page with 10 items
+        Page<Post> postsPage = postRepository.findAllByMember(member, pageable);
+
+        List<Post> memberPosts = postsPage.getContent();
+        for (Post post : memberPosts) {
+            System.out.println("게시물 번호: " + post.getPostId());
+            System.out.println("게시물 제목: " + post.getTitle());
+            System.out.println("게시물 타입: " + post.getPostType());
+            System.out.println("===================================");
+        }
     }
 }
