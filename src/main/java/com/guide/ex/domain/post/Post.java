@@ -18,7 +18,7 @@ import java.util.List;
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@ToString
+//@ToString
 public class Post {
 
     @Id

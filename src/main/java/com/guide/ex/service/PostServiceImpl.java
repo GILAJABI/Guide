@@ -266,12 +266,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void postDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
+    public Post postDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
         // 데이터베이스에서 Post 객체를 검색
         Post post = allPostSearch.searchOne(postId, postType);
         if (post == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
+        return post;
     }
 
 //    @Override

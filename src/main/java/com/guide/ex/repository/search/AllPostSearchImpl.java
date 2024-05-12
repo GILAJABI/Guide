@@ -44,26 +44,26 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
     }
 
 
-    @Override
-    public Page<Post> searchPostPaging(String postType, int size, int page) {    // 게시판 유형에 따른 모든 게시글 검색
-        QPost post = QPost.post;
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-
-        JPAQuery<Post> query = new JPAQuery<>(entityManager);
-
-        query.from(post)
-                .where(post.postType.contains(postType));
-
-        long total = query.fetchCount();
-
-        query.offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        List<Post> posts = query.fetch();
-
-        return new PageImpl<>(posts, pageable, total);
-    }
+//    @Override
+//    public Page<Post> searchPostPaging(String postType, int size, int page) {    // 게시판 유형에 따른 모든 게시글 검색
+//        QPost post = QPost.post;
+//
+//        Pageable pageable = PageRequest.of(page - 1, size);
+//
+//        JPAQuery<Post> query = new JPAQuery<>(entityManager);
+//
+//        query.from(post)
+//                .where(post.postType.contains(postType));
+//
+//        long total = query.fetchCount();
+//
+//        query.offset(pageable.getOffset())
+//                .limit(pageable.getPageSize());
+//
+//        List<Post> posts = query.fetch();
+//
+//        return new PageImpl<>(posts, pageable, total);
+//    }
 
     @Override
     public Page<Carrot> searchCarrotPaging(int size, int page) {    // 당근 게시판 모든 게시글 검색
@@ -132,6 +132,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         if (result == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
+        log.info("Found post By Id: " + result);
 
         return result;
     }
@@ -144,6 +145,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .set(post.views, post.views.add(1))
                 .where(post.postId.eq(postId))
                 .execute();
+        log.info(executed + " views updated");
     }
 
 }

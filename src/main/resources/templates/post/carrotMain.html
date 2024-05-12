@@ -17,10 +17,27 @@
         }
         .carrotBox {
             margin-bottom: 20px;
+            background-size: cover;
         }
         #dateCSS {
             margin-right: 5px;
         }
+        .image-section {
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center; /* 세로 중앙 정렬 */
+            height: 200px; /* 이미지 섹션의 고정 높이 */
+            margin-bottom: 10px; /* 이미지 하단의 여백 */
+            overflow: hidden; /* 넘치는 이미지는 숨김 */
+            border-radius: 5px; /* 이미지 모서리 둥글게 */
+        }
+        .image-section img {
+            max-height: 100%; /* 최대 높이 제한 */
+            max-width: 100%; /* 최대 너비 제한 */
+            object-fit: contain; /* 컨테이너에 맞게 이미지 비율 유지 */
+        }
+
+
     </style>
 </head>
 <body>
@@ -53,13 +70,14 @@
     <section>
         <div th:each="post : ${posts}" class="carrotBox">
             <div class="image-section">
-                <!-- Display the first image if available, otherwise show default image -->
-                <img th:if="${post.imageDTOs != null && !post.imageDTOs.isEmpty()}"
-                     th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"
-                     alt="사용자가 게시한 이미지"
-                     th:onerror="@{/images/default.jpg}">
-                <img th:if="${post.imageDTOs == null || post.imageDTOs.isEmpty()}"
-                     src="@{/images/default.jpg}" alt="Default Image">
+                <a th:href="@{/post/carrotDetail(postId=${post.postId})}">
+                    <img th:if="${post.imageDTOs != null && !post.imageDTOs.isEmpty()}"
+                         th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"
+                         alt="사용자가 게시한 이미지"
+                         th:onerror="@{/images/default.jpg}">
+                    <img th:if="${post.imageDTOs == null || post.imageDTOs.isEmpty()}"
+                         src="@{/images/default.jpg}" alt="Default Image">
+                </a>
             </div>
             <div class="text-section">
                 <span class="board-title" th:text="${post.title}">판매 물품 제목</span>

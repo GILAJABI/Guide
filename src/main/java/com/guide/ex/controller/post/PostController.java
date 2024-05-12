@@ -1,9 +1,8 @@
 package com.guide.ex.controller.post;
 
-import com.guide.ex.dto.post.CarrotDTO;
-import com.guide.ex.dto.post.JoinDTO;
-import com.guide.ex.dto.post.PostDTO;
-import com.guide.ex.dto.post.ReviewDTO;
+import com.guide.ex.domain.post.Post;
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.post.*;
 import com.guide.ex.repository.search.AllPostSearchImpl;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
@@ -73,12 +73,25 @@ public class PostController {
     public String reviewWriteInput(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
         postService.reviewRegister(reviewDTO, file, session);
         return "redirect:/main";
-    }  
-  
-    @GetMapping("/carrotDetail")
-    public void carrotDetail() {
-        postService.postDetailRead(2L,"Carrot");
     }
+
+    @GetMapping("/carrotDetail")
+    public String carrotDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId, "Carrot");
+        CarrotDTO carrotDTO = new CarrotDTO();
+        int price = carrotDTO.getPrice();
+        List<ImageDTO> imageDTOS =  carrotDTO.getImageDTOs();
+
+        MemberDTO memberDTO = new MemberDTO();
+        String name = memberDTO.getName();
+        model.addAttribute("post", post);
+        model.addAttribute("price", price);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/carrotDetail";
+    }
+
+
 
     @GetMapping("/reviewDetail")
     public void reviewDetail() {
