@@ -60,26 +60,55 @@ div#circle img {
 div#name {
     font-family: 'BMJUA';
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
+}
+
+div#name > p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+#otherInfo {
+    font-family: 'BMJUA';
+    font-size: 20px;
+    margin-top: 0px;
 }
 
 #userInfo {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    width: 318px;
 }
 
-#userInfo > p {
+#userInfo > .cir {
+    width: 150px;
+    height: 51px;
+    border-radius: 10px;
+    border: none;
+    background-color: #ff6392;
     font-family: 'Pretendard-Regular';
-    font-size: 16px;
+    align-items: center;
+    color: #fafafa;
+    text-align: center;
+    line-height: 50px;
 }
 
-#chatImg {
+#chatting {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
-    /*margin-top: 30px;*/
+    margin: 6px 6px;
+    line-height: 14px;
+    font-size: 14px;
 }
+
+/*#chatImg {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    !*margin-top: 30px;*!*/
+/*}*/
 
 #otherCount {
     width: 270px;
@@ -94,19 +123,32 @@ div#name {
 div#like,
 div#post,
 div#chat {
-    margin-top: 13px;
+    margin-top: 23px;
+    flex: 1px;
+    text-align: center;
 }
 
+#otherCount p{
+    margin: 0;
+    margin-top: 10px;
+}
 #report {
     width: 270px;
     text-align: end;
     font-size: 14px;
 }
 
+#info {
+    width: 240px;
+    height: 70px;
+    margin: 0 auto;
+    border: 1px solid rgba(54, 54, 54, 0.1);
+}
+
 #info > p {
     font-family: 'BMJUA';
-    font-size: 20px;
-    margin-top: 0px;
+    font-size: 18px;
+    margin: 5px 5px;
 }
 
 #info > #content {
@@ -121,13 +163,18 @@ div#chat {
 #mbti {
     width: 650px;
     height: 133px;
-    margin-top: 34px;
+    margin-top: 40px;
 }
 
 #mbti > p {
     font-family: 'BMJUA';
     font-size: 20px;
     margin-top: 0px;
+}
+
+#info_content {
+    font-size: 14px;
+    margin-left: 5px;
 }
 
 #userMbti {
@@ -162,7 +209,7 @@ div#chat {
     width: 650px;
     height: 223px;
     border-radius: 5px;
-    margin-top: 48px;
+    margin-top: 30px;
 }
 
 #otherPost > p {
