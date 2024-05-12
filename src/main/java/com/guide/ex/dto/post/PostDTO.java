@@ -39,7 +39,7 @@ public class PostDTO {
 
     private int likeCount;
 
-//    private int commentCount;
+    private int commentCount;
 
     private String postType;
     

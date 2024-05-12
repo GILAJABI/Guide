@@ -4,6 +4,7 @@ import com.guide.ex.dto.post.CarrotDTO;
 import com.guide.ex.dto.post.JoinDTO;
 import com.guide.ex.dto.post.PostDTO;
 import com.guide.ex.dto.post.ReviewDTO;
+import com.guide.ex.repository.search.AllPostSearchImpl;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 
 @Controller
@@ -28,6 +30,8 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private AllPostSearchImpl allPostSearchImpl;
 
     @GetMapping("/carrotWrite")
     public String carrotWtire(HttpSession session) {
@@ -38,7 +42,7 @@ public class PostController {
     }
 
     @PostMapping("/carrotWrite")
-    public String carrotWtireInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
+    public String carrotWriteInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
         postService.carrotRegister(carrotDTO, file, session);
         return "redirect:/main";
     }
@@ -73,7 +77,7 @@ public class PostController {
   
     @GetMapping("/carrotDetail")
     public void carrotDetail() {
-
+        postService.postDetailRead(2L,"Carrot");
     }
 
     @GetMapping("/reviewDetail")
@@ -87,29 +91,18 @@ public class PostController {
     }
 
     @GetMapping("/carrotMain")
-    public void carrotMain(Model model,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
-
-        Page<CarrotDTO> post = postService.carrotTypeReadAll(size, page);
+    public String carrotMain(@Valid Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
         System.out.println("-----------------------");
-        System.out.println(post.getContent());
+        System.out.println(posts.getContent());
         System.out.println("-----------------------");
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
-                post.getTotalElements(), post.getTotalPages(), post.getNumber());
+                posts.getTotalElements(), posts.getTotalPages(), posts.getNumber());
 
-//        if (!post.hasContent()) {
-//            log.warn("No content available for page {}", page + 1);
-//            model.addAttribute("message", "No posts available");
-//            return "post/carrotMain";
-//        }
-
-
-        model.addAttribute("startPage", page);
-        model.addAttribute("endPage", post.getTotalPages());
-        model.addAttribute("posts", post);
-        model.addAttribute("currentPage", page + 1);
+        model.addAttribute("posts", posts);
+        return "post/carrotMain";  // View name for Thymeleaf template
     }
+
 
     @GetMapping("/joinMain")
     public void joinMain() {
