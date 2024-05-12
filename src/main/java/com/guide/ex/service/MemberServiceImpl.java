@@ -2,18 +2,24 @@ package com.guide.ex.service;
 
 import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.member.MemberProfile;
+import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.member.MemberProfileDTO;
+import com.guide.ex.dto.post.PostDTO;
 import com.guide.ex.repository.member.MemberProfileRepository;
 import com.guide.ex.repository.member.MemberRepository;
+import com.guide.ex.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -32,6 +38,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final ModelMapper modelMapper;
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
     private final MemberProfileRepository memberProfileRepository;
 
     // 회원 등록 작업(회원가입)
@@ -113,7 +120,31 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
-    @Override
+//    @Override
+//    public MemberDTO memberReadOne(Long memberId) {
+//        // Member 엔티티 조회
+//        Optional<Member> result = memberRepository.findById(memberId);
+//        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+//
+//        // MemberDTO로 변환
+//        MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
+//
+//        // MemberProfile 조회
+//        Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
+//        MemberProfile memberProfile = memberProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
+//
+//        // MemberProfile 정보를 MemberDTO에 추가
+//        // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
+//        if (memberProfile != null) {
+//            memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+//        } else {
+//            memberDTO.setProfileInfo(null); // 또는 빈 MemberProfileDTO 객체를 넣어도 됩니다.
+//        }
+//
+//        return memberDTO;
+//    }
+
+        @Override
     public MemberDTO memberReadOne(Long memberId) {
         // Member 엔티티 조회
         Optional<Member> result = memberRepository.findById(memberId);
@@ -133,6 +164,20 @@ public class MemberServiceImpl implements MemberService {
         } else {
             memberDTO.setProfileInfo(null); // 또는 빈 MemberProfileDTO 객체를 넣어도 됩니다.
         }
+
+            Optional<List<Post>> memberPostsResult = postRepository.findAllByMember(member);
+            List<Post> memberPosts = memberPostsResult.orElse(null);
+
+//            List<PostDTO> memberDTOList = new ArrayList<>();
+//
+//            for (Post post : memberPosts) {
+//                PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+//                System.out.println("=====================================");
+//                System.out.println(postDTO);
+//                System.out.println("=====================================");
+//                memberDTOList.add(postDTO);
+//            }
+//            memberDTO.setPosts(memberDTOList);
 
         return memberDTO;
     }
@@ -162,6 +207,22 @@ public class MemberServiceImpl implements MemberService {
             });
         }
         return memberDTOList;
+    }
+
+    @Override
+    public Page<PostDTO> memberPosts(HttpSession session,int size, int page) {
+        Optional<Member> result = memberRepository.findById((Long) session.getAttribute("member_id"));
+        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다."));
+
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findAllByMember(member, pageable);
+
+        Page<PostDTO> postDTOPage = postsPage.map(post -> {
+            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            return postDTO;
+        });
+
+        return postDTOPage;
     }
 
     @Override

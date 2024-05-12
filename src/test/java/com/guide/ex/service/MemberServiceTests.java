@@ -92,8 +92,8 @@ public class MemberServiceTests {
     // 회원 정보 읽기(member + memberProfile)
     @Test
     public void memberReadOneTest() {
-        MemberDTO memberDTO = memberService.memberReadOne(1L);
-        log.info(memberDTO);
+        MemberDTO memberDTO = memberService.memberReadOne(3L);
+        log.info(memberDTO.getPosts());
     }
 
     @Test

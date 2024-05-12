@@ -1,5 +1,6 @@
 package com.guide.ex.dto.member;
 
+import com.guide.ex.dto.post.PostDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.List;
 
 @Data
 @Builder
@@ -45,6 +47,8 @@ public class MemberDTO {
     private void change(String name) {
         this.name = name;
     }
+
+    private List<PostDTO> posts;
 
     private MemberProfileDTO profileInfo;
 
