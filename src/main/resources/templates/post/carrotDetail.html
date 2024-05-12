@@ -49,7 +49,11 @@
         <div class="bottom">
 
             <div class="left">
-                <img th:src="@{/image/product.jpg}" alt="상품사진">
+                <th:block th:each="image : ${imageDTOS}">
+                    <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}"
+                         alt="Uploaded Image"
+                         th:onerror="@{/images/default.jpg}">
+                </th:block>
             </div>
 
             <div class="right">

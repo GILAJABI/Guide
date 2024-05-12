@@ -19,4 +19,10 @@ public class ImageDTO {
     private int ord;
     private String uuid;
     private Long postId;
+
+    public ImageDTO(Long imageId, String uuid, String fileName) {
+        this.imageId = imageId;
+        this.uuid = uuid;
+        this.fileName = fileName;
+    }
 }
