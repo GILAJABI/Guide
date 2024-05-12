@@ -108,12 +108,19 @@
                     <p>나의 게시물</p>
                     <p id="postMore">더보기</p>
                 </div>
+<!--                <ul>-->
+<!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
+<!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
+<!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
+<!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
+<!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
+<!--                </ul>-->
                 <ul>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
+                    <li th:each="post : ${member.posts}">
+                        <span th:if="${post.postType == 'Review'}">[후기] <span th:text="${post.title}"></span></span>
+                        <span th:if="${post.postType == 'Join'}">[모집] <span th:text="${post.title}"></span></span>
+                        <span th:if="${post.postType == 'Carrot'}">[당근] <span th:text="${post.title}"></span></span>
+                    </li>
                 </ul>
             </div>
         </div>

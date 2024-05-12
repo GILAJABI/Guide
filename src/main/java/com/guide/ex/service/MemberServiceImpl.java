@@ -144,7 +144,7 @@ public class MemberServiceImpl implements MemberService {
 //        return memberDTO;
 //    }
 
-        @Override
+    @Override
     public MemberDTO memberReadOne(Long memberId) {
         // Member 엔티티 조회
         Optional<Member> result = memberRepository.findById(memberId);
@@ -165,19 +165,13 @@ public class MemberServiceImpl implements MemberService {
             memberDTO.setProfileInfo(null); // 또는 빈 MemberProfileDTO 객체를 넣어도 됩니다.
         }
 
-            Optional<List<Post>> memberPostsResult = postRepository.findAllByMember(member);
-            List<Post> memberPosts = memberPostsResult.orElse(null);
-
-//            List<PostDTO> memberDTOList = new ArrayList<>();
-//
-//            for (Post post : memberPosts) {
-//                PostDTO postDTO = modelMapper.map(post, PostDTO.class);
-//                System.out.println("=====================================");
-//                System.out.println(postDTO);
-//                System.out.println("=====================================");
-//                memberDTOList.add(postDTO);
-//            }
-//            memberDTO.setPosts(memberDTOList);
+        List<Post> memberPosts = postRepository.findTop5ByMemberOrderByPostIdDesc(member);
+        // 게시물 목록을 MemberDTO에 추가
+        List<PostDTO> postDTOs = new ArrayList<>();
+        for (Post post : memberPosts) {
+            postDTOs.add(modelMapper.map(post, PostDTO.class));
+        }
+        memberDTO.setPosts(postDTOs);
 
         return memberDTO;
     }
@@ -210,7 +204,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<PostDTO> memberPosts(HttpSession session,int size, int page) {
+    public Page<PostDTO> memberPosts(HttpSession session, int size, int page) {
         Optional<Member> result = memberRepository.findById((Long) session.getAttribute("member_id"));
         Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다."));
 

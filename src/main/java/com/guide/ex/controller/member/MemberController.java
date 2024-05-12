@@ -108,15 +108,14 @@ public class MemberController {
     @GetMapping("/myPage")
     public String myPage(HttpSession session, Model model) {
 
-        Long sessionMemberId = (Long) session.getAttribute("member_id");
+        Long memberId = (Long) session.getAttribute("member_id");
 
-        if (sessionMemberId == null) {
+        if (memberId == null) {
             return "redirect:/member/login";
-        } else if (sessionMemberId != null && !memberService.setProfileSession(sessionMemberId)) {
+        } else if (memberId != null && !memberService.setProfileSession(memberId)) {
             return "/member/profile";
         }
 
-        Long memberId = (Long) session.getAttribute("member_id");
         MemberDTO member = memberService.memberReadOne(memberId);
         model.addAttribute("member", member);
         return "member/myPage";
