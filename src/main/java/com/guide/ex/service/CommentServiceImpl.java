@@ -28,13 +28,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
     private final ModelMapper modelMapper;
 
+    // 댓글 등록 처리
     @Override
     public Long register(CommentDTO commentDTO) {
         Comment comment = modelMapper.map(commentDTO, Comment.class);
@@ -52,6 +53,7 @@ public class CommentServiceImpl implements CommentService{
         return commentId;
     }
 
+    // 댓글 조회 처리
     @Override
     public CommentDTO read(Long commentId) {
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
@@ -68,7 +70,7 @@ public class CommentServiceImpl implements CommentService{
         return commentDTO;
     }
 
-
+    // 댓글 수정 처리
     @Override
     public void modify(CommentDTO commentDTO) {
         Optional<Comment> commentOptional = commentRepository.findById(commentDTO.getCommentId());
@@ -80,28 +82,88 @@ public class CommentServiceImpl implements CommentService{
         commentRepository.save(comment);
     }
 
+    // 댓글 삭제 처리
     @Override
     public void remove(Long commentId) {
         commentRepository.deleteById(commentId);
     }
 
+    // 게시물별 댓글 페이징 처리
     @Override
     public PageResponseDTO<CommentDTO> getListOfPost(Long postId, PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0 ? 0 : pageRequestDTO.getPage() - 1,
+                pageRequestDTO.getSize());
 
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <=0? 0: pageRequestDTO.getPage() -1,
-                pageRequestDTO.getSize(),
-                Sort.by("commentId").ascending());
+        Page<Comment> result = commentRepository.listOfPost(postId, pageable);
 
-        Page<Comment> result = commentRepository.findByPostId(postId, pageable);
-
-        List<CommentDTO> dtoList =
-                result.getContent().stream().map(reply -> modelMapper.map(reply, CommentDTO.class))
-                        .collect(Collectors.toList());
+        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> {
+            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
+            if (comment.getPost() != null) {
+                commentDTO.setPostId(comment.getPost().getId());
+            }
+            if (comment.getMember() != null) {
+                commentDTO.setMemberId(comment.getMember().getId());
+            }
+            return commentDTO;
+        }).collect(Collectors.toList());
 
         return PageResponseDTO.<CommentDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
-                .total((int)result.getTotalElements())
+                .total((int) result.getTotalElements())
                 .build();
     }
+
+    // 사용자별 댓글 페이징 처리
+    @Override
+    public PageResponseDTO<CommentDTO> getListOfMember(Long memberId, PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0 ? 0 : pageRequestDTO.getPage() - 1,
+                pageRequestDTO.getSize());
+
+        Page<Comment> result = commentRepository.listOfMember(memberId, pageable);
+
+        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> {
+            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
+            if (comment.getPost() != null) {
+                commentDTO.setPostId(comment.getPost().getId());
+            }
+            if (comment.getMember() != null) {
+                commentDTO.setMemberId(comment.getMember().getId());
+            }
+            return commentDTO;
+        }).collect(Collectors.toList());
+
+        return PageResponseDTO.<CommentDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int) result.getTotalElements())
+                .build();
+    }
+
+//    @Override
+//    public PageResponseDTO<CommentDTO> getListOfPostMember(Long postId, Long memberId, PageRequestDTO pageRequestDTO) {
+//        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <=0? 0: pageRequestDTO.getPage() -1,
+//                pageRequestDTO.getSize(),
+//                Sort.by("postId").ascending());
+//
+//        Page<Comment> result = commentRepository.listOfPostMember(postId, memberId, pageable);
+//
+//        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> {
+//            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
+//            if (comment.getPost() != null) {
+//                commentDTO.setPostId(comment.getPost().getId());
+//            }
+//            if (comment.getMember() != null) {
+//                commentDTO.setMemberId(comment.getMember().getId());
+//            }
+//            return commentDTO;
+//        }).collect(Collectors.toList());
+//
+//        return PageResponseDTO.<CommentDTO>withAll()
+//                .pageRequestDTO(pageRequestDTO)
+//                .dtoList(dtoList)
+//                .total((int)result.getTotalElements())
+//                .build();
+//    }
+
 }

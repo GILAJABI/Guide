@@ -52,6 +52,26 @@ public class CommentController {
         return resultMap;
     }
 
+    @ApiOperation(value = "Comments of Post", notes = "GET 방식으로 특정 게시물의 댓글 목록")
+    @GetMapping(value = "/post/{postId}")
+    public PageResponseDTO<CommentDTO> getList1(@PathVariable("postId") Long postId,
+                                             PageRequestDTO pageRequestDTO){
+
+        PageResponseDTO<CommentDTO> responseDTO = commentService.getListOfPost(postId, pageRequestDTO);
+
+        return responseDTO;
+    }
+
+    @ApiOperation(value = "Comments of Member", notes = "GET 방식으로 특정 사용자의 댓글 목록")
+    @GetMapping(value = "/member/{memberId}")
+    public PageResponseDTO<CommentDTO> getList2(@PathVariable("memberId") Long memberId,
+                                               PageRequestDTO pageRequestDTO){
+
+        PageResponseDTO<CommentDTO> responseDTO = commentService.getListOfMember(memberId, pageRequestDTO);
+
+        return responseDTO;
+    }
+
     @ApiOperation(value = "Read Comment", notes = "GET 방식으로 특정 댓글 조회")
     @GetMapping("/{commentId}")
     public ResponseEntity<CommentDTO> getCommentDTO(@PathVariable("commentId") Long commentId) {
@@ -65,7 +85,7 @@ public class CommentController {
 
     @ApiOperation(value = "Modify Comment", notes = "PUT 방식으로 특정 댓글 수정")
     @PutMapping(value = "/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE )
-    public Map<String,Long> remove( @PathVariable("commentId") Long commentId, @RequestBody CommentDTO commentDTO ){
+    public Map<String,Long> modify( @PathVariable("commentId") Long commentId, @RequestBody CommentDTO commentDTO ){
 
         commentDTO.setCommentId(commentId); //번호를 일치시킴
 
