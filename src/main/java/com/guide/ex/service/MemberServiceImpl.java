@@ -166,13 +166,15 @@ public class MemberServiceImpl implements MemberService {
         }
 
         List<Post> memberPosts = postRepository.findTop5ByMemberOrderByPostIdDesc(member);
-        // 게시물 목록을 MemberDTO에 추가
         List<PostDTO> postDTOs = new ArrayList<>();
-        for (Post post : memberPosts) {
-            postDTOs.add(modelMapper.map(post, PostDTO.class));
+        if (memberPosts != null) {
+            for (Post post : memberPosts) {
+                postDTOs.add(modelMapper.map(post, PostDTO.class));
+            }
+        } else {
+            postDTOs = null;
         }
         memberDTO.setPosts(postDTOs);
-
         return memberDTO;
     }
 

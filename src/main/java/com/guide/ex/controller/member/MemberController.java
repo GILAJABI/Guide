@@ -117,6 +117,10 @@ public class MemberController {
         }
 
         MemberDTO member = memberService.memberReadOne(memberId);
+        System.out.println("====================================");
+        System.out.println(member.getPosts());
+        System.out.println("====================================");
+
         model.addAttribute("member", member);
         return "member/myPage";
     }
