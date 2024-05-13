@@ -1,5 +1,6 @@
 package com.guide.ex.controller.post;
 
+import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
@@ -78,7 +79,7 @@ public class PostController {
 
     @GetMapping("/carrotDetail")
     public String carrotDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId, "Carrot");
+        Post post = postService.postDetailRead(postId);
         System.out.println("-----------------------");
         System.out.println(post.getContent());
         System.out.println("-----------------------");
@@ -86,6 +87,7 @@ public class PostController {
         List<ImageDTO> imageDTOS = post.getPostImages().stream()
                 .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
                 .collect(Collectors.toList());
+
 
         model.addAttribute("post", post);
         model.addAttribute("imageDTOS", imageDTOS);

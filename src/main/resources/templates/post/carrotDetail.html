@@ -56,7 +56,9 @@
                 </th:block>
             </div>
 
-            <div class="right">
+            <div class="right" th:if="${session.member_id == post.member.getMemberId()}">
+                <button>수정</button>
+                <button>삭제</button>
 
                 <h1 th:text="'제목 : ' + ${post.title}">상품설명</h1>
                 <h2 th:text="'가격 : ' + ${post.price} + '원'">가격</h2>
@@ -68,7 +70,7 @@
 <!--                             th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"-->
 <!--                             alt="사용자가 게시한 이미지"-->
 <!--                             th:onerror="@{/images/default.jpg}">-->
-                        <h3 class="nickname">닉네임</h3>
+                        <h3 class="nickname" th:text="'닉네임' + ${post.member.getMemberId()}">닉네임</h3>
                     </div>
                     <h3>작성 날짜</h3>
                     <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
@@ -111,6 +113,33 @@
     </div>
 
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        var postId = this.getAttribute('data-post-id');
+        var memberId = this.getAttribute('data-member-id');
+
+        if(confirm('정말 삭제하시겠습니까?')) {
+            fetch(`/posts/delete/${postId}/${memberId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // CSRF 토큰 설정이 필요할 수 있습니다.
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert('게시글이 삭제되었습니다.');
+                    window.location.href = '/posts'; // 삭제 후 리디렉션
+                } else {
+                    alert('게시글 삭제에 실패했습니다.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+    /*]]>*/
+</script>
 <script th:src="@{/js/post/comment.js}"></script>
 </body>
 
