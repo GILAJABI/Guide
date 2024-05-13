@@ -17,6 +17,8 @@ public interface AllPostSearch {
 
     Page<Carrot> searchCarrotPaging(int size, int page);
 
-    Post searchOne(Long postId, String postType);
+    Post searchOne(Long postId);
     void updateViews(Long postId);
+
+    boolean deleteOne(Long postId, Long memberId);
 }

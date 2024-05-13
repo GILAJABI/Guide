@@ -16,11 +16,14 @@ public interface PostService {
     void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
     void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
-    Post postDetailRead(Long memberId, String postType);
+    Post postDetailRead(Long memberId);
 //    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
     List<PostDTO> postSelectAll(String searchValue, String postType);
 
     Page<CarrotDTO> carrotTypeReadAll(int size, int page);
     Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable);
     Page<JoinDTO> joinTypeReadAll(String searchValue, String postType, Pageable pageable);
+
+    boolean deletePost(Long postId, Long memberId);
+
 }

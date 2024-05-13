@@ -266,9 +266,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post postDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
+    public Post postDetailRead(Long postId) {  // 게시글 상세 검색(Service -> Repository)
         // 데이터베이스에서 Post 객체를 검색
-        Post post = allPostSearch.searchOne(postId, postType);
+        Post post = allPostSearch.searchOne(postId);
         if (post == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
@@ -332,7 +332,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     @Override
     public Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable) {
         return null;
@@ -343,5 +342,8 @@ public class PostServiceImpl implements PostService {
         return null;
     }
 
-
+    @Override
+    public boolean deletePost(Long postId, Long memberId) {
+        return allPostSearch.deleteOne(postId, memberId);
+    }
 }

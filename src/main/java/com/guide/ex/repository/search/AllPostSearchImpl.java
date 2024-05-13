@@ -2,6 +2,7 @@ package com.guide.ex.repository.search;
 
 import com.guide.ex.domain.member.QMember;
 import com.guide.ex.domain.post.*;
+import com.guide.ex.dto.post.PostDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -93,18 +94,19 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
         QPost post = QPost.post;
+
         JPAQuery<Post> query = new JPAQuery<>(entityManager);
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
         // 게시판 유형에 맞는 게시글만 필터링
         booleanBuilder.and(post.postType.eq(postType));
         if (searchValue != null && !searchValue.trim().isEmpty()) {
-            booleanBuilder.andAnyOf(
+            booleanBuilder.andAnyOf(    // 여러 조건 중 하나라도 참이면 전체 조건이 참
                     post.title.contains(searchValue),
-                    post.content.contains(searchValue)
+                    post.content.contains(searchValue),
+                    post.member.name.contains(searchValue)
             );
         }
-
         query.select(post).from(post).where(booleanBuilder);
         return query.fetch();
     }
@@ -112,21 +114,20 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
     @Transactional
     @Override
-    public Post searchOne(Long postId, String postType) {
+    public Post searchOne(Long postId) {
         updateViews(postId);
-        Post post = findPostById(postId, postType);
+        Post post = findPostById(postId);
         log.info("Found post: " + post);
         return post;
     }
 
-    private Post findPostById(Long postId, String postType) {
+    private Post findPostById(Long postId) {
         QPost qPost = QPost.post;
         JPAQuery<Post> query = new JPAQuery<>(entityManager);
 
         Post result = query.select(qPost)
                 .from(qPost)
-                .where(qPost.postId.eq(postId)
-                        .and(qPost.postType.eq(postType)))
+                .where(qPost.postId.eq(postId))
                 .fetchOne();
         if (result == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
@@ -135,6 +136,8 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
         return result;
     }
+
+
 
     @Transactional
     public void updateViews(Long postId) {
@@ -146,6 +149,30 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .execute();
         log.info(executed + " views updated");
     }
+
+    @Override
+    public boolean deleteOne(Long postId, Long memberId) {
+        // postId로 게시글을 조회하고 memberId로 소유권을 확인
+        QPost qpost = QPost.post;
+        Post post = new JPAQuery<>(entityManager)
+                .select(qpost)
+                .from(qpost)
+                .where(qpost.postId.eq(postId)
+                        .and(qpost.member.memberId.eq(memberId))) // 게시글의 memberId가 입력 memberId와 일치하는지 확인
+                .fetchOne();
+
+        // 게시글이 존재하고 사용자가 삭제 권한을 가지고 있는지 확인
+        if (post != null) {
+            entityManager.remove(post);
+            entityManager.flush();
+            log.info("게시글 삭제 완료!! : " + post);
+            return true;  // 성공적으로 삭제됨
+        }
+        return false;  // 삭제 실패 (게시글이 존재하지 않거나 권한 없음)
+    }
+
+
+
 
 }
 
