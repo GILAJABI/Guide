@@ -92,6 +92,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         return new PageImpl<>(carrots, pageable, total);
     }
 
+    @Override
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
         QPost post = QPost.post;
 
@@ -107,6 +108,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                     post.member.name.contains(searchValue)
             );
         }
+
         query.select(post).from(post).where(booleanBuilder);
         return query.fetch();
     }
