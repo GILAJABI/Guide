@@ -25,19 +25,33 @@
     </div>
       <p id="content2">닌텐도 월드 갈사람있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? </p>
       <p id="commentH">댓글 </p>
-      <div class="comment">
-        <div class="profile-info">
-          <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">
-        </div>
-        <div>
-          <h4 class="nickname">김시언 잇프제 대전</h4>
-          <span class="nickname"> 안사요 안산다고요 안사요...</span>
-        </div>
+<!--      <div class="comment">-->
+<!--        <div class="profile-info">-->
+<!--          <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <h4 class="nickname">김시언 잇프제 대전</h4>-->
+<!--          <span class="nickname"> 안사요 안산다고요 안사요...</span>-->
+<!--        </div>-->
+<!--      </div>-->
+      <div>
+        <form th:action="@{/post/joinDetail}" method="post">
+          <input type="hidden" name="postId" th:value="${postId}" />
+          <input type="hidden" name="memberId" th:value="${memberId}" />
+          <input type="text" name="commentContent" placeholder="댓글을 입력하세요">
+          <button type="submit">입력</button>
+        </form>
+      </div>
+      <div>
+        <ul id="comment-list">
+          <li th:each="comment : ${comments}" th:text="${comment}">
+            <!-- 댓글 추가됨 -->
+        </ul>
       </div>
     </div>
   </div>
 </div>
-
+<script th:src="@{/js/post/comment.js}"></script>
 </body>
 
 </html>

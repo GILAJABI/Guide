@@ -44,26 +44,26 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
     }
 
 
-    @Override
-    public Page<Post> searchPostPaging(String postType, int size, int page) {    // 게시판 유형에 따른 모든 게시글 검색
-        QPost post = QPost.post;
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-
-        JPAQuery<Post> query = new JPAQuery<>(entityManager);
-
-        query.from(post)
-                .where(post.postType.contains(postType));
-
-        long total = query.fetchCount();
-
-        query.offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        List<Post> posts = query.fetch();
-
-        return new PageImpl<>(posts, pageable, total);
-    }
+//    @Override
+//    public Page<Post> searchPostPaging(String postType, int size, int page) {    // 게시판 유형에 따른 모든 게시글 검색
+//        QPost post = QPost.post;
+//
+//        Pageable pageable = PageRequest.of(page - 1, size);
+//
+//        JPAQuery<Post> query = new JPAQuery<>(entityManager);
+//
+//        query.from(post)
+//                .where(post.postType.contains(postType));
+//
+//        long total = query.fetchCount();
+//
+//        query.offset(pageable.getOffset())
+//                .limit(pageable.getPageSize());
+//
+//        List<Post> posts = query.fetch();
+//
+//        return new PageImpl<>(posts, pageable, total);
+//    }
 
     @Override
     public Page<Carrot> searchCarrotPaging(int size, int page) {    // 당근 게시판 모든 게시글 검색
@@ -76,10 +76,12 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         JPAQuery<Carrot> query = new JPAQuery<>(entityManager);
         query.from(carrot)
                 .join(carrot.member, member).fetchJoin() // Member와 페치 조인
-                .leftJoin(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
+                .join(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
                 .where(carrot.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
                 .where(carrot.postType.eq("Carrot")); // Carrot 타입만 검색
 
+        log.info("!!!!!!!!!!!!!!!!! : " + query.fetchCount());
+        log.info("@@@@@@@@@@@@ : " + query.fetchFirst().getPostImages());
         long total = query.fetchCount(); // 전체 아이템 수 가져오기
 
         List<Carrot> carrots = query.offset(pageable.getOffset())
@@ -126,10 +128,10 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .where(qPost.postId.eq(postId)
                         .and(qPost.postType.eq(postType)))
                 .fetchOne();
-
         if (result == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
+        log.info("Found post By Id: " + result);
 
         return result;
     }
@@ -142,6 +144,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .set(post.views, post.views.add(1))
                 .where(post.postId.eq(postId))
                 .execute();
+        log.info(executed + " views updated");
     }
 
 }

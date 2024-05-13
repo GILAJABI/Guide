@@ -19,12 +19,10 @@ public class CommentDTO {
     private Long commentId;
 
     @NotEmpty
-    private String content;
+    private String commentContent;
 
-    @CreatedDate
     private LocalDateTime registerDate;
 
-    @LastModifiedDate
     private LocalDateTime modifyDate;
 
     @NotNull

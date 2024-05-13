@@ -11,7 +11,7 @@ public interface AllPostSearch {
 
     List<Post> searchPost(String postType);
 
-    Page<Post> searchPostPaging(String postType,int size, int page);
+//    Page<Post> searchPostPaging(String postType,int size, int page);
 
     List<Post> searchPostContaining(String searchValue, String postType);
 
