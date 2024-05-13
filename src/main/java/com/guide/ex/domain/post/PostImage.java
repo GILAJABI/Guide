@@ -28,6 +28,15 @@ public class PostImage {
     @JoinColumn(name = "post_id")       // Post테이블의 외래키로 받아옴
     private Post post;
 
+    // 순환 참조 방지
+    @Override
+    public String toString() {
+        return "PostImage{" +
+                "id=" + imageId +
+                ", uuid='" + uuid + '\'' +
+                ", fileName='" + fileName + '\'' +
+                '}';
+    }
     public void setPost(Post post) {
         this.post = post;
     }
