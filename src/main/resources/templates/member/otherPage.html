@@ -35,11 +35,9 @@
                     <p>[[${member.getGenderDescription()}]]</p>
                 </div>
                 <div id="chatImg">
-                    <form action="/chat/chatRoom.html" method="get">
-                        <button type="submit" class="chat_room">
+                        <button id="startChat">
                             <img th:src="@{/image/chattingBtn.png}" alt="채팅 걸기">
                         </button>
-                    </form>
                 </div>
             </div>
             <div id="otherCount">
@@ -111,9 +109,23 @@
     </section>
 </div>
 
-<script>
-</script>
+<script th:inline="javascript">
+    /* 서버로부터 받은 로그인한 사용자의 memberId */
+    const senderId = [[${senderId}]];
+    /* 선택된 상대방 사용자의 memberId */
+    const receiverId = [[${receiverId}]];
 
+    document.getElementById('startChat').addEventListener('click', function() {
+        fetch(`/api/chat/create?senderId=${senderId}&receiverId=${receiverId}`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = `chat/chatRoom.html?roomId=${data.roomId}`;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 
 </body>
 
