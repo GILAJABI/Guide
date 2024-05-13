@@ -25,7 +25,7 @@ import java.util.Optional;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString(exclude = "post")
+@ToString(exclude = "post")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 public class Comment{

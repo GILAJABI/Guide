@@ -3,27 +3,23 @@ package com.guide.ex.controller.post;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
-import com.guide.ex.repository.search.AllPostSearchImpl;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Controller
 @Log4j2
@@ -132,11 +128,17 @@ public class PostController {
 
     }
 
-    @PostMapping("/joinDetail")
-    public String registerComment(@RequestParam("commentContent") String commentContent,
-                                  @RequestParam("postId") Long postId,
-                                  @RequestParam("memberId") Long memberId,
-                                  RedirectAttributes redirectAttributes) {
+    @PostMapping("/carrotDetail")
+    public ResponseEntity<?> registerComment(
+            @RequestParam("commentContent") String commentContent,
+            @RequestParam("postId") Long postId,
+            @RequestParam("memberId") Long memberId,
+            RedirectAttributes redirectAttributes) {
+
+        if (commentContent == null || postId == null || memberId == null) {
+            return ResponseEntity.badRequest().body("Null values are not allowed.");
+        }
+
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setCommentContent(commentContent);
         commentDTO.setPostId(postId);
@@ -144,11 +146,9 @@ public class PostController {
 
         try {
             Long commentId = commentService.register(commentDTO);
-            redirectAttributes.addFlashAttribute("successMessage", "댓글이 성공적으로 등록되었습니다. ID: " + commentId);
+            return ResponseEntity.ok("Comment created with ID: " + commentId);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "댓글 등록 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create comment: " + e.getMessage());
         }
-        return "redirect:/post/joinDetail";
     }
-
 }
