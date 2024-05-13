@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -165,37 +166,27 @@ public class PostController {
 
     }
 
-    @PostMapping("/carrotDetail")
-    public ResponseEntity<?> registerComment(
-            HttpSession session,
-            @RequestParam("commentContent") String commentContent,
-            @RequestParam("postId") Long postId,
-            RedirectAttributes redirectAttributes) {
+    @PostMapping("/comment") // 요청 경로 수정
+    public String addComment(HttpSession session,
+                             @RequestParam("commentContent") String commentContent,
+                             @RequestParam("postId") Long postId) {
 
         Long memberId = (Long) session.getAttribute("member_id");
-
-        if (commentContent == null || postId == null || memberId == null) {
-            return ResponseEntity.badRequest().body("Null values are not allowed.");
-        }
 
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setCommentContent(commentContent);
         commentDTO.setPostId(postId);
         commentDTO.setMemberId(memberId);
 
-        try {
-            commentService.register(commentDTO);
-
-            // PageRequestDTO 생성 및 초기화
-            PageRequestDTO pageRequestDTO = new PageRequestDTO();
-            pageRequestDTO.setPage(1); // 첫 페이지
-            pageRequestDTO.setSize(10); // 페이지 당 댓글 수
-
-            PageResponseDTO<CommentDTO> responseDTO = commentService.getListOfPost(postId, pageRequestDTO);
-            List<CommentDTO> updatedComments = responseDTO.getDtoList();  // DTO 리스트를 직접 가져옵니다.
-            return ResponseEntity.ok(updatedComments);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create comment: " + e.getMessage());
-        }
+        commentService.register(commentDTO);
+        return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
     }
+
+    @GetMapping("/comment")
+    @ResponseBody
+    public PageResponseDTO<CommentDTO> getComments(@RequestParam("postId") Long postId, PageRequestDTO requestDTO) {
+        PageResponseDTO<CommentDTO> comments = commentService.getListOfPost(postId, requestDTO);
+        return comments;
+    }
+
 }
