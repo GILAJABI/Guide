@@ -1,7 +1,7 @@
 // const roomId = "YOUR_ROOM_ID"; // 실제 채팅방의 식별자로 대체해야 합니다.
 
 // STOMP 클라이언트 생성
-const socket = new SockJS('http:192.168.0.12:8888/connection');
+const socket = new SockJS('http:192.168.0.13:8888/connection');
 // const socket = new SockJS('http://192.168.0.12:8888/connection');
 const stompClient = Stomp.over(socket);
 
@@ -48,6 +48,8 @@ stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
 
 document.addEventListener("DOMContentLoaded", function() {
 
+    const roomId = document.body.getAttribute('data-room-id');
+
     document.getElementById("chatForm").addEventListener("submit", function(event) {
         event.preventDefault(); // 폼 기본 동작 중단
         //
@@ -70,14 +72,13 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Message entered:", message);
 
         // 메시지를 서버로 전송
-        let roomId = 1;
         // let memberId = sessionStorage.getItem("session_member_id")
         // let memberName = sessionStorage.getItem("member_name")
         const chatMessageDTO = {
             chatMsg: message,
             memberId: myId,
             memberName: memberName,
-            chatRoom: roomId,
+            roomId: roomId,
             registDate: new Date().toISOString()
         };
         console.log(chatMessageDTO)
