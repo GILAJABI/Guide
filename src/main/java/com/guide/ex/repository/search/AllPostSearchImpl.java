@@ -94,18 +94,19 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
         QPost post = QPost.post;
+
         JPAQuery<Post> query = new JPAQuery<>(entityManager);
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
         // 게시판 유형에 맞는 게시글만 필터링
         booleanBuilder.and(post.postType.eq(postType));
         if (searchValue != null && !searchValue.trim().isEmpty()) {
-            booleanBuilder.andAnyOf(
+            booleanBuilder.andAnyOf(    // 여러 조건 중 하나라도 참이면 전체 조건이 참
                     post.title.contains(searchValue),
-                    post.content.contains(searchValue)
+                    post.content.contains(searchValue),
+                    post.member.name.contains(searchValue)
             );
         }
-
         query.select(post).from(post).where(booleanBuilder);
         return query.fetch();
     }

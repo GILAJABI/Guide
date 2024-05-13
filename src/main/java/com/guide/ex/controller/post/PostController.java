@@ -80,6 +80,7 @@ public class PostController {
     @GetMapping("/carrotDetail")
     public String carrotDetail(Model model, Long postId) {
         Post post = postService.postDetailRead(postId);
+
         System.out.println("-----------------------");
         System.out.println(post.getContent());
         System.out.println("-----------------------");
@@ -95,7 +96,37 @@ public class PostController {
         return "post/carrotDetail";
     }
 
+    @PostMapping("/delete/{postId}")
+    public String deletePost(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
+        try {
+            if (postService.deletePost(postId, memberId)) {
+                redirectAttributes.addFlashAttribute("successMessage", "게시글이 성공적으로 삭제되었습니다.");
+                return "redirect:/post/carrotMain";
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "게시글 삭제에 실패하였습니다.");
+                return "redirect:/post/carrotMain";
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "오류 발생: " + e.getMessage());
+            return "redirect:/error-page";
+        }
+    }
 
+//    @PostMapping("/delete/{postId}")
+//    public String postSearchValue(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
+//        try {
+//            if (postService.deletePost(postId, memberId)) {
+//                redirectAttributes.addFlashAttribute("successMessage", "게시글이 성공적으로 삭제되었습니다.");
+//                return "redirect:/post/carrotMain";
+//            } else {
+//                redirectAttributes.addFlashAttribute("errorMessage", "게시글 삭제에 실패하였습니다.");
+//                return "redirect:/post/carrotMain";
+//            }
+//        } catch (Exception e) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "오류 발생: " + e.getMessage());
+//            return "redirect:/error-page";
+//        }
+//    }
 
     @GetMapping("/reviewDetail")
     public void reviewDetail() {
@@ -103,7 +134,7 @@ public class PostController {
     }
 
     @GetMapping("/joinDetail")
-    public void joinDetail(){
+    public void joinDetail() {
 
     }
 

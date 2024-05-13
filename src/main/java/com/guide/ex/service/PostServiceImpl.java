@@ -332,7 +332,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     @Override
     public Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable) {
         return null;

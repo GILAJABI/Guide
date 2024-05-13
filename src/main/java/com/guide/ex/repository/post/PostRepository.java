@@ -15,5 +15,4 @@ public interface PostRepository extends JpaRepository<Post, Long>, AllPostSearch
     Optional<List<Post>> findAllByMember(Member member);
     Page<Post> findAllByMember(Member member, Pageable pageable);
     List<Post> findTop5ByMemberOrderByPostIdDesc(Member member);
-    PostDTO postDelelteById(Long id);
 }
