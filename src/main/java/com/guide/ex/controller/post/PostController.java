@@ -3,7 +3,6 @@ package com.guide.ex.controller.post;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
-import com.guide.ex.repository.search.AllPostSearchImpl;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-
 
 @Controller
 @Log4j2
@@ -81,14 +78,15 @@ public class PostController {
     @GetMapping("/carrotDetail")
     public String carrotDetail(Model model, Long postId) {
         Post post = postService.postDetailRead(postId, "Carrot");
-        CarrotDTO carrotDTO = new CarrotDTO();
-        int price = carrotDTO.getPrice();
-        List<ImageDTO> imageDTOS =  carrotDTO.getImageDTOs();
+        System.out.println("-----------------------");
+        System.out.println(post.getContent());
+        System.out.println("-----------------------");
+        log.info("postImage {}, postId {}", post.getPostImages(), post.getPostId());
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
 
-        MemberDTO memberDTO = new MemberDTO();
-        String name = memberDTO.getName();
         model.addAttribute("post", post);
-        model.addAttribute("price", price);
         model.addAttribute("imageDTOS", imageDTOS);
 
         return "post/carrotDetail";

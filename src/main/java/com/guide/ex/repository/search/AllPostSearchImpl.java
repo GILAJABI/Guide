@@ -128,7 +128,6 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .where(qPost.postId.eq(postId)
                         .and(qPost.postType.eq(postType)))
                 .fetchOne();
-
         if (result == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
