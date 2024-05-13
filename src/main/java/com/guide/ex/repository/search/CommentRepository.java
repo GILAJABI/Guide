@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT c FROM Comment c WHERE c.post.id = :postId")
+    @Query("SELECT c FROM Comment c WHERE c.post.id = :postId ORDER BY c.registerDate desc")
     Page<Comment> listOfPost(@Param("postId") Long postId, Pageable pageable);
 
     @Query("SELECT c FROM Comment c WHERE c.member.id = :memberId")
