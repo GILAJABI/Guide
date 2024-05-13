@@ -1,8 +1,6 @@
 package com.guide.ex.service;
 
-import com.guide.ex.domain.post.Join;
 import com.guide.ex.domain.post.Post;
-import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,7 @@ public interface PostService {
     void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
     void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
-    void postDetailRead(Long memberId, String postType);
+    Post postDetailRead(Long memberId, String postType);
 //    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
     List<PostDTO> postSelectAll(String searchValue, String postType);
 

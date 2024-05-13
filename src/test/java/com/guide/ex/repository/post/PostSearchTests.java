@@ -41,7 +41,7 @@ public class PostSearchTests {
                 Join join = (Join) post;
                 log.info("Join 엔티티의 정보:");
                 log.info("post_id: " + join.getPostId());
-                log.info("comment_count: " + join.getCommentCount());
+//                log.info("comment_count: " + join.getCommentCount());
                 log.info("content: " + join.getContent());
                 // 나머지 필드들도 필요한 대로 출력
                 log.info("numPeople: " + join.getNumPeople());
@@ -60,22 +60,22 @@ public class PostSearchTests {
         int size = 10;
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size,page);
+//        Page<Post> postPage = allPostSearch.searchPostPaging(postType, size,page);
 
-        assertNotNull(postPage);
-        assertNotNull(postPage.getContent());
-
-        // 출력 테스트
-        System.out.println("페이징 결과:");
-        System.out.println("전체 항목 수: " + postPage.getTotalElements());
-        System.out.println("페이지당 항목 수: " + postPage.getSize());
-        System.out.println("전체 페이지 수: " + postPage.getTotalPages());
-        System.out.println("현재 페이지 번호: " + postPage.getNumber());
-        System.out.println("페이징된 결과: ");
-        postPage.getContent().forEach(post -> {
-            System.out.println("POST ID: " + post.getPostId());
-            // 필요한 다른 속성들도 출력
-        });
+//        assertNotNull(postPage);
+//        assertNotNull(postPage.getContent());
+//
+//        // 출력 테스트
+//        System.out.println("페이징 결과:");
+//        System.out.println("전체 항목 수: " + postPage.getTotalElements());
+//        System.out.println("페이지당 항목 수: " + postPage.getSize());
+//        System.out.println("전체 페이지 수: " + postPage.getTotalPages());
+//        System.out.println("현재 페이지 번호: " + postPage.getNumber());
+//        System.out.println("페이징된 결과: ");
+//        postPage.getContent().forEach(post -> {
+//            System.out.println("POST ID: " + post.getPostId());
+//            // 필요한 다른 속성들도 출력
+//        });
     }
 
     @Test

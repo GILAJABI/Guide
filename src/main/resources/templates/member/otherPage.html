@@ -42,6 +42,7 @@
 <!--                </div>-->
                 <div>
                     <p id="chatting">1:1 채팅</p>
+
                 </div>
 <!--                <div id="chatImg">-->
 <!--                    <form action="/chat/create" method="post" >-->
@@ -126,6 +127,25 @@
         </div>
     </section>
 </div>
+
+<script th:inline="javascript">
+    /* 서버로부터 받은 로그인한 사용자의 memberId */
+    const senderId = [[${senderId}]];
+    /* 선택된 상대방 사용자의 memberId */
+    const receiverId = [[${receiverId}]];
+
+    document.getElementById('startChat').addEventListener('click', function() {
+        fetch(`/api/chat/create?senderId=${senderId}&receiverId=${receiverId}`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = `chat/chatRoom.html?roomId=${data.roomId}`;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
 </body>
 
 </html>
