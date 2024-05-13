@@ -5,8 +5,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" th:href="@{/css/post/carrotDetail.css}">
-<!--    <script th:src="@{/js/post/carrotDetail.js}"></script>-->
+    <!--    <link rel="stylesheet" th:href="@{/css/post/carrotDetail.css}">-->
+    <!--        <script th:src="@{/js/post/carrotDetail.js}"></script>-->
+
+    <script>
+        var postId = `[[${post.postId}]]`;
+        console.log("===============postId======================");
+        console.log(postId);
+        console.log("===========================================");
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // 페이지 로드될 때 댓글을 가져오는 함수 호출
+            loadComments(1);
+        });
+
+        // 댓글을 가져와서 HTML에 표시하는 함수
+        function loadComments(page) {
+            // Ajax를 사용하여 서버에서 특정 페이지의 댓글 데이터를 가져옵니다.
+            fetch("/post/comment?postId=" + postId + "&page=" + page)
+                .then(response => response.json()) // JSON 데이터로 변환
+                .then(data => {
+                    // 서버에서 받은 데이터를 처리하여 HTML에 표시
+                    displayComments(data.dtoList);
+                    // 페이징 버튼을 생성합니다.
+                    displayPagination(data);
+                })
+                .catch(error => {
+                    console.error('댓글을 불러오는 중 에러가 발생했습니다:', error);
+                });
+        }
+
+        // 댓글을 HTML에 표시하는 함수
+        function displayComments(comments) {
+            var commentList = document.getElementById("commentList");
+            commentList.innerHTML = ''; // 기존 댓글을 지웁니다.
+            comments.forEach(function (comment) {
+                var li = document.createElement('li');
+                li.innerHTML = `
+                    <p>작성자: ${comment.memberId} / 내용: ${comment.commentContent} / 등록일자: ${comment.registerDate}</p>
+                `;
+                commentList.appendChild(li);
+            });
+        }
+
+        // 페이징 버튼을 생성하는 함수
+        function displayPagination(data) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = ''; // 기존 페이징 버튼을 지웁니다.
+
+            var totalPages = Math.ceil(data.total / data.size); // 전체 페이지 수 계산
+
+            for (var i = 1; i <= totalPages; i++) {
+                var button = document.createElement('button');
+                button.textContent = i;
+                button.addEventListener("click", function () {
+                    loadComments(this.textContent); // 버튼을 클릭하면 해당 페이지의 댓글을 가져옵니다.
+                });
+                pagination.appendChild(button);
+            }
+        }
+
+    </script>
 </head>
 
 <body>
@@ -61,24 +120,23 @@
                     <button>수정</button>
 
                     <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
-                        <input type="hidden" name="postId" th:value="${post.postId}" />
-                        <input type="hidden" name="memberId" th:value="${post.member.memberId}" />
+                        <input type="hidden" name="postId" th:value="${post.postId}"/>
+                        <input type="hidden" name="memberId" th:value="${post.member.memberId}"/>
                         <button type="submit">삭제</button>
                     </form>
                 </div>
 
 
-
-            <h1 th:text="'제목 : ' + ${post.title}">상품설명</h1>
+                <h1 th:text="'제목 : ' + ${post.title}">상품설명</h1>
                 <h2 th:text="'가격 : ' + ${post.price} + '원'">가격</h2>
                 <h2 th:text="'거래 상태 : ' + ${post.status==false ? '판매중' : '판매완료'}">상태</h2>
                 <div class="line">
                     <!-- 프로필 정보 추가 -->
                     <div class="profile-info">
-<!--                        <img th:if="${post.getPostImages() != null && !post.imageDTOs.isEmpty()}"-->
-<!--                             th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"-->
-<!--                             alt="사용자가 게시한 이미지"-->
-<!--                             th:onerror="@{/images/default.jpg}">-->
+                        <!--                        <img th:if="${post.getPostImages() != null && !post.imageDTOs.isEmpty()}"-->
+                        <!--                             th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"-->
+                        <!--                             alt="사용자가 게시한 이미지"-->
+                        <!--                             th:onerror="@{/images/default.jpg}">-->
                         <h3 class="nickname" th:text="'닉네임 : ' + ${post.member.getName()}">닉네임</h3>
                     </div>
                     <h3>작성 날짜</h3>
@@ -95,28 +153,64 @@
                 <hr>
                 <p th:text="${post.content}"></p>
 
+                <form th:action="@{/post/comment}" method="post">
+                    <input type="hidden" name="postId" th:value="${post.postId}" />
+                    <input type="hidden" name="memberId" th:value="${memberId}" />
+                    <input type="text" name="commentContent" placeholder="댓글을 입력하세요">
+                    <button type="submit">입력</button>
+                </form>
                 <div class="comment">
-
-                </div>
-                <div class="comment">
-                    <form th:action="@{/post/carrotDetail}" method="post">
-                        <input type="hidden" name="postId" th:value="${post.postId}" />
-                        <input type="hidden" name="memberId" th:value="${memberId}" />
-                        <input type="text" name="commentContent" placeholder="댓글을 입력하세요">
-                        <button type="submit">입력</button>
-                    </form>
-                </div>
-                <div>
-                    <ul id="comment-list">
-                        <li th:each="comment : ${comments}" th:text="${comment}">
-                            <!-- 댓글 추가됨 -->
+                    <ul id="commentList">
                     </ul>
+                    <div id="pagination">
+                    </div>
                 </div>
+
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
+
+<script>
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const postData = new URLSearchParams();
+
+        for (const pair of formData.entries()) {
+            postData.append(pair[0], pair[1]);
+        }
+
+        // 폼 데이터로부터 postId 추출
+        const postId = formData.get("postId");
+
+        fetch(`/post/comment?postId=${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: postData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) { // 서버에서 응답받은 데이터에 id가 포함되어 있는 경우
+                    const commentItem = document.createElement("li");
+                    commentItem.textContent = `${data.authorName}: ${data.content}`; // 작성자 이름과 내용을 표시
+                    commentList.appendChild(commentItem);
+                    form.reset(); // 폼 초기화
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error posting comment: " + error.message);
+            });
+    });
+
+
+</script>
 </body>
 
 </html>
