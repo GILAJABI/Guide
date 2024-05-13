@@ -28,17 +28,29 @@
                     </div>
                 </div>
                 <div id="name">
-                    [[${member.name}]]
+                    <p>[[${member.name}]]</p>
                 </div>
-                <div id="userInfo">
-                    <p>[[${member.getAgeRange()}]]</p>
-                    <p>[[${member.getGenderDescription()}]]</p>
+                <div id="info">
+                    <table id="info_table">
+                        <p>한 줄 소개</p>
+                        <span id="info_content">[[${member.profileInfo.content}]]</span>
+                    </table>
                 </div>
-                <div id="chatImg">
-                        <button id="startChat">
-                            <img th:src="@{/image/chattingBtn.png}" alt="채팅 걸기">
-                        </button>
+<!--                <div id="userInfo">-->
+<!--                    <p>[[${member.getAgeRange()}]]</p>-->
+<!--                    <p>[[${member.getGenderDescription()}]]</p>-->
+<!--                </div>-->
+                <div>
+                    <p id="chatting">1:1 채팅</p>
+
                 </div>
+<!--                <div id="chatImg">-->
+<!--                    <form action="/chat/create" method="post" >-->
+<!--                        <button type="submit" class="chat_room">-->
+<!--                    <img th:src="@{/image/chattingBtn.png}" alt="채팅 걸기">-->
+<!--                        </button>-->
+<!--                    </form>-->
+<!--                </div>-->
             </div>
             <div id="otherCount">
                 <div id="like">
@@ -57,10 +69,17 @@
             <p id="report">신고</p>
         </div>
         <div id="right">
-            <div id="info">
-                <p>한줄 소개</p>
-                <p id="content">[[${member.profileInfo.content}]]</p>
+            <!--            <div id="userInfo">-->
+            <p id="otherInfo">상세 정보</p>
+            <!--                </div>-->
+            <div id="userInfo">
+                <div class="cir">[[${member.getAgeRange()}]]</div>
+                <div class="cir">[[${member.getGenderDescription()}]]</div>
             </div>
+<!--            <div id="info">-->
+<!--                <p>한줄 소개</p>-->
+<!--                <p id="content">[[${member.profileInfo.content}]]</p>-->
+<!--            </div>-->
             <div id="mbti">
                 <p>나의 여행 유형</p>
                 <p id="userMbti">
