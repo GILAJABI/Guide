@@ -128,7 +128,7 @@ public class MemberController {
     public String otherPage(@PathVariable Long memberId, HttpSession session, Model model) {
         Long senderId = (Long) session.getAttribute("member_id");
 
-        if(senderId.equals(memberId)){
+        if(senderId != null && senderId.equals(memberId)){
             return "redirect:/member/myPage";
         }
 
