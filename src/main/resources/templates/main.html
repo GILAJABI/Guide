@@ -108,7 +108,16 @@
     <div></div>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:if="session.member_id != null">
+    let session_member_id= [[${session.member_id}]]
+    let session_member_name = `[[${session.member_name}]]`
 
+    sessionStorage.setItem("member_id", session_member_id)
+    sessionStorage.setItem("member_name", session_member_name)
+
+    console.log(sessionStorage.getItem("member_id"))
+    console.log(sessionStorage.getItem("member_name"))
+</script>
 <script>
     var currentImageIndex = 1; // 기본적으로 첫 번째 이미지가 보입니다.
     function toggleImages() {
@@ -153,15 +162,15 @@
 
     var otherMembers = /*[[${otherMembers}]]*/ '';
 
-    for (var i = 0; i < otherMembers.length; i++) {
-        var member = otherMembers[i]
-        console.log(member.memberId)
-        console.log('나이: ', member.ageRange)
-        console.log('이름: ', member.name)
-        console.log('mbti: ', member.profileInfo.travelType)
-        console.log('사진uuid: ', member.profileInfo.uuid)
-        console.log('사진이름: ', member.profileInfo.fileName)
-    }
+    // for (var i = 0; i < otherMembers.length; i++) {
+    //     var member = otherMembers[i]
+    //     console.log(member.memberId)
+    //     console.log('나이: ', member.ageRange)
+    //     console.log('이름: ', member.name)
+    //     console.log('mbti: ', member.profileInfo.travelType)
+    //     console.log('사진uuid: ', member.profileInfo.uuid)
+    //     console.log('사진이름: ', member.profileInfo.fileName)
+    // }
 
     for (var i = 0; i < otherMembers.length; i++) {
         var member = otherMembers[i]
