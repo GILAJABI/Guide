@@ -1,6 +1,7 @@
 package com.guide.ex.domain.post;
 
 import com.guide.ex.domain.member.Member;
+import com.guide.ex.domain.member.MemberProfile;
 import com.sun.xml.bind.v2.TODO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

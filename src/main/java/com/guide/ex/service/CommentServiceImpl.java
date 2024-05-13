@@ -1,10 +1,13 @@
 package com.guide.ex.service;
 
 import com.guide.ex.domain.member.Member;
+import com.guide.ex.domain.member.MemberProfile;
 import com.guide.ex.domain.post.Comment;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.member.MemberProfileDTO;
 import com.guide.ex.dto.post.CommentDTO;
 import com.guide.ex.dto.post.PostDTO;
 import com.guide.ex.repository.member.MemberRepository;
@@ -103,6 +106,8 @@ public class CommentServiceImpl implements CommentService {
             }
             if (comment.getMember() != null) {
                 commentDTO.setMemberId(comment.getMember().getId());
+                MemberDTO memberDTO = modelMapper.map(comment.getMember(), MemberDTO.class);
+                commentDTO.setMember(memberDTO);
             }
             return commentDTO;
         }).collect(Collectors.toList());
