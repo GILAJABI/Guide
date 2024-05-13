@@ -11,6 +11,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,11 +69,14 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatRoom> chatRooms;
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessages;
+
+    @OneToMany(mappedBy = "sender")
+    private List<ChatRoom> sentChatRooms;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<ChatRoom> receivedChatRooms;
 
 //    private List<Comment> comments;
 

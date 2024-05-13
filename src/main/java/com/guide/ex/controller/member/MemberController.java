@@ -123,10 +123,17 @@ public class MemberController {
     }
 
     @GetMapping("/otherPage/{memberId}")
-    public String otherPage(@PathVariable Long memberId, Model model) {
+    public String otherPage(@PathVariable Long memberId, HttpSession session, Model model) {
+        Long senderId = (Long) session.getAttribute("member_id");
+        // 상대방의 memberId와 로그인한 사용자의 memberId를 모델에 추가
+        model.addAttribute("receiverId", memberId);
+        model.addAttribute("senderId", senderId);
+
+        // 나머지 로직 처리
         MemberDTO memberDTO = memberService.memberReadOne(memberId);
         model.addAttribute("member", memberDTO);
         model.addAttribute("profile", memberDTO.getProfileInfo());
+
         return "member/otherPage";
     }
 }

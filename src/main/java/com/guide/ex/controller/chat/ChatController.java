@@ -21,7 +21,6 @@ public class ChatController {
 //        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
 //        if (room != null) {
 //            chatMessageRepository.save(message);
-        System.out.println(message.toString());
             messagingTemplate.convertAndSend("/topic/chat/room/", message);
         //}
     }
