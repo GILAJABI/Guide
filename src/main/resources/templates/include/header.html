@@ -7,47 +7,55 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
-    <header id="header">
-        <ul id="list">
-            <div class="left-group">
-                <li id="travelmaker">
-                    <a class="a-link" th:href="@{/main}" target="_parent"><img src="../../image/logo.png"></a>
-                </li>
-            </div>
-            <div class="center-group">
-                <li>
-                    <a class="a-link" th:href="@{/main}" target="_parent">홈</a>
-                </li>
-                <li id="community">
-                    <a class="a-link" href="#" target="_parent">커뮤니티</a>
-                </li>
-                <li id="chat">
-                    <a class="a-link" href="#" target="_parent">채팅</a>
-                </li>
-            </div>
+<header id="header">
+    <ul id="list">
+        <div class="left-group">
+            <li id="travelmaker">
+                <a class="a-link" th:href="@{/main}" target="_parent"><img src="../../image/logo.png"></a>
+            </li>
+        </div>
+        <div class="center-group">
+            <li>
+                <a class="a-link" th:href="@{/main}" target="_parent">홈</a>
+            </li>
+            <li id="community">
+                <a class="a-link" href="#" target="_parent">커뮤니티</a>
+            </li>
+            <li id="chat">
+                <a class="a-link" href="#" target="_parent">채팅</a>
+            </li>
+        </div>
 
-            <div class="right-group" th:if="${session.member_id != null}">
-                <form id="logoutForm" method="post" action="/member/logout">
-                    <li id="mypage">
-                        <a class="a-link" th:href="@{/member/myPage}" target="_parent">마이페이지</a>
-                    </li>
-                    <li id="logout" onclick="document.getElementById('logoutForm').submit();">
-                        <a class="a-link" href="#">로그아웃</a>
-                    </li>
-                </form>
-            </div>
-            <div class="right-group" th:unless="${session.member_id != null}">
-                <li id="login">
-                    <a class="a-link" href="/member/login" target="_parent">로그인</a>
+        <div class="right-group" th:if="${session.member_id != null}">
+            <form id="logoutForm" method="post" action="/member/logout">
+                <li id="mypage">
+                    <a class="a-link" th:href="@{/member/myPage}" target="_parent">마이페이지</a>
                 </li>
-                <li id="block">
-                    |
+                <li id="logout" onclick="logout()">
+                    <a class="a-link" href="#">로그아웃</a>
                 </li>
-                <li id="signUp">
-                    <a class="a-link" href="/member/signUp" target="_parent">회원가입</a>
-                </li>
-            </div>
-        </ul>
-    </header>
+
+            </form>
+        </div>
+        <div class="right-group" th:unless="${session.member_id != null}">
+            <li id="login">
+                <a class="a-link" href="/member/login" target="_parent">로그인</a>
+            </li>
+            <li id="block">
+                |
+            </li>
+            <li id="signUp">
+                <a class="a-link" href="/member/signUp" target="_parent">회원가입</a>
+            </li>
+        </div>
+    </ul>
+</header>
+
+<script>
+    function logout() {
+        sessionStorage.clear();
+        document.getElementById('logoutForm').submit();
+    }
+</script>
 </body>
 </html>
