@@ -2,6 +2,8 @@ package com.guide.ex.controller.post;
 
 import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.Post;
+import com.guide.ex.dto.PageRequestDTO;
+import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
 import com.guide.ex.service.CommentService;
@@ -33,6 +35,7 @@ public class PostController {
     private PostService postService;
     @Autowired
     private CommentService commentService;
+    private PageRequestDTO pageRequestDTO;
 
 
     @GetMapping("/carrotWrite")
@@ -164,10 +167,12 @@ public class PostController {
 
     @PostMapping("/carrotDetail")
     public ResponseEntity<?> registerComment(
+            HttpSession session,
             @RequestParam("commentContent") String commentContent,
             @RequestParam("postId") Long postId,
-            @RequestParam("memberId") Long memberId,
             RedirectAttributes redirectAttributes) {
+
+        Long memberId = (Long) session.getAttribute("member_id");
 
         if (commentContent == null || postId == null || memberId == null) {
             return ResponseEntity.badRequest().body("Null values are not allowed.");
@@ -179,8 +184,16 @@ public class PostController {
         commentDTO.setMemberId(memberId);
 
         try {
-            Long commentId = commentService.register(commentDTO);
-            return ResponseEntity.ok("Comment created with ID: " + commentId);
+            commentService.register(commentDTO);
+
+            // PageRequestDTO 생성 및 초기화
+            PageRequestDTO pageRequestDTO = new PageRequestDTO();
+            pageRequestDTO.setPage(1); // 첫 페이지
+            pageRequestDTO.setSize(10); // 페이지 당 댓글 수
+
+            PageResponseDTO<CommentDTO> responseDTO = commentService.getListOfPost(postId, pageRequestDTO);
+            List<CommentDTO> updatedComments = responseDTO.getDtoList();  // DTO 리스트를 직접 가져옵니다.
+            return ResponseEntity.ok(updatedComments);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create comment: " + e.getMessage());
         }

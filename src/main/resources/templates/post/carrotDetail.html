@@ -88,7 +88,7 @@
                     <h3 class="line-item" th:text="${post.views} + ' views'">조회수</h3>
                 </div>
 
-
+                carrot
                 <div class="line">
                     <h3>상품 상태 | 새상품</h3>
                 </div>
@@ -99,13 +99,8 @@
 
                 </div>
                 <div class="comment">
-<!--                    <div class="profile-info">-->
-<!--                        <img th:src="@{/image/profile.jpg}" alt="프로필 사진" class="profile-pic">-->
-<!--                        <h4 class="nickname">닉네임</h4>-->
-<!--                        <h4>댓글 : </h4>-->
-<!--                    </div>-->
                     <form th:action="@{/post/carrotDetail}" method="post">
-                        <input type="hidden" name="postId" th:value="${postId}" />
+                        <input type="hidden" name="postId" th:value="${post.postId}" />
                         <input type="hidden" name="memberId" th:value="${memberId}" />
                         <input type="text" name="commentContent" placeholder="댓글을 입력하세요">
                         <button type="submit">입력</button>
