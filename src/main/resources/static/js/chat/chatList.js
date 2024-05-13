@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // 모든 .list_div 요소를 선택하고 클릭 이벤트 리스너를 추가합니다.
-    var listDivElements = document.querySelectorAll('.chat_room');
+    var listDivElements = document.querySelectorAll('.list_div');
     listDivElements.forEach(function(element) {
         element.addEventListener('click', function() {
             window.open('chatRoom.html', '_blank', 'width=375px,height=667px');
