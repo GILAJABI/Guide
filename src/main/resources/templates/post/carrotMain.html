@@ -57,8 +57,9 @@
                 <a href="#" class="filter-link">댓글순</a>
             </div>
             <div id="use">
-                <form th:action="@{/post/search/}">
-                    <input type="text" name="query" id="searchInp" >
+                <form th:action="@{/post/carrotMain/search}" method="post">
+                    <input type="text" name="searchValue" id="searchInp">
+                    <input type="hidden" name="postType" value="Carrot"> <!-- postType을 전달 -->
                     <button type="submit" id="searchBtn">
                         <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
                     </button>

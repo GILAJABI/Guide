@@ -1,10 +1,8 @@
 package com.guide.ex.controller.post;
 
-import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
-import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.post.*;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.PostService;
@@ -39,8 +37,37 @@ public class PostController {
     private PageRequestDTO pageRequestDTO;
 
 
+    @GetMapping("/carrotMain")
+    public String carrotMain(@Valid Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
+        System.out.println("-----------------------");
+        System.out.println(posts.getContent());
+        System.out.println("-----------------------");
+        log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
+                posts.getTotalElements(), posts.getTotalPages(), posts.getNumber());
+
+        model.addAttribute("posts", posts);
+        return "post/carrotMain";  // View name for Thymeleaf template
+    }
+
+    @PostMapping("/carrotMain/search")
+    public String searchValue(@RequestParam("searchValue") String searchValue,
+                              @RequestParam("postType") String postType,
+                              Model model) {
+        switch (postType) {
+            case "Carrot":
+            case "Review":
+            case "Join":
+                postService.postSelectAll(searchValue, postType);
+        }
+
+        postService.postSelectAll(searchValue, postType);
+
+        return "redirect:/post/carrotMain";
+    }
+
     @GetMapping("/carrotWrite")
-    public String carrotWtire(HttpSession session) {
+    public String carrotWrite(HttpSession session) {
         if (session.getAttribute("member_id") == null) {
             return "redirect:/member/login";
         }
@@ -142,18 +169,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/carrotMain")
-    public String carrotMain(@Valid Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
-        System.out.println("-----------------------");
-        System.out.println(posts.getContent());
-        System.out.println("-----------------------");
-        log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
-                posts.getTotalElements(), posts.getTotalPages(), posts.getNumber());
 
-        model.addAttribute("posts", posts);
-        return "post/carrotMain";  // View name for Thymeleaf template
-    }
 
 
     @GetMapping("/joinMain")

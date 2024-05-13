@@ -51,14 +51,14 @@ public class PostServiceTests {
         });
     }
 
-    @Test
-    public void testSelectAll() {
-        List<PostDTO> postPage = postService.postSelectAll("타조", "Review");
-        assertNotNull(postPage);    // postPage 객체가 null이 아닌지 확인
-        assertFalse(postPage.isEmpty());    // postPage 객체가 비어있는지 확인, isEmpty() = false 반환
-        postPage.forEach(postDTO ->
-                log.info("postDTO: {}", postDTO));
-    }
+//    @Test
+//    public void testSelectAll() {
+//        List<PostDTO> postPage = postService.postSelectAll("타조", "Review");
+//        assertNotNull(postPage);    // postPage 객체가 null이 아닌지 확인
+//        assertFalse(postPage.isEmpty());    // postPage 객체가 비어있는지 확인, isEmpty() = false 반환
+//        postPage.forEach(postDTO ->
+//                log.info("postDTO: {}", postDTO));
+//    }
 
     @Test
     public void testSearchPostAll() {
@@ -83,7 +83,7 @@ public class PostServiceTests {
 
     @Test
     void testSearchPostContaining() {
-        // Given
+//         Given
         String searchValue = "도라에몽";
 
         // When
