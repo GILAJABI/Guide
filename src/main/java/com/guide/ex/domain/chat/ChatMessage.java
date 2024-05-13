@@ -1,19 +1,21 @@
 package com.guide.ex.domain.chat;
 
+import java.time.LocalDateTime;
 import com.guide.ex.domain.member.Member;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter
+@Setter // 필요에 따라 Setter 추가
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class ChatMessage {
 
     @Id
@@ -22,32 +24,22 @@ public class ChatMessage {
     private Long messageId;
 
     @NotNull
-    @Column(name = "chat_mesg", length = 200)
+    @Column(name = "chat_msg", nullable = false)
     private String chatMsg;
 
-    @NotNull
-    @Column(name = "member_name", length = 200)
-    private String memberName;
-
-    @NotNull
     @CreatedDate
-    @Column(name = "regist_date")
+    @Column(name = "regist_date", nullable = false, updatable = false)
     private LocalDateTime registDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
 
-    public void change(String newMessage, String s) {
-        this.chatMsg = newMessage;
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", insertable=false, updatable=false)
-    private ChatRoom chatroom;
 }

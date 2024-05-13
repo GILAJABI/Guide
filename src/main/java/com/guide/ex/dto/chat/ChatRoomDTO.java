@@ -1,17 +1,17 @@
 package com.guide.ex.dto.chat;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.guide.ex.dto.chat.ChatMessageDTO;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoomDTO {
-    private Long memberId;
-    private Long roomNumber;
+
+    private Long senderId;
+    private Long receiverId;
 }
