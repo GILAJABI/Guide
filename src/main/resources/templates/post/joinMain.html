@@ -49,7 +49,7 @@
                 </a>
             </div>
             <div class="text-section">
-                <span class="board-title" th:text="${post.title}">모집 제목</span>
+                <span class="board-title" th:text="${post.title}">판매 물품 제목</span>
                 <div class="additional-text">
                     <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
                     <p th:text="${post.likeCount} + ' likes'">좋아요수</p>
@@ -75,7 +75,6 @@
                 <li class="page-item" th:classappend="${!posts.hasNext()} ? 'disabled' : ''">
                     <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number + 2}, size=${posts.size})}" th:if="${posts.hasNext()}">Next</a>
                 </li>
-
             </ul>
         </nav>
     </div>
