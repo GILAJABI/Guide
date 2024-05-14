@@ -6,14 +6,13 @@ const socket = new SockJS('http:192.168.0.13:8888/connection');
 const stompClient = Stomp.over(socket);
 
 // 연결 시도
-let authToken;
 let myId = sessionStorage.getItem("member_id")
 let memberName = sessionStorage.getItem("member_name")
 let roomId= [[${room_id}]]
 console.log(roomId);
 
 
-stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
+stompClient.connect( function(frame) {
     console.log('Connected: ' + frame);
     // 메시지를 받았을 때의 동작 정의
     stompClient.subscribe("/topic/chat/room/" + roomId, function(message) {
