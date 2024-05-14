@@ -26,5 +26,7 @@ public interface PostService {
     Page<JoinDTO> joinTypeReadAll(int size, int page, Sort sort);
 
     boolean deletePost(Long postId, Long memberId);
+    String findPostTypeByPostId(Long postId);
 
+    void updatePostCommentCount(Long postId);
 }

@@ -88,4 +88,8 @@ public class Post {
     public void changeDate(LocalDateTime modifyDate) {
         this.modifyDate = modifyDate;
     }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
 }

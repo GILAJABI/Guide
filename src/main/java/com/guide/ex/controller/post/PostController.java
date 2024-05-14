@@ -6,6 +6,7 @@ import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
 import com.guide.ex.service.CommentService;
+import com.guide.ex.service.MemberService;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,7 +33,8 @@ public class PostController {
     private PostService postService;
     @Autowired
     private CommentService commentService;
-    private PageRequestDTO pageRequestDTO;
+    @Autowired
+    private MemberService memberService;
 
 
     @GetMapping("/carrotMain")
@@ -171,7 +173,8 @@ public class PostController {
     @PostMapping("/carrotWrite")
     public String carrotWriteInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
         postService.carrotRegister(carrotDTO, file, session);
-        return "redirect:/main";
+        memberService.updateBoardCount(session);
+        return "redirect:/post/carrotMain";
     }
 
     @GetMapping("/joinWrite")
@@ -185,7 +188,8 @@ public class PostController {
     @PostMapping("/joinWrite")
     public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
         postService.joinRegister(joinDTO, file, session);
-        return "redirect:/main";
+        memberService.updateBoardCount(session);
+        return "redirect:/post/joinMain";
     }
 
     @GetMapping("/reviewWrite")
@@ -199,10 +203,9 @@ public class PostController {
     @PostMapping("/reviewWrite")
     public String reviewWriteInput(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
         postService.reviewRegister(reviewDTO, file, session);
-        return "redirect:/main";
+        memberService.updateBoardCount(session);
+        return "redirect:/post/reviewMain";
     }
-
-
 
     @PostMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
@@ -250,7 +253,22 @@ public class PostController {
         commentDTO.setMemberId(memberId);
 
         commentService.register(commentDTO);
-        return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+        memberService.updateCommentCount(memberId);
+        postService.updatePostCommentCount(postId);
+
+        String postType = postService.findPostTypeByPostId(postId);
+
+        switch (postType) {
+            case "Carrot":
+                return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+            case "Join":
+                return "redirect:/post/joinDetail?postId=" + commentDTO.getPostId();
+            case "Review":
+                return "redirect:/post/reviewDetail?postId=" + commentDTO.getPostId();
+            default:
+                return "redirect:/post/carrotMain";
+        }
+
     }
 
     @GetMapping("/comment")

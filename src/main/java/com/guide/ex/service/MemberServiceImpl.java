@@ -9,6 +9,7 @@ import com.guide.ex.dto.post.PostDTO;
 import com.guide.ex.repository.member.MemberProfileRepository;
 import com.guide.ex.repository.member.MemberRepository;
 import com.guide.ex.repository.post.PostRepository;
+import com.guide.ex.repository.search.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -40,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final MemberProfileRepository memberProfileRepository;
+    private final CommentRepository commentRepository;
 
     // 회원 등록 작업(회원가입)
     @Override
@@ -244,12 +246,32 @@ public class MemberServiceImpl implements MemberService {
         }
         return false;
     }
-//    // 회원 삭제 작업
+
+    //    // 회원 삭제 작업
 //    @Override
 //    public void memberRemove(Long memberId) {
 //        memberProfileRepository.deleteByMemberId(memberId);
 //        memberRepository.deleteById(memberId);
 //    }
+    @Override
+    public void updateCommentCount(Long memberId) {
+        Optional<Member> result = memberRepository.findById(memberId);
+        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+        int memberCommentCount = commentRepository.countByMember(member);
+        member.setCommentCount(memberCommentCount);
 
+        memberRepository.save(member);
+    }
+
+    @Override
+    public void updateBoardCount(HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+        Optional<Member> result = memberRepository.findById(memberId);
+        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+        int memberPostCount = postRepository.countByMember(member);
+        member.setPostCount(memberPostCount);
+
+        memberRepository.save(member);
+    }
 
 }
