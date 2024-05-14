@@ -1,26 +1,36 @@
 body {
-    margin-top: 20px;
-    margin-right: 140px;
-    margin-left: 140px;
+    margin: 20px 140px;
     font-family: 'Pretendard-Regular';
     background-color: #fafafa;
-    position: relative;
 }
 
 #header {
-    text-align: center;
+    width: 1000px;
+    margin: 0 auto;
     font-size: 20px;
+    text-align: center;
 }
 
 #list {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
+    padding: 0;
+    list-style: none;
 }
 
-#list li {
-    display: inline-block;
+.left-group, .center-group, .right-group {
+    display: flex;
+    align-items: center;
+}
+
+.center-group li {
+    margin-right: 50px;
+}
+
+.right-group li {
+    margin-right: 0px;
+    margin-left: 20px;
 }
 
 #list li a {
@@ -28,32 +38,17 @@ body {
     color: #363636;
 }
 
-.left-group {
-    margin-right: auto;
-}
-
-.center-group {
-    margin: 0 auto;
-}
-
-.center-group li {
-    margin-right: 50px;
-}
-
-.right-group {
-    margin-left: auto;
-}
-.right-group li {
-    margin-right: 20px;
-}
-
 img {
     vertical-align: middle;
+}
+
+#logoutForm {
+    width: 200px;
 }
 
 @font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
 }

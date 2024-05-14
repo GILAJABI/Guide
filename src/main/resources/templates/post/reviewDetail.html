@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/post/reviewDetail.css}">
-<!--    <script th:src="@{/js/post/reviewDetail.js}"></script>-->
-
     <script>
         var postId = `[[${post.postId}]]`;
         console.log("===============postId======================");
@@ -93,7 +91,6 @@
 </head>
 
 <body>
-
 <div th:include="/include/header.html"></div>
 <div class="container">
     <header>
@@ -183,7 +180,6 @@
         </div>
     </div>
 </div>
-
 <script>
     function changeHeartIcon() {
         var heartIcon = document.getElementById('heartIcon');
@@ -203,7 +199,6 @@
     });
 </script>
 </div>
-
 </body>
 
 </html>

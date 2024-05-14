@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-        <link rel="stylesheet" th:href="@{/css/post/carrotDetail.css}">
-    <!--        <script th:src="@{/js/post/carrotDetail.js}"></script>-->
-
+    <link rel="stylesheet" th:href="@{/css/post/carrotDetail.css}">
     <script>
         var postId = `[[${post.postId}]]`;
         console.log("===============postId======================");
@@ -39,11 +37,11 @@
         function displayComments(comments) {
             var commentList = document.getElementById("commentList");
             commentList.innerHTML = ''; // 기존 댓글을 지웁니다.
+
             comments.forEach(function (comment) {
+                // 각 댓글을 리스트 아이템으로 추가
                 var li = document.createElement('li');
-                li.innerHTML = `
-                    <p>${comment.member.name}: ${comment.commentContent} 등록일자: ${comment.registerDate}</p>
-                `;
+                li.innerHTML = `<p>${comment.member.name}</p><p>${comment.commentContent}</p><p>${comment.regisgerDate}</p>`;
                 commentList.appendChild(li);
             });
         }
@@ -64,114 +62,73 @@
                 pagination.appendChild(button);
             }
         }
-
     </script>
 </head>
 
 <body>
 <div th:include="/include/header.html"></div>
 <div class="container">
-    <header>
-        <div id="selectMenu">
-            <a th:href="@{/post/joinMain}">모집</a>
-            <a th:href="@{/post/reviewMain}">후기</a>
-            <a th:href="@{/post/carrotMain}" style="color:#FF6392">상품</a>
-        </div>
-        <div id="selectMenu2">
-            <div id="sortMenu">
-                <a href="#" class="filter-link">최신순</a>
-                <a href="#" class="filter-link">인기순</a>
-                <a href="#" class="filter-link">많이 본 순</a>
-                <a href="#" class="filter-link">댓글순</a>
-            </div>
-            <div id="use">
-                <form>
-                    <input type="text" name="query" id="searchInp">
-                    <button type="submit" id="searchBtn">
-                        <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
-                    </button>
-                </form>
-                <button type="submit" id="postBtn">+ 올리기</button>
-            </div>
-        </div>
-    </header>
-
-    <div class="cont">
-        <div class="top">
-            <!-- <div class="snu">
-                <input type="text" class="search">
-
-                <button type="button" class="glass" style="background-image: url('../image/white.png');"></button>
-                <button type="submit" class="upload">올리기</button>
-            </div> -->
-        </div>
-        <div class="bottom">
-
-            <div class="left">
-                <th:block th:each="image : ${imageDTOS}">
-                    <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}"
-                         alt="Uploaded Image"
-                         th:onerror="@{/images/default.jpg}">
-                </th:block>
-            </div>
-
-            <div class="right">
-                <div th:if="${session.member_id == post.member.getMemberId()}">
-                    <button>수정</button>
-
-                    <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
-                        <input type="hidden" name="postId" th:value="${post.postId}" />
-                        <input type="hidden" name="memberId" th:value="${post.member.memberId}" />
-                        <button type="submit">삭제</button>
-                    </form>
+    <div id="selectMenu">
+        <a th:href="@{/post/joinMain}">모집</a>
+        <a th:href="@{/post/reviewMain}">후기</a>
+        <a th:href="@{/post/carrotMain}" style="color:#FF6392">거래</a>
+    </div>
+    <section>
+        <th:block th:each="image : ${imageDTOS}">
+            <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}" alt="Uploaded Image" class="img" th:onerror="@{/images/default.jpg}">
+        </th:block>
+        <div class="sec-container">
+            <div id="left">
+                <p class="regDate" id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
+                <div class="view">
+                    <p th:text="'👀  ' + ${post.views} + ' 명이 조회했어요'"></p>
                 </div>
-
-
-
-                <h1 th:text="'제목 : ' + ${post.title}">상품설명</h1>
-                <h2 th:text="'가격 : ' + ${post.price} + '원'">가격</h2>
-                <h2 th:text="'거래 상태 : ' + ${post.status==false ? '판매중' : '판매완료'}">상태</h2>
-                <div class="line">
-                    <!-- 프로필 정보 추가 -->
-                    <div class="profile-info">
-                        <!--                        <img th:if="${post.getPostImages() != null && !post.imageDTOs.isEmpty()}"-->
-                        <!--                             th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"-->
-                        <!--                             alt="사용자가 게시한 이미지"-->
-                        <!--                             th:onerror="@{/images/default.jpg}">-->
-                        <h3 class="nickname" th:text="'닉네임 : ' + ${post.member.getName()}">닉네임</h3>
-                    </div>
-                    <h3>작성 날짜</h3>
-                    <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
-                    <h3 class="line-item" th:text="${post.likeCount} + ' likes'">좋아요</h3>
-                    <img th:src="@{/image/eye.png}" class="line-item">
-                    <h3 class="line-item" th:text="${post.views} + ' views'">조회수</h3>
+                <p id="location">📍 위치</p>
+                <p id="title" th:text="${post.title}"></p>
+                <p class="text">거래 정보</p>
+                <div class="infoBox">
+                    <p th:text="'🏷️ 가격 : ' + ${post.price} + '원'"></p>
+                    <p th:text="'🫱🏻‍ 거래 상태 : ' + ${post.status==false ? '판매중' : '판매완료'}"></p>
                 </div>
-
-                <div class="line">
-                    <h3>상품 상태 | 새상품</h3>
-                </div>
-                <hr>
-                <p th:text="${post.content}"></p>
-
+                <p class="text">상품 소개</p>
+                <p id="content" th:text="${post.content}"></p>
+                <p class="text">댓글</p>
+                <p id="commentCnt">댓글 0개</p>
                 <form th:action="@{/post/comment}" method="post">
                     <input type="hidden" name="postId" th:value="${post.postId}" />
                     <input type="hidden" name="memberId" th:value="${memberId}" />
-                    <input type="text" name="commentContent" placeholder="댓글을 입력하세요">
+                    <input type="text" name="commentContent" id="comment-input" placeholder="댓글을 입력하세요">
                     <button type="submit">입력</button>
                 </form>
                 <div class="comment">
                     <ul id="commentList">
+                        <li></li>
                     </ul>
                     <div id="pagination">
                     </div>
+                </div> <!--comment-->
+            </div> <!--left-->
+            <div id="right">
+                <p class="text" id="sell">판매자</p>
+                <div class="user">
+                    <div class="profile-container">
+                        <div id="circle">
+                        </div>
+                    </div> <!--profile-container-->
+                    <div class="profile-info">
+                        <p id="name" th:text="${post.member.getName()}"></p>
+<!--                        <p id="age" th:text="${post.member.getYear()}"></p>-->
+<!--                        <p id="gender" th:text="${post.member.getGender()}"></p>-->
+                    </div> <!--profile-info-->
+                </div> <!--user-->
+                <p class="text" id="loc">위치</p>
+                <div class="map">
+
                 </div>
-
-            </div>
-        </div>
-    </div>
-
-</div>
-
+            </div> <!--right-->
+        </div> <!--sec-container-->
+    </section>
+</div> <!--container-->
 <script>
     form.addEventListener("submit", function(e) {
         e.preventDefault();
@@ -208,8 +165,6 @@
                 alert("Error posting comment: " + error.message);
             });
     });
-
-
 </script>
 </body>
 
