@@ -36,35 +36,64 @@ public class PostController {
 
 
     @GetMapping("/carrotMain")
-    public String carrotMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
+    public String carrotMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size,
+                             @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}, Content !!{}",
                 posts.getTotalElements(), posts.getTotalPages(), posts.getNumber(), posts.getContent());
 
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/carrotMain";  // View name for Thymeleaf template
     }
+
     @GetMapping("/carrotMain/view")
-    public String carrotView(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotViewRead(size, page);
-        model.addAttribute("posts", posts);
-        return "post/carrotMain";
+    public String carrotView(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return carrotMain(model, page, size, "views");
     }
 
+
     @GetMapping("/reviewMain")
-    public String reviewMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page);
+    public String reviewMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size,
+                             @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/reviewMain";
+    }
+    @GetMapping("/reviewMain/view")
+    public String reviewView(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return reviewMain(model, page, size, "views");
     }
 
     @GetMapping("/joinMain")
-        public String joinMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page);
+    public String joinMain(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "6") int size,
+                           @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/joinMain";
     }
 
+    @GetMapping("/joinMain/view")
+    public String joinView(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "6") int size) {
+        return joinMain(model, page, size, "views");
+    }
+
+
+    //    검색기능
     @PostMapping("/carrotMain/search")
     public String searchValue(@RequestParam("searchValue") String searchValue,
                               @RequestParam("postType") String postType,

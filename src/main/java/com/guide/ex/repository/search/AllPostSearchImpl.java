@@ -2,7 +2,6 @@ package com.guide.ex.repository.search;
 
 import com.guide.ex.domain.member.QMember;
 import com.guide.ex.domain.post.*;
-import com.guide.ex.dto.post.PostDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,44 +40,21 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .fetch();
     }
 
-
-//    @Override
-//    public Page<Post> searchPostPaging(String postType, int size, int page) {    // 게시판 유형에 따른 모든 게시글 검색
-//        QPost post = QPost.post;
-//
-//        Pageable pageable = PageRequest.of(page - 1, size);
-//
-//        JPAQuery<Post> query = new JPAQuery<>(entityManager);
-//
-//        query.from(post)
-//                .where(post.postType.contains(postType));
-//
-//        long total = query.fetchCount();
-//
-//        query.offset(pageable.getOffset())
-//                .limit(pageable.getPageSize());
-//
-//        List<Post> posts = query.fetch();
-//
-//        return new PageImpl<>(posts, pageable, total);
-//    }
-
     @Override
-    public Page<Carrot> searchCarrotPaging(int size, int page) {    // 당근 게시판 모든 게시글 검색
+    public Page<Carrot> searchCarrotPaging(int size, int page, Sort sort) {
         QCarrot carrot = QCarrot.carrot; // QCarrot 인스턴스 생성
         QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
         QMember member = QMember.member; // Member의 QueryDSL 메타모델
 
         // 페이지 요청과 함께 sort를 사용하여 정렬 설정
-        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
 
         JPAQuery<Carrot> query = new JPAQuery<>(entityManager);
         query.from(carrot)
                 .join(carrot.member, member).fetchJoin() // Member와 페치 조인
                 .join(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
                 .where(carrot.isDeleted.eq(false).and(carrot.postType.eq("Carrot"))) // 삭제되지 않은 Carrot 게시물 검색
-                .orderBy(carrot.registerDate.desc()) // 여러 조건으로 정렬
-
+                .orderBy(sort.equals(Sort.by(Sort.Direction.DESC, "views")) ? carrot.views.desc() : carrot.registerDate.desc()) // 정렬 조건에 따라 정렬
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -92,24 +68,22 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
 
     @Override
-    public Page<Review> searchReviewPaging(int size, int page) {
+    public Page<Review> searchReviewPaging(int size, int page, Sort sort) {
         QReview review = QReview.review; // QCarrot 인스턴스 생성
         QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
         QMember member = QMember.member; // Member의 QueryDSL 메타모델
 
         // 페이지 요청과 함께 registerDate를 기준으로 내림차순 정렬 설정
-        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
 
         JPAQuery<Review> query = new JPAQuery<>(entityManager);
         query.from(review)
                 .join(review.member, member).fetchJoin() // Member와 페치 조인
                 .join(review.postImages, postImage).fetchJoin() // PostImage와 페치 조인
-                .where(review.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
-                .where(review.postType.eq("Review")) // Review 타입만 검색
-                .orderBy(review.registerDate.desc()) // registerDate 기준으로 내림차순 정렬
+                .where(review.isDeleted.eq(false).and(review.postType.eq("Review"))) // 삭제되지 않은 Carrot 게시물 검색
+                .orderBy(sort.equals(Sort.by(Sort.Direction.DESC, "views")) ? review.views.desc() : review.registerDate.desc()) // 정렬 조건에 따라 정렬
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
-
         long total = query.fetchCount(); // 전체 아이템 수 가져오기
         List<Review> reviews = query.fetch(); // 페이지 정보 적용하여 데이터 가져오기
 
@@ -119,21 +93,20 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
     }
 
     @Override
-    public Page<Join> searchJoinPaging(int size, int page) {
-        QJoin join = QJoin.join; // QCarrot 인스턴스 생성
+    public Page<Join> searchJoinPaging(int size, int page, Sort sort) {
+        QJoin join = QJoin.join;
         QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
         QMember member = QMember.member; // Member의 QueryDSL 메타모델
 
         // 페이지 요청과 함께 registerDate를 기준으로 내림차순 정렬 설정
-        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
 
         JPAQuery<Join> query = new JPAQuery<>(entityManager);
         query.from(join)
                 .join(join.member, member).fetchJoin() // Member와 페치 조인
                 .join(join.postImages, postImage).fetchJoin() // PostImage와 페치 조인
-                .where(join.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
-                .where(join.postType.eq("Join")) // Review 타입만 검색
-                .orderBy(join.registerDate.desc()) // registerDate 기준으로 내림차순 정렬
+                .where(join.isDeleted.eq(false).and(join.postType.eq("Join"))) // 삭제되지 않은 Carrot 게시물 검색
+                .orderBy(sort.equals(Sort.by(Sort.Direction.DESC, "views")) ? join.views.desc() : join.registerDate.desc()) // 정렬 조건에 따라 정렬
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -144,33 +117,6 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
         return new PageImpl<>(joins, pageable, total);
     }
-
-    @Override
-    public Page<Carrot> searchCarrotViewCount(int size, int page) {
-        QCarrot carrot = QCarrot.carrot; // QCarrot 인스턴스 생성
-        QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
-        QMember member = QMember.member; // Member의 QueryDSL 메타모델
-
-        // 페이지 요청과 함께 sort를 사용하여 정렬 설정
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "views"));
-
-        JPAQuery<Carrot> query = new JPAQuery<>(entityManager);
-        query.from(carrot)
-                .join(carrot.member, member).fetchJoin() // Member와 페치 조인
-                .join(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
-                .where(carrot.isDeleted.eq(false).and(carrot.postType.eq("Carrot"))) // 삭제되지 않은 Carrot 게시물 검색
-                .orderBy(carrot.views.desc()) // 여러 조건으로 정렬
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        long total = query.fetchCount(); // 전체 아이템 수 가져오기
-        List<Carrot> carrots = query.fetch(); // 페이지 정보 적용하여 데이터 가져오기
-
-        log.info("Total items: {}, Query: {}", total, query);
-
-        return new PageImpl<>(carrots, pageable, total);
-    }
-
 
     @Override
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
@@ -218,7 +164,6 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
         return result;
     }
-
 
 
     @Transactional

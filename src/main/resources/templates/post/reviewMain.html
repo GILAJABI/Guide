@@ -19,10 +19,9 @@
     </div>
     <div id="selectMenu2">
         <div id="sortMenu">
-            <a href="#" class="filter-link active">최신순</a>
-            <a href="#" class="filter-link">인기순</a>
-            <a href="#" class="filter-link">많이 본 순</a>
-            <a href="#" class="filter-link">댓글순</a>
+            <a th:href="@{/post/reviewMain(sort='registerDate')}" th:classappend="${sort == 'registerDate'} ? 'active' : ''">최신순</a>
+            <a th:href="@{/post/reviewMain(sort='views')}" th:classappend="${sort == 'views'} ? 'active' : ''">많이 본 순</a>
+            <a th:href="@{/post/reviewMain(sort='comments')}" th:classappend="${sort == 'comments'} ? 'active' : ''">댓글순</a>
         </div>
         <div id="use">
             <form>
@@ -37,7 +36,7 @@
         </div>
     </div>
     <section>
-        <div th:each="post : ${posts}" class="carrotBox">
+        <div th:each="post : ${posts.content}" class="carrotBox">
             <div class="image-section">
                 <a th:href="@{/post/reviewDetail(postId=${post.postId})}">
                     <img th:if="${post.imageDTOs != null && !post.imageDTOs.isEmpty()}"
@@ -49,7 +48,7 @@
                 </a>
             </div>
             <div class="text-section">
-                <span class="board-title" th:text="${post.title}">판매 물품 제목</span>
+                <span class="board-title" th:text="${post.title}">후기 제목</span>
                 <div class="additional-text">
                     <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
                     <p th:text="${post.likeCount} + ' likes'">좋아요수</p>
@@ -63,19 +62,18 @@
             <ul class="pagination justify-content-center">
                 <!-- 이전 페이지 버튼 -->
                 <li class="page-item" th:classappend="${!posts.hasPrevious()} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number}, size=${posts.size})}" th:unless="${!posts.hasPrevious()}">Previous</a>
+                    <a class="page-link" th:href="@{/post/reviewMain(page=${posts.number}, size=${posts.size}, sort=${sort})}" th:unless="${!posts.hasPrevious()}">Previous</a>
                 </li>
                 <!-- 페이지 번호 버튼들 -->
                 <th:block th:each="i : ${#numbers.sequence(1, posts.totalPages)}">
-                    <li class="page-item" th:class="${posts.number == i} ? 'active' : ''">
-                        <a class="page-link" th:href="@{/post/carrotMain(page=${i}, size=${posts.size})}" th:text="${i}"></a>
+                    <li class="page-item" th:class="${posts.number== i} ? 'active' : ''">
+                        <a class="page-link" th:href="@{/post/reviewMain(page=${i}, size=${posts.size}, sort=${sort})}" th:text="${i}"></a>
                     </li>
                 </th:block>
                 <!-- 다음 페이지 버튼 -->
                 <li class="page-item" th:classappend="${!posts.hasNext()} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/post/carrotMain(page=${posts.number + 2}, size=${posts.size})}" th:if="${posts.hasNext()}">Next</a>
+                    <a class="page-link" th:href="@{/post/reviewMain(page=${posts.number + 2}, size=${posts.size}, sort=${sort})}" th:if="${posts.hasNext()}">Next</a>
                 </li>
-
             </ul>
         </nav>
     </div>
