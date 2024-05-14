@@ -42,9 +42,17 @@ public class ChatHtmlController {
 //    }
 
     @GetMapping("/chatList")
-    public void getRoomById(HttpSession session, Model model) {
-        List<ChatRoomDTO> rooms = chatService.memberChatRooms((long) session.getAttribute("member_id"));
+    public String getRoomById(HttpSession session, Model model) {
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        if (memberId == null) {
+            return "redirect:/member/login";
+        }
+
+        List<ChatRoomDTO> rooms = chatService.memberChatRooms(memberId);
         model.addAttribute("rooms", rooms);
+        return "/chat/chatList";
+
     }
 
     @GetMapping("/chatRoom/{roomId}")
