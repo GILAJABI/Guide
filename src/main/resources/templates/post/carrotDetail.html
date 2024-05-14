@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>거래-상세</title>
     <link rel="stylesheet" th:href="@{/css/post/carrotDetail.css}">
     <script>
         var postId = `[[${post.postId}]]`;
@@ -122,16 +122,52 @@
                     </div> <!--profile-info-->
                 </div> <!--user-->
                 <p class="text" id="loc">위치</p>
-                <div class="map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35799.901099154966!2d126.99122613009443!3d37.52456387269132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca15aee9ab0cb%3A0x31793fc63e0cf9d3!2z67mE7Yq47Lqg7ZSE!5e0!3m2!1sko!2skr!4v1709707618933!5m2!1sko!2skr"
-                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+                <div id="map" style="width:600px;height:450px;">
+<!--                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35799.901099154966!2d126.99122613009443!3d37.52456387269132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca15aee9ab0cb%3A0x31793fc63e0cf9d3!2z67mE7Yq47Lqg7ZSE!5e0!3m2!1sko!2skr!4v1709707618933!5m2!1sko!2skr"-->
+<!--                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"-->
+<!--                            referrerpolicy="no-referrer-when-downgrade">-->
+<!--                    </iframe>-->
                 </div>
             </div> <!--right-->
         </div> <!--sec-container-->
     </section>
 </div> <!--container-->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
+
+<script th:inline="javascript">
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        createKakaoMap();
+    });
+
+    function createKakaoMap() {
+        // 카카오맵을 표시할 위치
+        var container = document.getElementById('map');
+
+        // 중심 좌표 설정
+        var centerLatLng = new kakao.maps.LatLng([[${post.locationX}]], [[${post.locationY}]]); // Thymeleaf 문법을 사용하여 서버에서 전달된 post의 locationX와 locationY 값을 가져옵니다.
+
+        // 지도 옵션 설정
+        var options = {
+            center: centerLatLng,
+            level: 3
+        };
+
+        // 지도 생성
+        var map = new kakao.maps.Map(container, options);
+
+        // 마커 생성
+        var marker = new kakao.maps.Marker({
+            position: centerLatLng // 마커가 표시될 위치
+        });
+
+        // 마커 지도에 추가
+        marker.setMap(map);
+    }
+</script>
+
 <script>
     form.addEventListener("submit", function(e) {
         e.preventDefault();
