@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
             memberId: myId,
             memberName: memberName,
             roomId: roomId,
-            registDate: new Date().toISOString()
+            // registDate: new Date().toISOString()
         };
         console.log(chatMessageDTO)
         stompClient.send("/app/message", {}, JSON.stringify(chatMessageDTO));
