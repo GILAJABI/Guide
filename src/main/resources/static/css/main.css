@@ -1,8 +1,6 @@
 * {
-    background-color: #fafafa;
-    color: #363636;
+    /*background-color: #fafafa;*/
     font-family: "Pretendard-Regular";
-    font-size: 20px;
 }
 .container {
     max-width: 1000px;
@@ -61,36 +59,50 @@ button > img {
 }
 #user,
 #weather {
+    background-color: white;
     width: 400px;
     height: 120px;
-    border: 1px solid #363636;
     border-radius: 13px;
     margin-bottom: 20px;
+    box-shadow: 4px 4px 10px lightgray;
 }
 #all_user {
+    background-color: white;
     width: 400px;
     height: 160px;
     border-radius: 13px;
-    border: 1px solid #363636;
+    border: none;
     margin-bottom: 0;
-    font-size: 9px;
+    font-size: 16px;
+    box-shadow: 2px 4px 10px rgb(172, 172, 172);
 }
 #all_user_title {
+    /* �ы뻾�먮뱾 媛��대뜲 �뺣젹 */
+    font-family: "BMJUA";
+    text-align: center;
     margin: 10px;
 }
 #sec2 {
+    background-color: white;
     height: 800px;
-    border: 1px solid #363636;
+    /*border: 1px solid #363636;*/
     margin-top: 30px;
+    box-shadow: 4px 4px 10px lightgray;
+    border-radius: 13px;
+    overflow: hidden;
 }
 .title {
+    padding: 10px;
     font-family: "BMJUA";
     font-size: 21px;
+    border-radius: 13px;
+    text-align: center;
 }
 footer {
-    height: 200px;
-    border: 1px solid #363636;
+    height: 100%;
+    /*border: 1px solid #363636;*/
     margin-top: 30px;
+    text-align: center;
 }
 @font-face {
     font-family: "Pretendard-Regular";
@@ -123,11 +135,13 @@ footer {
     margin-top: 20px;
     display: inline-block;
     vertical-align: top;
+    text-align: center;
 }
-.button_area button {
+.loginBtn,
+.myPageBtn{
     margin-top: 5px;
     height: 35px;
-    background-color: #4CAF50;
+    background-color: #FF6392;
     border: none;
     color: white;
     padding: 10px 20px;
@@ -139,9 +153,36 @@ footer {
     border-radius: 5px;
     cursor: pointer;
 }
-.button_area button:hover {
-    background-color: #45a049;
+.signupBtn,
+.logoutBtn{
+    margin-top: 5px;
+    height: 35px;
+    background-color: #fafafa;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
 }
+
+.loginBtn:hover ,
+.myPageBtn:hover{
+    background-color: White;
+    color: #FF6392;
+    transition: background-color 0.3s ease;
+}
+.signupBtn:hover,
+.logoutBtn:hover {
+    background-color: grey;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
 #all_user_profile {
     margin-left: 5px;
     padding-top: 4px;
@@ -152,13 +193,14 @@ footer {
     overflow: hidden;
 }
 .profile_area {
+    font-family: Pretendard-Regular;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 4px;
     width: 80px;
-    font-size: 9px;
+    font-size: 6px;
 }
 .profile_img_area img {
     width: 60px;
@@ -176,16 +218,19 @@ footer {
 #notLogin{
     margin-top: 10px;
 }
+.button_area {
+    margin-top: 6px;
+}
 .button_area > .profileBtn {
     border-style: none;
-    color: #ffffff; /* 연한 분홍색 */
-    background-color: #ffcccc; /* 마우스 호버 시 연한 분홍색 배경 */
-    cursor: pointer; /* 마우스 호버 시 포인터로 변경 */
-    outline: none; /* 기본 버튼 테두리 제거 */
+    color: #ffffff; /* �고븳 遺꾪솉�� */
+    background-color: #ffcccc; /* 留덉슦�� �몃쾭 �� �고븳 遺꾪솉�� 諛곌꼍 */
+    cursor: pointer; /* 留덉슦�� �몃쾭 �� �ъ씤�곕줈 蹂�寃� */
+    outline: none; /* 湲곕낯 踰꾪듉 �뚮몢由� �쒓굅 */
     border-radius: 5px;
-    transition: background-color 0.3s ease; /* 부드러운 효과를 위한 트랜지션 */
+    transition: background-color 0.3s ease; /* 遺��쒕윭�� �④낵瑜� �꾪븳 �몃옖吏��� */
 }
 
 .button_area > .profileBtn:hover {
-    background-color: #ff7f7f; /* 마우스 호버 시 연한 분홍색으로 변경 */
+    background-color: #ff7f7f; /* 留덉슦�� �몃쾭 �� �고븳 遺꾪솉�됱쑝濡� 蹂�寃� */
 }
