@@ -9,10 +9,10 @@ const stompClient = Stomp.over(socket);
 let authToken;
 let myId = sessionStorage.getItem("member_id")
 let memberName = sessionStorage.getItem("member_name")
+let roomId= [[${room_id}]]
 
 stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
     console.log('Connected: ' + frame);
-    const roomId = document.body.getAttribute('data-room-id');
     // 메시지를 받았을 때의 동작 정의
     stompClient.subscribe("/topic/chat/room/" + roomId, function(message) {
         const messageBody = JSON.parse(message.body);
@@ -47,7 +47,7 @@ stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    const roomId = document.body.getAttribute('data-room-id');
+
 
     document.getElementById("chatForm").addEventListener("submit", function(event) {
         event.preventDefault(); // 폼 기본 동작 중단
@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //
         // const message = messageInput.value; // 입력된 메시지 가져오기
         // console.log("message: ",message)
+
 
         const messageInput = document.querySelector("#chat_content");
         console.log(messageInput);

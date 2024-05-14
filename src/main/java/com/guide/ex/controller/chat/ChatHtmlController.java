@@ -61,7 +61,7 @@ public class ChatHtmlController {
         System.out.println(name);
         System.out.println("============================");
 
-        model.addAttribute("session_member_id", memberId);
+
         model.addAttribute("member_name", name);
         model.addAttribute("room_id", roomId); // 채팅방 ID를 모델에 추가
 
