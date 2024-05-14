@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var listDivElements = document.querySelectorAll('.list_div');
     listDivElements.forEach(function(element) {
         element.addEventListener('click', function() {
-            window.open('chatRoom.html', '_blank', 'width=375px,height=667px');
+            window.open('chatRoom.html' + roomId, '_blank', 'width=375px,height=667px');
         });
     });
 

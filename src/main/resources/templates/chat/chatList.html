@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>채팅 목록</title>
+    <title>Chat List</title>
     <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
 </head>
 
@@ -13,12 +13,12 @@
 
 <div class="container">
     <div>
-        <p id="title">채팅</p>
+        <p id="title">Chat Rooms</p>
     </div>
 
-     <div class="chat_box">
+    <div class="chat_box">
         <ul id="chat_arrange">
-            <li class="chat_div" th:each="room : ${rooms}">
+            <li class="chat_div" th:each="room : ${rooms}" th:data-room-id="${room.roomId}">
                 <div class="chat_list">
                     <div class="circle" th:if="${room.receiver.profileInfo != null}">
                         <img th:class="profile" th:src="'/api/photo/' + ${room.receiver.profileInfo.uuid + '_' + room.receiver.profileInfo.fileName}">
@@ -42,27 +42,15 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var chatListElements = document.querySelectorAll('.chat_list');
+        var chatListElements = document.querySelectorAll('.chat_div');
         chatListElements.forEach(function(element) {
             element.addEventListener('click', function() {
-                // 클릭된 요소에서 roomId 값을 가져옵니다.
                 var roomId = element.getAttribute('data-room-id');
-                // roomId를 URL에 추가하여 동적으로 URL을 생성합니다.
-                var url = 'chatRoom/' + roomId;
-                // 현재 창으로 이동합니다.
-                window.location.href = url;
-            });
-        });
-
-        var deleteButtons = document.querySelectorAll('.delete_btn');
-        deleteButtons.forEach(function(button) {
-            button.addEventListener('click', function(event) {
-                event.stopPropagation();
-
-                var listItem = button.closest('.chat_div');
-
-                if (listItem) {
-                    listItem.remove();
+                if (roomId) { // roomId가 null이 아닌 경우에만 처리
+                    var url = 'chatRoom/' + roomId;
+                    window.location.href = url;
+                } else {
+                    console.error("roomId is null or undefined");
                 }
             });
         });
@@ -72,4 +60,3 @@
 </body>
 
 </html>
-
