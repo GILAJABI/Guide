@@ -18,10 +18,11 @@ public interface AllPostSearch {
 
     List<Post> searchPostContaining(String searchValue, String postType);
 
-    Page<Carrot> searchCarrotPaging(int size, int page, Sort sort);
+    Page<Carrot> searchCarrotPaging(int size, int page);
     Page<Review> searchReviewPaging(int size, int page);
     Page<Join> searchJoinPaging(int size, int page);
 
+    Page<Carrot> searchCarrotViewCount(int size, int page);
     Post searchOne(Long postId);
     void updateViews(Long postId);
 
