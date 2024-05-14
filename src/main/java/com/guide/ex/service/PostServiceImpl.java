@@ -288,7 +288,7 @@ public class PostServiceImpl implements PostService {
 //    }
 
     @Override
-    public List<PostDTO> postSelectAll(String searchValue, String postType) {
+    public Page<PostDTO> postSelectAll(String searchValue, String postType, Pageable pageable) {
         if (searchValue == null || searchValue.trim().isEmpty()) {
             throw new IllegalArgumentException("검색 값이 제공되지 않았습니다.");
         }
@@ -300,12 +300,10 @@ public class PostServiceImpl implements PostService {
         if (!validPostTypes.contains(postType)) {
             throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
         }
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue, postType);
-        // 엔티티를 DTO로 변환
-        return posts.stream()
-                .map(post -> modelMapper.map(post, PostDTO.class))
-                .collect(Collectors.toList());
+        Page<Post> posts = allPostSearch.searchPostContaining(searchValue, postType, pageable);
+        return posts.map(post -> modelMapper.map(post, PostDTO.class));
     }
+
 
     @Override
     public Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort) {

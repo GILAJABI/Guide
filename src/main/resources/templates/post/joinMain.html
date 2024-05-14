@@ -24,12 +24,14 @@
             <a th:href="@{/post/joinMain(sort='comments')}" th:classappend="${sort == 'comments'} ? 'active' : ''">댓글순</a>
         </div>
         <div id="use">
-            <form>
-                <input type="text" name="query" id="searchInp">
+            <form th:action="@{/post/joinMain/search}" method="get">
+                <input type="text" name="searchValue" id="searchInp" placeholder="검색어를 입력하세요">
+                <input type="hidden" name="postType" value="Join"> <!-- postType을 Review로 설정 -->
                 <button type="submit" id="searchBtn">
                     <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
                 </button>
             </form>
+
             <a th:href="@{/post/joinWrite}">
                 <button type="submit" id="postBtn">글쓰기</button>
             </a>
@@ -62,7 +64,7 @@
             <ul class="pagination justify-content-center">
                 <!-- 이전 페이지 버튼 -->
                 <li class="page-item" th:classappend="${!posts.hasPrevious()} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/post/joinMain(page=${posts.number - 1}, size=${posts.size}, sort=${sort})}" th:unless="${!posts.hasPrevious()}">Previous</a>
+                    <a class="page-link" th:href="@{/post/joinMain(page=${posts.number}, size=${posts.size}, sort=${sort})}" th:unless="${!posts.hasPrevious()}">Previous</a>
                 </li>
                 <!-- 페이지 번호 버튼들 -->
                 <th:block th:each="i : ${#numbers.sequence(1, posts.totalPages)}">
@@ -72,7 +74,7 @@
                 </th:block>
                 <!-- 다음 페이지 버튼 -->
                 <li class="page-item" th:classappend="${!posts.hasNext()} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/post/joinMain(page=${posts.number + 1}, size=${posts.size}, sort=${sort})}" th:if="${posts.hasNext()}">Next</a>
+                    <a class="page-link" th:href="@{/post/joinMain(page=${posts.number + 2}, size=${posts.size}, sort=${sort})}" th:if="${posts.hasNext()}">Next</a>
                 </li>
             </ul>
         </nav>

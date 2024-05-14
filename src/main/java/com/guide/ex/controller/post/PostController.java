@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -94,23 +96,59 @@ public class PostController {
         return joinMain(model, page, size, "views");
     }
 
+    @GetMapping("/joinMain/search")
+    public String joinSearch(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
 
-    //    검색기능
-    @PostMapping("/carrotMain/search")
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/joinMain";
+    }
+
+
+
+    @GetMapping("/carrotMain/search")
     public String searchValue(@RequestParam("searchValue") String searchValue,
                               @RequestParam("postType") String postType,
+                              @RequestParam(defaultValue = "registerDate") String sort,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "6") int size,
                               Model model) {
-        switch (postType) {
-            case "Carrot":
-            case "Review":
-            case "Join":
-                postService.postSelectAll(searchValue, postType);
-        }
 
-        postService.postSelectAll(searchValue, postType);
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
 
-        return "redirect:/post/carrotMain";
+        model.addAttribute("posts", posts);
+        return "post/carrotMain";
     }
+
+//    @GetMapping("/joinMain/search")
+//    public String searchReviewPost(@RequestParam("searchValue") String searchValue,
+//                                   @RequestParam("postType") String postType,
+//                                   @RequestParam(defaultValue = "registerDate") String sort,
+//                                   @RequestParam(defaultValue = "1") int page,
+//                                   @RequestParam(defaultValue = "6") int size,
+//                                   Model model) {
+//
+//        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+//        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+//        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+//
+//        model.addAttribute("posts", posts);
+//        model.addAttribute("sort", sort);
+//        return "post/joinMain";
+//    }
+
+
+
 
 
     @GetMapping("/carrotDetail")

@@ -3,6 +3,9 @@ package com.guide.ex.repository.search;
 import com.guide.ex.domain.member.QMember;
 import com.guide.ex.domain.post.*;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository("allPostSearchImpl")
 @Log4j2
@@ -119,7 +123,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
     }
 
     @Override
-    public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
+    public Page<Post> searchPostContaining(String searchValue, String postType, Pageable pageable) {
         QPost post = QPost.post;
 
         JPAQuery<Post> query = new JPAQuery<>(entityManager);
@@ -128,16 +132,29 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         // 게시판 유형에 맞는 게시글만 필터링
         booleanBuilder.and(post.postType.eq(postType));
         if (searchValue != null && !searchValue.trim().isEmpty()) {
-            booleanBuilder.andAnyOf(    // 여러 조건 중 하나라도 참이면 전체 조건이 참
+            booleanBuilder.andAnyOf(
                     post.title.contains(searchValue),
                     post.content.contains(searchValue),
                     post.member.name.contains(searchValue)
             );
         }
 
-        query.select(post).from(post).where(booleanBuilder);
-        return query.fetch();
+        // 쿼리 실행 전에 로그를 출력하여 디버깅
+        log.info("Search Query: {}", query);
+        log.info("Search BooleanBuilder: {}", booleanBuilder);
+
+        List<Post> results = query.select(post)
+                .from(post)
+                .where(booleanBuilder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = query.fetchCount();
+        return new PageImpl<>(results, pageable, total);
     }
+
+
 
 
     @Transactional
