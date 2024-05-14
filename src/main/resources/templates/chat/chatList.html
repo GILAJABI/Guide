@@ -10,19 +10,22 @@
 
 <body>
 <div class="header" th:include="/include/header.html"></div>
+
 <div class="container">
-    <header>
-        <p id="title">채팅</p>
-    </header>
     <div>
+        <p id="title">채팅</p>
+    </div>
+
+     <div class="chat_box">
         <ul id="chat_arrange">
             <li class="chat_div" th:each="room : ${rooms}">
-                <div class="chat_list" th:data-room-id="${room.roomId}">
-                    <img th:class="profile"
-                         th:if="${room.receiver.profileInfo != null}"
-                         th:src="'/api/photo/' + ${room.receiver.profileInfo.uuid + '_' + room.receiver.profileInfo.fileName}">
-                    <img th:class="profile"
-                         th:unless="${room.receiver.profileInfo != null}" th:src="@{/image/profile.png}">
+                <div class="chat_list">
+                    <div class="circle" th:if="${room.receiver.profileInfo != null}">
+                        <img th:class="profile" th:src="'/api/photo/' + ${room.receiver.profileInfo.uuid + '_' + room.receiver.profileInfo.fileName}">
+                    </div>
+                    <div class="circle" th:unless="${room.receiver.profileInfo != null}">
+                        <img th:class="profile" th:src="@{/image/profile.png}">
+                    </div>
                     <div class="list_div">
                         <span class="name" th:text="${room.receiver.name}">username1</span>
                     </div>
@@ -66,11 +69,6 @@
     });
 
 </script>
-
-
-<!--<script th:src="@{/js/chat/chatList.js}"></script>-->
-<!--<script th:src="@{/js/chat/chatModal.js}"></script>-->
-<!--<script th:src="@{/js/chat/closeModal.js}"></script>-->
 </body>
 
 </html>
