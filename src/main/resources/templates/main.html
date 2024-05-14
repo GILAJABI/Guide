@@ -47,7 +47,8 @@
                         <div class="button_area">
                             <button class="myPageBtn">마이페이지</button>
                             <form method="post" th:action="@{/member/logout}" style="display: inline;">
-                                <button class="logoutBtn">로그아웃</button>
+                                <button class="logoutBtn" onclick="sessionStorage.clear()">로그아웃
+                                </button>
                             </form>
                         </div>
 
@@ -61,7 +62,7 @@
                         <div class="button_area">
                             <button class="profileBtn">프로필 등록</button>
                             <form method="post" th:action="@{/member/logout}" style="display: inline;">
-                                <button class="logoutBtn">로그아웃</button>
+                                <button class="logoutBtn" onclick="sessionStorage.clear()">로그아웃</button>
                             </form>
                         </div>
 
@@ -108,7 +109,16 @@
     <div></div>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:if="session.member_id != null">
+    let session_member_id = [[${session.member_id}]]
+    let session_member_name = `[[${session.member_name}]]`
 
+    sessionStorage.setItem("member_id", session_member_id)
+    sessionStorage.setItem("member_name", session_member_name)
+
+    console.log(sessionStorage.getItem("member_id"))
+    console.log(sessionStorage.getItem("member_name"))
+</script>
 <script>
     var currentImageIndex = 1; // 기본적으로 첫 번째 이미지가 보입니다.
     function toggleImages() {
@@ -127,6 +137,7 @@
             currentImageIndex = 1;
         }
     }
+
     document.getElementById('imageContainer').addEventListener('click', toggleImages);
 </script>
 
@@ -148,20 +159,21 @@
     setInterval(toggleImages, 5000);
 </script>
 
-<<script th:inline="javascript">
+<
+<script th:inline="javascript">
     var profiles = [];
 
     var otherMembers = /*[[${otherMembers}]]*/ '';
 
-    for (var i = 0; i < otherMembers.length; i++) {
-        var member = otherMembers[i]
-        console.log(member.memberId)
-        console.log('나이: ', member.ageRange)
-        console.log('이름: ', member.name)
-        console.log('mbti: ', member.profileInfo.travelType)
-        console.log('사진uuid: ', member.profileInfo.uuid)
-        console.log('사진이름: ', member.profileInfo.fileName)
-    }
+    // for (var i = 0; i < otherMembers.length; i++) {
+    //     var member = otherMembers[i]
+    //     console.log(member.memberId)
+    //     console.log('나이: ', member.ageRange)
+    //     console.log('이름: ', member.name)
+    //     console.log('mbti: ', member.profileInfo.travelType)
+    //     console.log('사진uuid: ', member.profileInfo.uuid)
+    //     console.log('사진이름: ', member.profileInfo.fileName)
+    // }
 
     for (var i = 0; i < otherMembers.length; i++) {
         var member = otherMembers[i]
@@ -172,13 +184,14 @@
         // console.log('사진uuid: ', member.profileInfo.uuid)
         // console.log('사진이름: ', member.profileInfo.fileName)
         var profile = {
-            memberId : member.memberId,
-            imgSrc: "/api/photo/" + member.profileInfo.uuid +'_' + member.profileInfo.fileName, // 이미지 경로
+            memberId: member.memberId,
+            imgSrc: "/api/photo/" + member.profileInfo.uuid + '_' + member.profileInfo.fileName, // 이미지 경로
             name: member.name, // 이름
             info: member.ageRange.slice(0, -1) + '/' + member.profileInfo.travelType // 정보 조합
         };
         profiles.push(profile); // profiles 배열에 추가
     }
+
     function generateProfiles(profiles) {
         var profileContainer = document.getElementById('all_user_profile');
 
@@ -210,7 +223,7 @@
             profileContainer.appendChild(profileArea);
 
             // 프로필 이미지 클릭 시 이벤트 리스너 추가
-            img.addEventListener('click', function() {
+            img.addEventListener('click', function () {
                 window.location.href = '/member/otherPage/' + profile.memberId; // memberId에 해당하는 프로필 페이지로 이동
             });
         });
@@ -230,7 +243,7 @@
         }
 
         // 클릭 이벤트 추가
-        profileContainer.on('click', '.profile_area', function() {
+        profileContainer.on('click', '.profile_area', function () {
             var memberId = $(this).data('memberId'); // 클릭된 프로필의 memberId를 가져옴
             console.log('Clicked member ID:', memberId);
         });
@@ -243,47 +256,46 @@
 <!--메인 페이지 화면이동 스크립트-->
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var loginBtn = document.querySelector(".loginBtn");
         var signupBtn = document.querySelector(".signupBtn");
 
-        loginBtn.addEventListener("click", function() {
+        loginBtn.addEventListener("click", function () {
             window.location.href = '/member/login';
         });
 
-        signupBtn.addEventListener("click", function() {
+        signupBtn.addEventListener("click", function () {
             window.location.href = '/member/signUp';
         });
     });
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var myPageBtn = document.querySelector(".myPageBtn");
         var logoutBtn = document.querySelector(".logoutBtn");
         var profileBtn = document.querySelector(".profileBtn");
 
 
-        myPageBtn.addEventListener("click", function() {
+        myPageBtn.addEventListener("click", function () {
             window.location.href = '/member/myPage';
         });
 
-        logoutBtn.addEventListener("click", function() {
+        logoutBtn.addEventListener("click", function () {
             document.getElementById('logoutForm').submit();
         });
 
-        profileBtn.addEventListener("click", function() {
+        profileBtn.addEventListener("click", function () {
             window.location.href = '/member/profile';
         });
 
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var profileBtn = document.querySelector(".profileBtn");
 
-        profileBtn.addEventListener("click", function() {
+        profileBtn.addEventListener("click", function () {
             window.location.href = '/member/profile';
         });
 
     });
 </script>
-
 </body>
 </html>

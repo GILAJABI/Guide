@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이페이지</title>
+    <title>타회원 페이지</title>
     <link rel="stylesheet" th:href="@{/css/member/otherPage.css}">
 </head>
 
@@ -116,12 +116,22 @@
                     <p>[[${member.name}]]님의 게시물</p>
                     <p id="postMore">더보기</p>
                 </div>
-                <ul>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
-                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>
+                <ul th:if="${#lists.isEmpty(member.posts)}">
+                    <br>
+                    <div>등록한 게시글이 없습니다.</div>
+                </ul>
+                <ul th:if="${not #lists.isEmpty(member.posts)}">
+                    <li th:each="post : ${member.posts}">
+                        <span th:if="${post.postType == 'Review'}"><a
+                                th:href="@{/post/reviewDetail(postId=${post.postId})}">[후기] <span
+                                th:text="${post.title}"></span></a></span>
+                        <span th:if="${post.postType == 'Join'}"><a
+                                th:href="@{/post/joinDetail(postId=${post.postId})}">[모집] <span
+                                th:text="${post.title}"></span></a></span>
+                        <span th:if="${post.postType == 'Carrot'}"><a
+                                th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span
+                                th:text="${post.title}"></span></a></span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -134,7 +144,7 @@
     /* 선택된 상대방 사용자의 memberId */
     const receiverId = [[${receiverId}]];
 
-    document.getElementById('startChat').addEventListener('click', function() {
+    document.getElementById('startChat').addEventListener('click', function () {
         fetch(`/api/chat/create?senderId=${senderId}&receiverId=${receiverId}`, {
             method: 'POST'
         })

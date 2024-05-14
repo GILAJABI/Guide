@@ -52,12 +52,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String doLogin(@RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession session) {
+    public String doLogin(@RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession session,Model model) {
         boolean check = memberService.login(uid, pwd);
 
         if (check) {
             Long memberId = memberService.setLoginSession(uid);
+            MemberDTO member = memberService.memberReadOne(memberId);
             session.setAttribute("member_id", memberId);
+            session.setAttribute("member_name", member.getName());
             if (memberService.setProfileSession(memberId)) {
                 session.setAttribute("member_profile", true);
             }
@@ -113,13 +115,10 @@ public class MemberController {
         if (memberId == null) {
             return "redirect:/member/login";
         } else if (memberId != null && !memberService.setProfileSession(memberId)) {
-            return "/member/profile";
+            return "redirect:/member/profile";
         }
 
         MemberDTO member = memberService.memberReadOne(memberId);
-        System.out.println("====================================");
-        System.out.println(member.getPosts());
-        System.out.println("====================================");
 
         model.addAttribute("member", member);
         return "member/myPage";
@@ -128,15 +127,17 @@ public class MemberController {
     @GetMapping("/otherPage/{memberId}")
     public String otherPage(@PathVariable Long memberId, HttpSession session, Model model) {
         Long senderId = (Long) session.getAttribute("member_id");
+
+        if(senderId != null && senderId.equals(memberId)){
+            return "redirect:/member/myPage";
+        }
+
         // 상대방의 memberId와 로그인한 사용자의 memberId를 모델에 추가
         model.addAttribute("receiverId", memberId);
         model.addAttribute("senderId", senderId);
 
-        // 나머지 로직 처리
         MemberDTO memberDTO = memberService.memberReadOne(memberId);
         model.addAttribute("member", memberDTO);
-        model.addAttribute("profile", memberDTO.getProfileInfo());
-
         return "member/otherPage";
     }
 }
