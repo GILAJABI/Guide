@@ -23,9 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -392,5 +390,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean deletePost(Long postId, Long memberId) {
         return allPostSearch.deleteOne(postId, memberId);
+    }
+
+    @Override
+    public String findPostTypeByPostId(Long postId) {
+        Optional<Post> result = postRepository.findById(postId);
+        Post post = result.orElseThrow(() -> new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다."));
+        return post.getPostType();
     }
 }

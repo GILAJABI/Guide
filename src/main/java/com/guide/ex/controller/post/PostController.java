@@ -250,7 +250,19 @@ public class PostController {
         commentDTO.setMemberId(memberId);
 
         commentService.register(commentDTO);
-        return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+        String postType = postService.findPostTypeByPostId(postId);
+
+        switch (postType) {
+            case "Carrot":
+                return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+            case "Join":
+                return "redirect:/post/joinDetail?postId=" + commentDTO.getPostId();
+            case "Review":
+                return "redirect:/post/reviewDetail?postId=" + commentDTO.getPostId();
+            default:
+                return "redirect:/post/carrotMain";
+        }
+
     }
 
     @GetMapping("/comment")
