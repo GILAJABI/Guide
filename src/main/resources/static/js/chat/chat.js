@@ -8,7 +8,7 @@ const stompClient = Stomp.over(socket);
 // 연결 시도
 let myId = sessionStorage.getItem("member_id")
 let memberName = sessionStorage.getItem("member_name")
-let roomId = JSON.parse(`[[${room_id}]]`);
+
 console.log(member_roomId);
 
 

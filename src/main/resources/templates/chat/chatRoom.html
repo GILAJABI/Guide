@@ -37,9 +37,10 @@
 </form>
 
 </body>
-<script>
+<script th:inline="javascript">
     let session_member_id= [[${session_member_id}]]
     let session_member_name= `[[${member_name}]]`
+    let roomId = JSON.parse([[${room_id}]])
 
     console.log("===================coookie===================")
     console.log(session_member_id)
