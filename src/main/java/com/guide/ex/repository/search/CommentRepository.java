@@ -2,6 +2,7 @@ package com.guide.ex.repository.search;
 
 import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.post.Comment;
+import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.post.CommentDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     int countByMember(Member member);
 
+    int countByPost(Post post);
 //    @Query("SELECT c FROM Comment c WHERE c.post.id = :postId AND c.member.id = :memberId ORDER BY c.post.id ASC")
 //    Page<Comment> listOfPostMember(@Param("postId") Long postId, @Param("memberId") Long memberId, Pageable pageable);
 

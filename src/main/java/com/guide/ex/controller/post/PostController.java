@@ -254,6 +254,8 @@ public class PostController {
 
         commentService.register(commentDTO);
         memberService.updateCommentCount(memberId);
+        postService.updatePostCommentCount(postId);
+
         String postType = postService.findPostTypeByPostId(postId);
 
         switch (postType) {

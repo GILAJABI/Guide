@@ -27,4 +27,6 @@ public interface PostService {
 
     boolean deletePost(Long postId, Long memberId);
     String findPostTypeByPostId(Long postId);
+
+    void updatePostCommentCount(Long postId);
 }

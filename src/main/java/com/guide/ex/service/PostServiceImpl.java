@@ -6,6 +6,7 @@ import com.guide.ex.dto.post.*;
 import com.guide.ex.repository.member.MemberRepository;
 import com.guide.ex.repository.post.*;
 import com.guide.ex.repository.search.AllPostSearchImpl;
+import com.guide.ex.repository.search.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -44,6 +45,8 @@ public class PostServiceImpl implements PostService {
     private final JoinRepository joinRepository;
     private final AllPostSearchImpl allPostSearch;
     private final ImageRepository imageRepository;
+    private final CommentRepository commentRepository;
+
 
     @Override
     public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
@@ -397,5 +400,14 @@ public class PostServiceImpl implements PostService {
         Optional<Post> result = postRepository.findById(postId);
         Post post = result.orElseThrow(() -> new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다."));
         return post.getPostType();
+    }
+
+    @Override
+    public void updatePostCommentCount(Long postId) {
+        Optional<Post> result = postRepository.findById(postId);
+        Post post = result.orElseThrow(() -> new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다."));
+        int commentCount = commentRepository.countByPost(post);
+        post.setCommentCount(commentCount);
+        postRepository.save(post);
     }
 }
