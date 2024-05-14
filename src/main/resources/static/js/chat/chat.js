@@ -9,7 +9,9 @@ const stompClient = Stomp.over(socket);
 let authToken;
 let myId = sessionStorage.getItem("member_id")
 let memberName = sessionStorage.getItem("member_name")
-let roomId= `[[${room_id}]]`
+let roomId= [[${room_id}]]
+console.log(roomId);
+
 
 stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
     console.log('Connected: ' + frame);
