@@ -10,20 +10,26 @@
 <div th:include="/include/header.html"></div>
 <div class="container"></div>
 <div class="details">
-  <img th:src="@{/image/ilcQqf__o2TdcXAj0XeVm1ZRxMeEVA6cQ4lzZcaLXoWeFe8iYdzwZSSp8Aw0jS0ZhBDIeLtkvtjdxXgZrz84C15hU4gftIKs2YNg33c4KEGBrQAo1xlh2BJoOAtIZ_Locz-nnfKA_LgwEIVa9hwxoQ.webp}"
-       alt="이미지 설명">
+  <div class="left">
+    <th:block th:each="image : ${imageDTOS}">
+      <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}"
+           alt="Uploaded Image"
+           th:onerror="@{/images/default.jpg}">
+    </th:block>
+  </div>
   <div class="description">
-    <div id="content">
-    <p id="title">닌텐도 월드 갈사람~~~~~~~~~~있나요~~</p>
+    <h2 th:text="${post.title}"></h2>
     <div class="info">
-      <img th:src="@{/image/map.png}" alt="위치">
-      <p id="position">위치</p>
+      <img th:src="@{/image/map.png}" alt="여행지">
+      <p id="position">여행지</p>
       <img th:src="@{/image/people.png}" alt="인원">
-      <p id="number">희망 인원</p>
+      <p id="number" th:text="'모집 인원 : ' + ${post.numPeople}">희망 인원</p>
+      <p th:text=" '예산 : ' + ${post.expense} + '원'">예상 예산</p>
       <img th:src="@{/image/calendar.png}" alt="일정">
-      <p id="cal">예상 일정</p>
+      <p id="cal">
+        출국 : [[${#temporals.format(post.startTravelDate, 'yyyy-MM-dd')}]] <br>귀국 : [[${#temporals.format(post.endTravelDate.plusDays(21), 'yyyy-MM-dd')}]]</p>
     </div>
-      <p id="content2">닌텐도 월드 갈사람있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? 있나요? 있어? </p>
+      <p id="content2" th:text="${post.content}">게시글 내용</p>
       <p id="commentH">댓글 </p>
 <!--      <div class="comment">-->
 <!--        <div class="profile-info">-->
@@ -51,7 +57,7 @@
     </div>
   </div>
 </div>
-<script th:src="@{/js/post/comment.js}"></script>
+<script th:src="@{/js/post/commentLoader.js}"></script>
 </body>
 
 </html>

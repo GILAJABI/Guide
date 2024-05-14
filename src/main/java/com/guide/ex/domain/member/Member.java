@@ -94,6 +94,14 @@ public class Member extends BaseEntity {
         return memberId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 //    public String getAgeRange() {
 //        int currentYear = LocalDate.now().getYear(); // 현재 연도를 구함
 //        int birthYear = this.year.getValue(); // Year 객체에서 연도를 int로 추출
