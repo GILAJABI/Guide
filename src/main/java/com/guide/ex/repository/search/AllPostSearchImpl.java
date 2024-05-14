@@ -7,10 +7,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +69,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
         QMember member = QMember.member; // Member의 QueryDSL 메타모델
 
+        // 페이지 요청과 함께 registerDate를 기준으로 내림차순 정렬 설정
         Pageable pageable = PageRequest.of(page - 1, size);
 
         JPAQuery<Carrot> query = new JPAQuery<>(entityManager);
@@ -79,18 +77,79 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
                 .join(carrot.member, member).fetchJoin() // Member와 페치 조인
                 .join(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
                 .where(carrot.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
-                .where(carrot.postType.eq("Carrot")); // Carrot 타입만 검색
+                .where(carrot.postType.eq("Carrot")) // Carrot 타입만 검색
+                .orderBy(carrot.registerDate.desc()) // registerDate 기준으로 내림차순 정렬
+                .orderBy(carrot.views.desc())
+                .orderBy(carrot.commentCount.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
 
-        log.info("!!!!!!!!!!!!!!!!! : " + query.fetchCount());
-        log.info("@@@@@@@@@@@@ : " + query.fetchFirst().getPostImages());
         long total = query.fetchCount(); // 전체 아이템 수 가져오기
+        List<Carrot> carrots = query.fetch(); // 페이지 정보 적용하여 데이터 가져오기
 
-        List<Carrot> carrots = query.offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch(); // 페이지 정보 적용하여 데이터 가져오기
+        log.info("Total items: {}, Query: {}", total, query);
 
         return new PageImpl<>(carrots, pageable, total);
     }
+
+    @Override
+    public Page<Review> searchReviewPaging(int size, int page) {
+        QReview review = QReview.review; // QCarrot 인스턴스 생성
+        QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
+        QMember member = QMember.member; // Member의 QueryDSL 메타모델
+
+        // 페이지 요청과 함께 registerDate를 기준으로 내림차순 정렬 설정
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        JPAQuery<Review> query = new JPAQuery<>(entityManager);
+        query.from(review)
+                .join(review.member, member).fetchJoin() // Member와 페치 조인
+                .join(review.postImages, postImage).fetchJoin() // PostImage와 페치 조인
+                .where(review.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
+                .where(review.postType.eq("Review")) // Review 타입만 검색
+                .orderBy(review.registerDate.desc()) // registerDate 기준으로 내림차순 정렬
+                .orderBy(review.views.desc())
+                .orderBy(review.commentCount.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        long total = query.fetchCount(); // 전체 아이템 수 가져오기
+        List<Review> reviews = query.fetch(); // 페이지 정보 적용하여 데이터 가져오기
+
+        log.info("Total items: {}, Query: {}", total, query);
+
+        return new PageImpl<>(reviews, pageable, total);
+    }
+
+    @Override
+    public Page<Join> searchJoinPaging(int size, int page) {
+        QJoin join = QJoin.join; // QCarrot 인스턴스 생성
+        QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
+        QMember member = QMember.member; // Member의 QueryDSL 메타모델
+
+        // 페이지 요청과 함께 registerDate를 기준으로 내림차순 정렬 설정
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        JPAQuery<Join> query = new JPAQuery<>(entityManager);
+        query.from(join)
+                .join(join.member, member).fetchJoin() // Member와 페치 조인
+                .join(join.postImages, postImage).fetchJoin() // PostImage와 페치 조인
+                .where(join.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
+                .where(join.postType.eq("Join")) // Review 타입만 검색
+                .orderBy(join.registerDate.desc()) // registerDate 기준으로 내림차순 정렬
+                .orderBy(join.views.desc())
+                .orderBy(join.commentCount.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        long total = query.fetchCount(); // 전체 아이템 수 가져오기
+        List<Join> joins = query.fetch(); // 페이지 정보 적용하여 데이터 가져오기
+
+        log.info("Total items: {}, Query: {}", total, query);
+
+        return new PageImpl<>(joins, pageable, total);
+    }
+
 
     @Override
     public List<Post> searchPostContaining(String searchValue, String postType) {    // 사용자가 입력한 제목 or 내용 검색 + 페이징 처리 + 특정 게시판 유형 필터
@@ -172,10 +231,6 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         }
         return false;  // 삭제 실패 (게시글이 존재하지 않거나 권한 없음)
     }
-
-
-
-
 }
 
 

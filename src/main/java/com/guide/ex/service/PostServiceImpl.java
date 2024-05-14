@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -333,13 +334,57 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable) {
-        return null;
+    public Page<ReviewDTO> reviewTypeReadAll(int size, int page) {
+        Page<Review> postPage = allPostSearch.searchReviewPaging(size, page);
+
+        return postPage.map(review -> {
+            ReviewDTO reviewDTO = modelMapper.map(review, ReviewDTO.class);
+            List<ImageDTO> imageDTOs = review.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + review.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + review.getId() + ": " + imageDTOs.size());
+            }
+
+            reviewDTO.setImageDTOs(imageDTOs);
+            return reviewDTO;
+        });
     }
 
     @Override
-    public Page<JoinDTO> joinTypeReadAll(String searchValue, String postType, Pageable pageable) {
-        return null;
+    public Page<JoinDTO> joinTypeReadAll(int size, int page) {
+        Page<Join> postPage = allPostSearch.searchJoinPaging(size, page);
+
+        return postPage.map(join -> {
+            JoinDTO joinDTO = modelMapper.map(join, JoinDTO.class);
+            List<ImageDTO> imageDTOs = join.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + join.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + join.getId() + ": " + imageDTOs.size());
+            }
+
+            joinDTO.setImageDTOs(imageDTOs);
+            return joinDTO;
+        });
     }
 
     @Override

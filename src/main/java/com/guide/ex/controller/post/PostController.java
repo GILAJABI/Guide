@@ -1,6 +1,7 @@
 package com.guide.ex.controller.post;
 
 import com.guide.ex.domain.post.Post;
+import com.guide.ex.domain.post.Review;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
@@ -38,7 +39,7 @@ public class PostController {
 
 
     @GetMapping("/carrotMain")
-    public String carrotMain(@Valid Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+    public String carrotMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
         Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
         System.out.println("-----------------------");
         System.out.println(posts.getContent());
@@ -49,6 +50,21 @@ public class PostController {
         model.addAttribute("posts", posts);
         return "post/carrotMain";  // View name for Thymeleaf template
     }
+
+    @GetMapping("/reviewMain")
+    public String reviewMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page);
+        model.addAttribute("posts", posts);
+        return "post/reviewMain";
+    }
+
+    @GetMapping("/joinMain")
+        public String joinMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page);
+        model.addAttribute("posts", posts);
+        return "post/joinMain";
+    }
+
 
     @PostMapping("/carrotMain/search")
     public String searchValue(@RequestParam("searchValue") String searchValue,
@@ -64,6 +80,55 @@ public class PostController {
         postService.postSelectAll(searchValue, postType);
 
         return "redirect:/post/carrotMain";
+    }
+
+    @GetMapping("/carrotDetail")
+    public String carrotDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId);
+
+        System.out.println("-----------------------");
+        System.out.println(post.getContent());
+        System.out.println("-----------------------");
+        log.info("postImage {}, postId {}", post.getPostImages(), post.getPostId());
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("post", post);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/carrotDetail";
+    }
+
+    @GetMapping("/reviewDetail")
+    public String reviewDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId);
+
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("post", post);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/reviewDetail";
+    }
+
+    @GetMapping("/joinDetail")
+    public String joinDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId);
+
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("post", post);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/joinDetail";
     }
 
     @GetMapping("/carrotWrite")
@@ -108,24 +173,7 @@ public class PostController {
         return "redirect:/main";
     }
 
-    @GetMapping("/carrotDetail")
-    public String carrotDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId);
 
-        System.out.println("-----------------------");
-        System.out.println(post.getContent());
-        System.out.println("-----------------------");
-        log.info("postImage {}, postId {}", post.getPostImages(), post.getPostId());
-        List<ImageDTO> imageDTOS = post.getPostImages().stream()
-                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
-                .collect(Collectors.toList());
-
-
-        model.addAttribute("post", post);
-        model.addAttribute("imageDTOS", imageDTOS);
-
-        return "post/carrotDetail";
-    }
 
     @PostMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
@@ -159,28 +207,6 @@ public class PostController {
 //        }
 //    }
 
-    @GetMapping("/reviewDetail")
-    public void reviewDetail() {
-
-    }
-
-    @GetMapping("/joinDetail")
-    public void joinDetail() {
-
-    }
-
-
-
-
-    @GetMapping("/joinMain")
-    public void joinMain() {
-
-    }
-
-    @GetMapping("/reviewMain")
-    public void reviewMain() {
-
-    }
 
     @PostMapping("/comment") // 요청 경로 수정
     public String addComment(HttpSession session,
