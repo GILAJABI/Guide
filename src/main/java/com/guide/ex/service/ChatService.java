@@ -12,5 +12,5 @@ public interface ChatService {
 
     List<ChatRoomDTO> memberChatRooms(long memberId);
 
-    void deleteChatRoom(Long roomId);
+//    void deleteChatRoom(Long roomId);
 }
