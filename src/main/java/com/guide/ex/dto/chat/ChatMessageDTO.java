@@ -18,4 +18,4 @@ public class ChatMessageDTO {
     private Long memberId;
     private String memberName;
     private Long roomId;
-}
+    }

@@ -12,9 +12,9 @@ let memberName = sessionStorage.getItem("member_name")
 
 stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
     console.log('Connected: ' + frame);
-
+    const roomId = document.body.getAttribute('data-room-id');
     // 메시지를 받았을 때의 동작 정의
-    stompClient.subscribe("/topic/chat/room/", function(message) {
+    stompClient.subscribe("/topic/chat/room/" + roomId, function(message) {
         const messageBody = JSON.parse(message.body);
         // 메시지를 chatMessages 영역에 추가
         const chatMessagesDiv = document.getElementById("chat_list");

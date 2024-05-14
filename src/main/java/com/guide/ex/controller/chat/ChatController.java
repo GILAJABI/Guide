@@ -18,10 +18,12 @@ public class ChatController {
 
     @MessageMapping("/message")
     public void sendMessage(ChatMessageDTO message) {
+
+        Long roomId = message.getRoomId();
 //        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
 //        if (room != null) {
 //            chatMessageRepository.save(message);
-        messagingTemplate.convertAndSend("/topic/chat/room/", message);
+        messagingTemplate.convertAndSend("/topic/chat/room/" + + roomId, message);
         //}
     }
 }
