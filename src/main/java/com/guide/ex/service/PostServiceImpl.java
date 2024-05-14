@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -306,8 +307,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<CarrotDTO> carrotTypeReadAll(int size, int page) {
-        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page);
+    public Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort) {
+        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page, sort);
 
         return postPage.map(carrot -> {
             CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
@@ -386,6 +387,7 @@ public class PostServiceImpl implements PostService {
             return joinDTO;
         });
     }
+
 
     @Override
     public boolean deletePost(Long postId, Long memberId) {

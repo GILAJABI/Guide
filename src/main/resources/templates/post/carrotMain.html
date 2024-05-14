@@ -51,9 +51,9 @@
         </div>
         <div id="selectMenu2">
             <div id="sortMenu">
-                <a href="#" class="filter-link" id="defaultChoice">최신순</a>
+                <a href="#" class="filter-link" th:href="@{/post/carrotMain}">최신순</a>
                 <a href="#" class="filter-link">인기순</a>
-                <a href="#" class="filter-link">많이 본 순</a>
+                <a href="#" class="filter-link" th:href="@{/post/carrotMain/view}">많이 본 순</a>
                 <a href="#" class="filter-link">댓글순</a>
             </div>
             <div id="use">
@@ -64,7 +64,10 @@
                         <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
                     </button>
                 </form>
-                <button type="submit" id="postBtn">+ 올리기</button>
+                <a th:href="@{/post/carrotWrite}">
+                    <button type="submit" id="postBtn">+ 올리기</button>
+                </a>
+
             </div>
         </div>
     </header>

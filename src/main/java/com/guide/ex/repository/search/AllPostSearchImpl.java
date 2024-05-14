@@ -64,23 +64,21 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 //    }
 
     @Override
-    public Page<Carrot> searchCarrotPaging(int size, int page) {    // 당근 게시판 모든 게시글 검색
+    public Page<Carrot> searchCarrotPaging(int size, int page, Sort sort) {    // 당근 게시판 모든 게시글 검색
         QCarrot carrot = QCarrot.carrot; // QCarrot 인스턴스 생성
         QPostImage postImage = QPostImage.postImage; // PostImage의 QueryDSL 메타모델
         QMember member = QMember.member; // Member의 QueryDSL 메타모델
 
-        // 페이지 요청과 함께 registerDate를 기준으로 내림차순 정렬 설정
-        Pageable pageable = PageRequest.of(page - 1, size);
+        // 페이지 요청과 함께 sort를 사용하여 정렬 설정
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
 
         JPAQuery<Carrot> query = new JPAQuery<>(entityManager);
         query.from(carrot)
                 .join(carrot.member, member).fetchJoin() // Member와 페치 조인
                 .join(carrot.postImages, postImage).fetchJoin() // PostImage와 페치 조인
-                .where(carrot.isDeleted.eq(false)) // 삭제되지 않은 Carrot 게시물 검색
-                .where(carrot.postType.eq("Carrot")) // Carrot 타입만 검색
-                .orderBy(carrot.registerDate.desc()) // registerDate 기준으로 내림차순 정렬
-                .orderBy(carrot.views.desc())
-                .orderBy(carrot.commentCount.desc())
+                .where(carrot.isDeleted.eq(false).and(carrot.postType.eq("Carrot"))) // 삭제되지 않은 Carrot 게시물 검색
+                .orderBy(carrot.views.desc()) // 여러 조건으로 정렬
+                .orderBy()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -91,6 +89,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
 
         return new PageImpl<>(carrots, pageable, total);
     }
+
 
     @Override
     public Page<Review> searchReviewPaging(int size, int page) {
@@ -232,6 +231,3 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         return false;  // 삭제 실패 (게시글이 존재하지 않거나 권한 없음)
     }
 }
-
-
-

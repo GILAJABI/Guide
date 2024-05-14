@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,15 +37,18 @@ public class PostController {
 
     @GetMapping("/carrotMain")
     public String carrotMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
-        System.out.println("-----------------------");
-        System.out.println(posts.getContent());
-        System.out.println("-----------------------");
-        log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}",
-                posts.getTotalElements(), posts.getTotalPages(), posts.getNumber());
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, "registerDate"));
+        log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}, Content !!{}",
+                posts.getTotalElements(), posts.getTotalPages(), posts.getNumber(), posts.getContent());
 
         model.addAttribute("posts", posts);
         return "post/carrotMain";  // View name for Thymeleaf template
+    }
+    @GetMapping("/carrotMain/view")
+    public String carrotView(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, "views"));
+        model.addAttribute("posts", posts);
+        return "post/carrotMain";
     }
 
     @GetMapping("/reviewMain")
@@ -65,7 +65,6 @@ public class PostController {
         return "post/joinMain";
     }
 
-
     @PostMapping("/carrotMain/search")
     public String searchValue(@RequestParam("searchValue") String searchValue,
                               @RequestParam("postType") String postType,
@@ -81,6 +80,7 @@ public class PostController {
 
         return "redirect:/post/carrotMain";
     }
+
 
     @GetMapping("/carrotDetail")
     public String carrotDetail(Model model, Long postId) {

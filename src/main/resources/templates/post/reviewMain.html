@@ -65,7 +65,9 @@
                         <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
                     </button>
                 </form>
-                <button type="submit" id="postBtn">+ 올리기</button>
+                <a th:href="@{/post/reviewWrite}">
+                    <button type="submit" id="postBtn">+ 올리기</button>
+                </a>
             </div>
         </div>
     </header>
