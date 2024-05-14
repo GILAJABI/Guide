@@ -22,7 +22,6 @@ stompClient.connect({Authorization: 'Bearer ' + authToken}, function(frame) {
         const senderName = messageBody.memberName; // 보낸 사람의 이름 또는 ID
         const messageContent = messageBody.chatMsg; // 메시지 내용
         const senderId = messageBody.memberId; // 보낸 사람의 ID
-
         console.log(myId);
         console.log(senderId);
 
