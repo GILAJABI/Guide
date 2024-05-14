@@ -1,28 +1,29 @@
-//package com.guide.ex.repository.chat;
-//
-//import com.guide.ex.domain.chat.ChatRoom;
-//import com.guide.ex.repository.chat.ChatRoomRepository;
-//import lombok.extern.slf4j.Slf4j;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//import java.time.LocalDateTime;
-//import java.util.Optional;
-//
-//@SpringBootTest
-//@Slf4j
-//public class ChatRoomRepositoryTests {
-//
-//    @Autowired
-//    private ChatRoomRepository chatRoomRepository;
-//
-////    @Test
-////    public void testTime(){
-////        log.info("------------test time-------------");
-////        chatRoomRepository.getTime();
-////    }
-//
+package com.guide.ex.repository.chat;
+
+import com.guide.ex.domain.chat.ChatRoom;
+import com.guide.ex.repository.chat.ChatRoomRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@SpringBootTest
+@Slf4j
+public class ChatRoomRepositoryTests {
+
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
+
+//    @Test
+//    public void testTime(){
+//        log.info("------------test time-------------");
+//        chatRoomRepository.getTime();
+//    }
+
 //    @Test
 //    public void testInsertChatRoom() {
 //
@@ -58,10 +59,20 @@
 //        * */
 //        chatRoomRepository.save(chatRoom);
 //   }
-//    @Test
-//    public void testDelete(){
-//        Long roomId = 1L;
-//
-//        chatRoomRepository.deleteById(roomId);
-//    }
-//}
+    @Test
+    public void testDelete(){
+        Long roomId = 1L;
+
+        chatRoomRepository.deleteById(roomId);
+    }
+
+    @Test
+    public void testFindAll() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        log.info("==============================================================");
+        log.info(chatRooms.toString());
+        log.info("==============================================================");
+    }
+
+
+}
