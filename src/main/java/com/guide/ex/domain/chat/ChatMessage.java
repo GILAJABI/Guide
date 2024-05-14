@@ -37,9 +37,9 @@ public class ChatMessage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    private ChatRoom chatRoom;
+    private ChatRoom roomId;
 
-    public void setChatRoom(ChatRoom chatRoom) {
-        this.chatRoom = chatRoom;
+    public void setChatRoom(ChatRoom roomId) {
+        this.roomId = roomId;
     }
 }

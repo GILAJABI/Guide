@@ -24,11 +24,11 @@ public class ChatRoom {
     @Column(name = "room_id")
     private Long roomId;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime registDate;
+//    @CreatedDate
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    private LocalDateTime registDate;
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "roomId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessages;
 
     @ManyToOne(fetch = FetchType.LAZY)

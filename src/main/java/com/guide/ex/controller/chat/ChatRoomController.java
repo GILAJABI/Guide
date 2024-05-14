@@ -3,7 +3,6 @@ package com.guide.ex.controller.chat;
 import com.guide.ex.dto.chat.ChatRoomDTO;
 import com.guide.ex.service.ChatService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-public class ChatPageController {
+public class ChatRoomController {
 
     private final ChatService chatService;
 
     // 생성자 주입
-    public ChatPageController(ChatService chatService) {
+    public ChatRoomController(ChatService chatService) {
         this.chatService = chatService;
     }
 

@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,8 +49,8 @@ public class ChatHtmlController {
         model.addAttribute("member_name", name);
     }
 
-    @GetMapping("/chatRoom.html")
-    public String chatRoom(@RequestParam("roomId") Long roomId, HttpSession session, Model model) {
+    @GetMapping("/chatRoom/{roomId}")
+    public String chatRoom(@PathVariable("roomId") Long roomId, HttpSession session, Model model) {
         Long memberId = (Long) session.getAttribute("member_id");
         String name = memberService.memberReadOne(memberId).getName();
 
@@ -60,10 +61,10 @@ public class ChatHtmlController {
         System.out.println(name);
         System.out.println("============================");
 
-        model.addAttribute("session_member_id", memberId);
+
         model.addAttribute("member_name", name);
         model.addAttribute("room_id", roomId); // 채팅방 ID를 모델에 추가
 
-        return "chatRoom"; // chatRoom.html 페이지 반환
+        return "/chat/chatRoom.html"; // chatRoom.html 페이지 반환
     }
 }
