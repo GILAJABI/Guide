@@ -16,11 +16,16 @@
     </header>
     <div>
         <ul id="chat_arrange">
-            <li class="chat_div">
+
+            <li class="chat_div" th:each="room : ${rooms}">
                 <div class="chat_list">
-                    <img class="profile" th:src="@{/image/profile.png}">
+                    <img th:class="profile"
+                         th:if="${room.receiver.profileInfo != null}"
+                         th:src="'/api/photo/' + ${room.receiver.profileInfo.uuid + '_' + room.receiver.profileInfo.fileName}">
+                    <img th:class="profile"
+                         th:unless="${room.receiver.profileInfo != null}" th:src="@{/image/profile.png}">
                     <div class="list_div">
-                        <span class="name">username1</span>
+                        <span class="name" th:text="${room.receiver.name}">username1</span>
                     </div>
                     <div class="delete_div">
                         <button class="delete_btn">
@@ -30,23 +35,6 @@
 
                 </div>
             </li>
-
-            <li class="chat_div">
-                <div class="chat_list">
-                    <img class="profile" th:src="@{/image/profile.png}">
-                    <div class="list_div">
-                        <span class="name">username2</span>
-                        <!-- 추가: 채팅 신청 버튼 -->
-
-                    </div>
-                    <div class="delete_div">
-                        <button class="delete_btn">
-                            <img th:src="@{/image/new_delete.png}">
-                        </button>
-                    </div>
-                </div>
-            </li>
-
         </ul>
     </div>
 </div>
@@ -69,53 +57,47 @@
                     <div id="name">
                         홍길동
                     </div>
-                    <div id="modify">
-                        프로필 수정
+                    <div id="info">
+                        <table id="info_table">
+                            <p>한 줄 소개</p>
+                            <span id="info_content">안녕</span>
+                        </table>
                     </div>
+                    <!--                <div id="myCount">-->
+                    <!--                    <div id="like">-->
+                    <!--                        <img th:src="@{/image/like.png}" alt="좋아요">-->
+                    <!--                        <p>16</p>-->
+                    <!--                    </div>-->
+                    <!--                    <div id="post">-->
+                    <!--                        <img th:src="@{/image/post.png}" alt="게시물">-->
+                    <!--                        <p>16</p>-->
+                    <!--                    </div>-->
+                    <!--                    <div id="chat">-->
+                    <!--                        <img th:src="@{/image/chat.png}" alt="채팅">-->
+                    <!--                        <p>16</p>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+                    <!--                <p id="withdraw">탈퇴</p>-->
                 </div>
-                <div id="myCount">
-                    <div id="like">
-                        <img th:src="@{/image/like.png}" alt="좋아요">
-                        <p>16</p>
-                    </div>
-                    <div id="post">
-                        <img th:src="@{/image/post.png}" alt="게시물">
-                        <p>16</p>
-                    </div>
-                    <div id="chat">
-                        <img th:src="@{/image/chat.png}" alt="채팅">
-                        <p>16</p>
-                    </div>
-                </div>
-                <p id="withdraw">탈퇴</p>
             </div>
         </section>
     </div>
 </div>
-<script>
-    let session_member_id= [[${session_member_id}]]
-    let session_member_name= `[[${member_name}]]`
+<!--<script>-->
+<!--    let session_member_id = [[${session_member_id}]]-->
+<!--    let session_member_name = `[[${member_name}]]`-->
 
-    sessionStorage.setItem('member_id', session_member_id);
-    sessionStorage.setItem('member_name', session_member_name);
+<!--    sessionStorage.setItem('member_id', session_member_id);-->
+<!--    sessionStorage.setItem('member_name', session_member_name);-->
 
-    console.log("===================coookie===================")
-    console.log(session_member_id)
-    console.log(session_member_name)
-    // console.log("======================================")
-    //
-    // sessionStorage.setItem('member_id', session_member_id);
-    // sessionStorage.setItem('member_name', session_member_name);
-    //
-    // console.log("==================session storage====================")
-    // console.log(sessionStorage.getItem('member_id'))
-    // console.log(sessionStorage.getItem('member_name'))
-    // console.log("======================================")
-
-</script>
+<!--    console.log("===================coookie===================")-->
+<!--    console.log(session_member_id)-->
+<!--    console.log(session_member_name)-->
+<!--</script>-->
 <script th:src="@{/js/chat/chatList.js}"></script>
 <script th:src="@{/js/chat/chatModal.js}"></script>
 <script th:src="@{/js/chat/closeModal.js}"></script>
 </body>
 
 </html>
+
