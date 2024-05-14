@@ -16,7 +16,7 @@
         <p id="title">채팅</p>
     </div>
 
-     <div class="chat_box">
+    <div class="chat_box">
         <ul id="chat_arrange">
             <li class="chat_div" th:each="room : ${rooms}">
                 <div class="chat_list">
@@ -30,7 +30,7 @@
                         <span class="name" th:text="${room.receiver.name}">username1</span>
                     </div>
                     <div class="delete_div">
-                        <button class="delete_btn" data-room-id="${room.roomId}">
+                        <button class="delete_btn">
                             <img th:src="@{/image/new_delete.png}">
                         </button>
                     </div>
@@ -59,23 +59,16 @@
             button.addEventListener('click', function(event) {
                 event.stopPropagation();
 
-                var chatRoomId = button.getAttribute('data-room-id'); // data-room-id 속성으로 roomId를 가져옵니다.
+                var listItem = button.closest('.chat_div');
 
-                // AJAX 요청을 보냅니다.
-                fetch('/chat/delete/' + chatRoomId, {
-                    method: 'DELETE'
-                }).then(response => {
-                    if(response.ok) {
-                        button.closest('.chat_div').remove(); // 요청이 성공하면 UI에서 해당 요소를 제거합니다.
-                    } else {
-                        alert('삭제 실패');
-                    }
-                });
+                if (listItem) {
+                    listItem.remove();
+                }
             });
         });
     });
+
 </script>
 </body>
 
 </html>
-
