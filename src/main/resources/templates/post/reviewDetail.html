@@ -6,41 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/post/reviewDetail.css}">
-<!--    <script th:src="@{/js/post/reviewDetail.js}"></script>-->
+    <script>
+        var postId = `[[${post.postId}]]`;
+        console.log("===============postId======================");
+        console.log(postId);
+        console.log("===========================================");
 
+        document.addEventListener("DOMContentLoaded", function () {
+            // 페이지 로드될 때 댓글을 가져오는 함수 호출
+            loadComments(1);
+        });
+
+        // 댓글을 가져와서 HTML에 표시하는 함수
+        function loadComments(page) {
+            // Ajax를 사용하여 서버에서 특정 페이지의 댓글 데이터를 가져옵니다.
+            fetch("/post/comment?postId=" + postId + "&page=" + page)
+                .then(response => response.json()) // JSON 데이터로 변환
+                .then(data => {
+                    // 서버에서 받은 데이터를 처리하여 HTML에 표시
+                    displayComments(data.dtoList);
+                    // 페이징 버튼을 생성합니다.
+                    displayPagination(data);
+                })
+                .catch(error => {
+                    console.error('댓글을 불러오는 중 에러가 발생했습니다:', error);
+                });
+        }
+
+        // 댓글을 HTML에 표시하는 함수
+        function displayComments(comments) {
+            var commentList = document.getElementById("commentList");
+            commentList.innerHTML = ''; // 기존 댓글을 지웁니다.
+
+            comments.forEach(function (comment) {
+                // 각 댓글을 리스트 아이템으로 추가
+                var li = document.createElement('li');
+                li.innerHTML = `<p>${comment.member.name}</p><p>${comment.commentContent}</p><p>${comment.regisgerDate}</p>`;
+                commentList.appendChild(li);
+            });
+        }
+
+        // 페이징 버튼을 생성하는 함수
+        function displayPagination(data) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = ''; // 기존 페이징 버튼을 지웁니다.
+
+            var totalPages = Math.ceil(data.total / data.size); // 전체 페이지 수 계산
+
+            for (var i = 1; i <= totalPages; i++) {
+                var button = document.createElement('button');
+                button.textContent = i;
+                button.addEventListener("click", function () {
+                    loadComments(this.textContent); // 버튼을 클릭하면 해당 페이지의 댓글을 가져옵니다.
+                });
+                pagination.appendChild(button);
+            }
+        }
+    </script>
 </head>
 
 <body>
-
 <div th:include="/include/header.html"></div>
 <div class="container">
-    <header>
-        <div id="selectMenu">
-            <a th:href="@{/post/joinMain}">모집</a>
-            <a th:href="@{/post/reviewMain}">후기</a>
-            <a th:href="@{/post/carrotMain}" style="color:#FF6392">상품</a>
-        </div>
-        <div id="selectMenu2">
-            <div id="sortMenu">
-                <a href="#" class="filter-link">최신순</a>
-                <a href="#" class="filter-link">인기순</a>
-                <a href="#" class="filter-link">많이 본 순</a>
-                <a href="#" class="filter-link">댓글순</a>
-            </div>
-            <div id="use">
-                <form>
-                    <input type="text" name="query" id="searchInp">
-                    <button type="submit" id="searchBtn">
-                        <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
-                    </button>
-                </form>
-                <button type="submit" id="postBtn">+ 올리기</button>
-            </div>
-        </div>
-    </header>
-
+    <div id="selectMenu">
+        <a th:href="@{/post/joinMain}">모집</a>
+        <a th:href="@{/post/reviewMain}" style="color:#FF6392">후기</a>
+        <a th:href="@{/post/carrotMain}">상품</a>
+    </div>
 <div class="cont">
-
     <div class="bottom">
         <div class="left">
             <img th:src="@{/image/cat.jpeg}" alt="상품사진">
@@ -53,15 +86,11 @@
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
-
         <div class="right">
-
             <div class="profile">
                 <img th:src="@{/image/cat.jpeg}" alt="프로필 사진">
                 <p>닉네임</p>
             </div>
-
-
             <h1>정말 좋은 여행을 갔다 온 사람이 쓴 글</h1>
 
             <h2>총 경비 | 100,000,000 원</h2>
@@ -99,6 +128,42 @@
             likeCount.textContent = parseInt(likeCount.textContent) + 1;
         }
     }
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const postData = new URLSearchParams();
+
+        for (const pair of formData.entries()) {
+            postData.append(pair[0], pair[1]);
+        }
+
+        // 폼 데이터로부터 postId 추출
+        const postId = formData.get("postId");
+
+        fetch(`/post/comment?postId=${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: postData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) { // 서버에서 응답받은 데이터에 id가 포함되어 있는 경우
+                    const commentItem = document.createElement("li");
+                    commentItem.textContent = `${data.authorName}: ${data.content}`; // 작성자 이름과 내용을 표시
+                    commentList.appendChild(commentItem);
+                    form.reset(); // 폼 초기화
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error posting comment: " + error.message);
+            });
+    });
 </script>
 </div>
 
