@@ -307,8 +307,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort) {
-        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page, sort);
+    public Page<CarrotDTO> carrotTypeReadAll(int size, int page) {
+        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page);
 
         return postPage.map(carrot -> {
             CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
@@ -386,6 +386,43 @@ public class PostServiceImpl implements PostService {
             joinDTO.setImageDTOs(imageDTOs);
             return joinDTO;
         });
+    }
+
+    @Override
+    public Page<CarrotDTO> carrotViewRead(int size, int page) {
+        Page<Carrot> postPage = allPostSearch.searchCarrotViewCount(size, page);
+
+        return postPage.map(carrot -> {
+            CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
+            List<ImageDTO> imageDTOs = carrot.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + carrot.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + carrot.getId() + ": " + imageDTOs.size());
+            }
+
+            carrotDTO.setImageDTOs(imageDTOs);
+            return carrotDTO;
+        });
+    }
+
+    @Override
+    public Page<ReviewDTO> reviewViewRead(int size, int page) {
+        return null;
+    }
+
+    @Override
+    public Page<JoinDTO> joinViewRead(int size, int page) {
+        return null;
     }
 
 

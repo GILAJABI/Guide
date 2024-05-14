@@ -37,7 +37,7 @@ public class PostController {
 
     @GetMapping("/carrotMain")
     public String carrotMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, "registerDate"));
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}, Content !!{}",
                 posts.getTotalElements(), posts.getTotalPages(), posts.getNumber(), posts.getContent());
 
@@ -46,7 +46,7 @@ public class PostController {
     }
     @GetMapping("/carrotMain/view")
     public String carrotView(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, "views"));
+        Page<CarrotDTO> posts = postService.carrotViewRead(size, page);
         model.addAttribute("posts", posts);
         return "post/carrotMain";
     }

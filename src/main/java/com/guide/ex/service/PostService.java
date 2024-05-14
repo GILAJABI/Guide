@@ -21,10 +21,13 @@ public interface PostService {
 //    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
     List<PostDTO> postSelectAll(String searchValue, String postType);
 
-    Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort);
+    Page<CarrotDTO> carrotTypeReadAll(int size, int page);
     Page<ReviewDTO> reviewTypeReadAll(int size, int page);
     Page<JoinDTO> joinTypeReadAll(int size, int page);
 
+    Page<CarrotDTO> carrotViewRead(int size, int page);
+    Page<ReviewDTO> reviewViewRead(int size, int page);
+    Page<JoinDTO> joinViewRead(int size, int page);
 
     boolean deletePost(Long postId, Long memberId);
 
