@@ -41,7 +41,7 @@
                 <!--                    <p>[[${member.getGenderDescription()}]]</p>-->
                 <!--                </div>-->
                 <div>
-                    <p id="chatting">1:1 채팅</p>
+                    <button id="startChat">1:1 채팅</button>
 
                 </div>
                 <!--                <div id="chatImg">-->
@@ -150,7 +150,7 @@
         })
             .then(response => response.json())
             .then(data => {
-                window.location.href = `chat/chatRoom.html?roomId=${data.roomId}`;
+                window.location.href = `/chat/chatRoom/${data.roomId}`;
             })
             .catch(error => console.error('Error:', error));
     });

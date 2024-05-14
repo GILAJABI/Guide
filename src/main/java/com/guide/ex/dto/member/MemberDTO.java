@@ -72,4 +72,8 @@ public class MemberDTO {
         if (gender == null) return "정보 없음"; // gender 정보가 없을 경우 처리
         return gender.equals("male") ? "남자" : "여자";
     }
+
+    public Long getMemberId(Long memberId) {
+        return this.memberId = memberId;
+    }
 }

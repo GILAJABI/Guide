@@ -11,7 +11,9 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -266,9 +268,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post postDetailRead(Long postId, String postType) {  // 게시글 상세 검색(Service -> Repository)
+    public Post postDetailRead(Long postId) {  // 게시글 상세 검색(Service -> Repository)
         // 데이터베이스에서 Post 객체를 검색
-        Post post = allPostSearch.searchOne(postId, postType);
+        Post post = allPostSearch.searchOne(postId);
         if (post == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
@@ -332,16 +334,100 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    @Override
+    public Page<ReviewDTO> reviewTypeReadAll(int size, int page) {
+        Page<Review> postPage = allPostSearch.searchReviewPaging(size, page);
+
+        return postPage.map(review -> {
+            ReviewDTO reviewDTO = modelMapper.map(review, ReviewDTO.class);
+            List<ImageDTO> imageDTOs = review.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + review.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + review.getId() + ": " + imageDTOs.size());
+            }
+
+            reviewDTO.setImageDTOs(imageDTOs);
+            return reviewDTO;
+        });
+    }
 
     @Override
-    public Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable) {
+    public Page<JoinDTO> joinTypeReadAll(int size, int page) {
+        Page<Join> postPage = allPostSearch.searchJoinPaging(size, page);
+
+        return postPage.map(join -> {
+            JoinDTO joinDTO = modelMapper.map(join, JoinDTO.class);
+            List<ImageDTO> imageDTOs = join.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + join.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + join.getId() + ": " + imageDTOs.size());
+            }
+
+            joinDTO.setImageDTOs(imageDTOs);
+            return joinDTO;
+        });
+    }
+
+    @Override
+    public Page<CarrotDTO> carrotViewRead(int size, int page) {
+        Page<Carrot> postPage = allPostSearch.searchCarrotViewCount(size, page);
+
+        return postPage.map(carrot -> {
+            CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
+            List<ImageDTO> imageDTOs = carrot.getPostImages()
+                    .stream()
+                    .map(image -> {
+                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                        return imgDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            // Check if imageDTOs list is empty or contains null elements
+            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+                log.warn("No images found for Carrot ID " + carrot.getId());
+            } else {
+                log.info("Number of images for Carrot ID " + carrot.getId() + ": " + imageDTOs.size());
+            }
+
+            carrotDTO.setImageDTOs(imageDTOs);
+            return carrotDTO;
+        });
+    }
+
+    @Override
+    public Page<ReviewDTO> reviewViewRead(int size, int page) {
         return null;
     }
 
     @Override
-    public Page<JoinDTO> joinTypeReadAll(String searchValue, String postType, Pageable pageable) {
+    public Page<JoinDTO> joinViewRead(int size, int page) {
         return null;
     }
 
 
+    @Override
+    public boolean deletePost(Long postId, Long memberId) {
+        return allPostSearch.deleteOne(postId, memberId);
+    }
 }

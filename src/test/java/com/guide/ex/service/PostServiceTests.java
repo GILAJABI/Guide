@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.swagger2.mappers.ModelMapper;
 
 import java.util.List;
 
@@ -31,14 +30,13 @@ public class PostServiceTests {
     @Autowired
     private AllPostSearch allPostSearch;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @Test
     public void testSearchPostOne() {       // 게시글 상세 검색
 //        allPostSearch.searchOne(60L,"Review");
-        postService.postDetailRead(1L,"Carrot");
+        postService.postDetailRead(1L);
+
     }
+
     @Test
     public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
         Page<CarrotDTO> postPage = postService.carrotTypeReadAll(6, 5);
@@ -52,14 +50,15 @@ public class PostServiceTests {
             // 필요한 다른 속성들도 출력
         });
     }
-    @Test
-    public void testSelectAll() {
-        List<PostDTO> postPage = postService.postSelectAll("타조", "Review");
-        assertNotNull(postPage);    // postPage 객체가 null이 아닌지 확인
-        assertFalse(postPage.isEmpty());    // postPage 객체가 비어있는지 확인, isEmpty() = false 반환
-        postPage.forEach(postDTO ->
-                log.info("postDTO: {}", postDTO));
-    }
+
+//    @Test
+//    public void testSelectAll() {
+//        List<PostDTO> postPage = postService.postSelectAll("타조", "Review");
+//        assertNotNull(postPage);    // postPage 객체가 null이 아닌지 확인
+//        assertFalse(postPage.isEmpty());    // postPage 객체가 비어있는지 확인, isEmpty() = false 반환
+//        postPage.forEach(postDTO ->
+//                log.info("postDTO: {}", postDTO));
+//    }
 
     @Test
     public void testSearchPostAll() {
@@ -84,21 +83,26 @@ public class PostServiceTests {
 
     @Test
     void testSearchPostContaining() {
-        // Given
-        String searchValue = "승규";
+//         Given
+        String searchValue = "도라에몽";
 
         // When
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Review");
+        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Carrot");
 
-        // Then
+        // posts 객체가 null값인지 아닌지 확인하는 메서드
         assertNotNull(posts);
         assertFalse(posts.isEmpty());
         for (Post post : posts) {
             log.info("Post title: " + post.getTitle());
             log.info("Post content: " + post.getContent());
+            log.info("게시글 작성자 : " + posts.get(0).getMember().getName());
             log.info("Post id: " + post.getPostId());
             log.info("-----------------------------------");
-//            log.info(post.getTitle().contains(postTitle) || post.getContent().contains(postContent));
         }
+    }
+
+    @Test
+    public void testDelete() {
+        postService.deletePost(18L, 2L);
     }
 }

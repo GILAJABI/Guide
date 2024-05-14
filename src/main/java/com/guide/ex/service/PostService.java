@@ -4,6 +4,7 @@ import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.post.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -16,11 +17,18 @@ public interface PostService {
     void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
     void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
-    Post postDetailRead(Long memberId, String postType);
+    Post postDetailRead(Long memberId);
 //    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
     List<PostDTO> postSelectAll(String searchValue, String postType);
 
     Page<CarrotDTO> carrotTypeReadAll(int size, int page);
-    Page<ReviewDTO> reviewTypeReadAll(String searchValue, String postType, Pageable pageable);
-    Page<JoinDTO> joinTypeReadAll(String searchValue, String postType, Pageable pageable);
+    Page<ReviewDTO> reviewTypeReadAll(int size, int page);
+    Page<JoinDTO> joinTypeReadAll(int size, int page);
+
+    Page<CarrotDTO> carrotViewRead(int size, int page);
+    Page<ReviewDTO> reviewViewRead(int size, int page);
+    Page<JoinDTO> joinViewRead(int size, int page);
+
+    boolean deletePost(Long postId, Long memberId);
+
 }

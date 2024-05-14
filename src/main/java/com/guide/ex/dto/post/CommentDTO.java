@@ -1,5 +1,7 @@
 package com.guide.ex.dto.post;
 
+import com.guide.ex.dto.member.MemberDTO;
+import com.guide.ex.dto.member.MemberProfileDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,4 +32,6 @@ public class CommentDTO {
 
     @NotNull
     private Long memberId;
+
+    private MemberDTO member;
 }
