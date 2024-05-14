@@ -1,7 +1,11 @@
 package com.guide.ex.controller.chat;
 
+import com.guide.ex.domain.chat.ChatRoom;
+import com.guide.ex.dto.chat.ChatRoomDTO;
 import com.guide.ex.repository.chat.ChatMessageRepository;
 import com.guide.ex.repository.chat.ChatRoomRepository;
+import com.guide.ex.service.ChatService;
+import com.guide.ex.service.ChatServiceImpl;
 import com.guide.ex.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/chat")
@@ -23,9 +28,9 @@ public class ChatHtmlController {
     @Autowired
     private MemberService memberService;
 
-    private final SimpMessageSendingOperations messagingTemplate;
-    private final ChatMessageRepository chatMessageRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    @Autowired
+    private ChatService chatService;
+
 
 //    @MessageMapping("/chat/message")
 //    public void sendMessage(ChatMessage message) {
@@ -38,15 +43,8 @@ public class ChatHtmlController {
 
     @GetMapping("/chatList")
     public void getRoomById(HttpSession session, Model model) {
-        Long memberId = (Long) session.getAttribute("member_id");
-        String name = memberService.memberReadOne(memberId).getName();
-
-        System.out.println("============================");
-        System.out.println(name);
-        System.out.println("============================");
-
-        model.addAttribute("session_member_id", memberId);
-        model.addAttribute("member_name", name);
+        List<ChatRoomDTO> rooms = chatService.memberChatRooms((long) session.getAttribute("member_id"));
+        model.addAttribute("rooms", rooms);
     }
 
     @GetMapping("/chatRoom/{roomId}")

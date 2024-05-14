@@ -71,7 +71,7 @@ public class ChatServiceImpl implements ChatService {
                     chatRoomDTO.setSenderId(room.getSender().getId());
                     chatRoomDTO.setReceiverId(room.getReceiver().getId());
 
-                    Optional<Member> resultReceiver = memberRepository.findById(memberId);
+                    Optional<Member> resultReceiver = memberRepository.findById(room.getReceiver().getId());
                     Member receiver = resultReceiver.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
 
 

@@ -16,11 +16,16 @@
     </header>
     <div>
         <ul id="chat_arrange">
-            <li class="chat_div">
+
+            <li class="chat_div" th:each="room : ${rooms}">
                 <div class="chat_list">
-                    <img class="profile" th:src="@{/image/profile.png}">
+                    <img th:class="profile"
+                         th:if="${room.receiver.profileInfo != null}"
+                         th:src="'/api/photo/' + ${room.receiver.profileInfo.uuid + '_' + room.receiver.profileInfo.fileName}">
+                    <img th:class="profile"
+                         th:unless="${room.receiver.profileInfo != null}" th:src="@{/image/profile.png}">
                     <div class="list_div">
-                        <span class="name">username1</span>
+                        <span class="name" th:text="${room.receiver.name}">username1</span>
                     </div>
                     <div class="delete_div">
                         <button class="delete_btn">
@@ -30,23 +35,6 @@
 
                 </div>
             </li>
-
-            <li class="chat_div">
-                <div class="chat_list">
-                    <img class="profile" th:src="@{/image/profile.png}">
-                    <div class="list_div">
-                        <span class="name">username2</span>
-                        <!-- 추가: 채팅 신청 버튼 -->
-
-                    </div>
-                    <div class="delete_div">
-                        <button class="delete_btn">
-                            <img th:src="@{/image/new_delete.png}">
-                        </button>
-                    </div>
-                </div>
-            </li>
-
         </ul>
     </div>
 </div>
@@ -96,8 +84,8 @@
     </div>
 </div>
 <script>
-    let session_member_id= [[${session_member_id}]]
-    let session_member_name= `[[${member_name}]]`
+    let session_member_id = [[${session_member_id}]]
+    let session_member_name = `[[${member_name}]]`
 
     sessionStorage.setItem('member_id', session_member_id);
     sessionStorage.setItem('member_name', session_member_name);
@@ -105,16 +93,6 @@
     console.log("===================coookie===================")
     console.log(session_member_id)
     console.log(session_member_name)
-    // console.log("======================================")
-    //
-    // sessionStorage.setItem('member_id', session_member_id);
-    // sessionStorage.setItem('member_name', session_member_name);
-    //
-    // console.log("==================session storage====================")
-    // console.log(sessionStorage.getItem('member_id'))
-    // console.log(sessionStorage.getItem('member_name'))
-    // console.log("======================================")
-
 </script>
 <script th:src="@{/js/chat/chatList.js}"></script>
 <script th:src="@{/js/chat/chatModal.js}"></script>
