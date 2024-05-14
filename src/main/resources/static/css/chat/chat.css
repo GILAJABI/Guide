@@ -301,16 +301,20 @@ div#chat {
     border-radius: 50%;
     border: none;
     flex: 0 0 auto;
-    margin: 10px 10px 2px 0;
+    margin:0 15px 2px 0;
 }
 
 .chat_input input {
     border: solid #363636 1.5px;
-    border-radius: 10px;
+    border-radius: 23px;
     padding: 10px;
     width: 100%;
-    margin: 5px 0 0 5px;
-    font-size: 15px;
+    margin: 0 7px;
+    font-size: 17px;
+}
+
+input:focus{
+    outline: none;
 }
 
 /*.chat_close button {*/
