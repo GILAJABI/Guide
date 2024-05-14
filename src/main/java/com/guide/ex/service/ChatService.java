@@ -11,4 +11,6 @@ public interface ChatService {
     void sendMessage(ChatMessageDTO chatMessageDTO);
 
     List<ChatRoomDTO> memberChatRooms(long memberId);
+
+    void deleteChatRoom(Long roomId);
 }

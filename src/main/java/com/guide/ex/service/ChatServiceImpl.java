@@ -117,7 +117,8 @@ public class ChatServiceImpl implements ChatService {
         return memberChatrooms;
     }
 
-
-
-
+    @Override
+    public void deleteChatRoom(Long roomId) {
+        chatRoomRepository.deleteById(roomId);
+    }
 }

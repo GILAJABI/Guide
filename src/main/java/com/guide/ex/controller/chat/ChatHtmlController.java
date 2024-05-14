@@ -1,21 +1,13 @@
 package com.guide.ex.controller.chat;
 
-import com.guide.ex.domain.chat.ChatRoom;
 import com.guide.ex.dto.chat.ChatRoomDTO;
-import com.guide.ex.repository.chat.ChatMessageRepository;
-import com.guide.ex.repository.chat.ChatRoomRepository;
 import com.guide.ex.service.ChatService;
-import com.guide.ex.service.ChatServiceImpl;
 import com.guide.ex.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
