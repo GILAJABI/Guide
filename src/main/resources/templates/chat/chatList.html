@@ -40,64 +40,35 @@
     </div>
 </div>
 
-<div id="chatModal" class="modal">
-    <div class="modal_content">
-        <section>
-            <div id="left">
-                <div id="myProfile">
-                    <div id="ratingImg">
-                        <img th:src="@{/image/high.png}" alt="금메달">
-                    </div>
-                    <div id="profilePhoto">
-                        <div id="circle">
-                            <div id="photo">
-                                <img th:src="@{/image/user.png}" alt="기본 프로필 사진">
-                            </div>
-                        </div>
-                    </div>
-                    <div id="name">
-                        홍길동
-                    </div>
-                    <div id="info">
-                        <table id="info_table">
-                            <p>한 줄 소개</p>
-                            <span id="info_content">안녕</span>
-                        </table>
-                    </div>
-                    <!--                <div id="myCount">-->
-                    <!--                    <div id="like">-->
-                    <!--                        <img th:src="@{/image/like.png}" alt="좋아요">-->
-                    <!--                        <p>16</p>-->
-                    <!--                    </div>-->
-                    <!--                    <div id="post">-->
-                    <!--                        <img th:src="@{/image/post.png}" alt="게시물">-->
-                    <!--                        <p>16</p>-->
-                    <!--                    </div>-->
-                    <!--                    <div id="chat">-->
-                    <!--                        <img th:src="@{/image/chat.png}" alt="채팅">-->
-                    <!--                        <p>16</p>-->
-                    <!--                    </div>-->
-                    <!--                </div>-->
-                    <!--                <p id="withdraw">탈퇴</p>-->
-                </div>
-            </div>
-        </section>
-    </div>
-</div>
-<!--<script>-->
-<!--    let session_member_id = [[${session_member_id}]]-->
-<!--    let session_member_name = `[[${member_name}]]`-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatListElements = document.querySelectorAll('.chat_list');
+        chatListElements.forEach(function(element) {
+            element.addEventListener('click', function() {
+                // 클릭된 요소에서 roomId 값을 가져옵니다.
+                var roomId = element.getAttribute('data-room-id');
+                // roomId를 URL에 추가하여 동적으로 URL을 생성합니다.
+                var url = 'chatRoom/' + roomId;
+                // 현재 창으로 이동합니다.
+                window.location.href = url;
+            });
+        });
 
-<!--    sessionStorage.setItem('member_id', session_member_id);-->
-<!--    sessionStorage.setItem('member_name', session_member_name);-->
+        var deleteButtons = document.querySelectorAll('.delete_btn');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
 
-<!--    console.log("===================coookie===================")-->
-<!--    console.log(session_member_id)-->
-<!--    console.log(session_member_name)-->
-<!--</script>-->
-<script th:src="@{/js/chat/chatList.js}"></script>
-<script th:src="@{/js/chat/chatModal.js}"></script>
-<script th:src="@{/js/chat/closeModal.js}"></script>
+                var listItem = button.closest('.chat_div');
+
+                if (listItem) {
+                    listItem.remove();
+                }
+            });
+        });
+    });
+
+</script>
 </body>
 
 </html>
