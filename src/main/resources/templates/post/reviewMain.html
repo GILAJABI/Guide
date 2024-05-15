@@ -49,9 +49,9 @@
         </div>
         <div id="selectMenu2">
             <div id="sortMenu">
-                <a href="#" class="filter-link" th:href="@{/post/reviewMain}">최신순</a>
-                <a href="#" class="filter-link" th:href="@{/post/reviewMain/view}">많이 본 순</a>
-                <a href="#" class="filter-link">댓글순</a>
+                <a th:href="@{/post/reviewMain(sort='registerDate')}" th:classappend="${sort == 'registerDate'} ? 'active' : ''">최신순</a>
+                <a th:href="@{/post/reviewMain(sort='views')}" th:classappend="${sort == 'views'} ? 'active' : ''">많이 본 순</a>
+                <a th:href="@{/post/reviewMain(sort='comments')}" th:classappend="${sort == 'comments'} ? 'active' : ''">댓글순</a>
             </div>
             <div id="use">
                 <form th:action="@{/post/reviewMain/search}" method="get">
