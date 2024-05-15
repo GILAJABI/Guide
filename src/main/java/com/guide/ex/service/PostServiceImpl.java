@@ -12,7 +12,6 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -48,6 +47,7 @@ public class PostServiceImpl implements PostService {
     private final CommentRepository commentRepository;
 
 
+    // 거래 게시판 글 등록
     @Override
     public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
 
@@ -155,6 +155,7 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    // 거래 게시글 수정
     @Override
     public void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO) {
         // Post 엔티티 찾기
@@ -268,8 +269,9 @@ public class PostServiceImpl implements PostService {
         log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
     }
 
+    // 게시글 상세 검색(Service -> Repository)
     @Override
-    public Post postDetailRead(Long postId) {  // 게시글 상세 검색(Service -> Repository)
+    public Post postDetailRead(Long postId) {
         // 데이터베이스에서 Post 객체를 검색
         Post post = allPostSearch.searchOne(postId);
         if (post == null) {
@@ -278,15 +280,8 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-//    @Override
-//    public Page<CarrotDTO> postTypeReadAll(String postType, int size, int page) { // 게시판 목록, 메인 -> 각 게시판(Service -> Repository)
-//        Page<Carrot> postPage = allPostSearch.searchPostPaging(size, page);
-//        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-//
-//        return  null;
-//
-//    }
 
+    // 게시글 검색(Service -> Repository)
     @Override
     public Page<PostDTO> postSelectAll(String searchValue, String postType, Pageable pageable) {
         if (searchValue == null || searchValue.trim().isEmpty()) {
@@ -372,9 +367,7 @@ public class PostServiceImpl implements PostService {
         });
     }
 
-
-
-
+    // 거래 게시판 글 모두 출력(Service -> Repository)
     @Override
     public Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort) {
         Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page, sort);
@@ -458,6 +451,7 @@ public class PostServiceImpl implements PostService {
     }
 //----------------------------------------
 
+    // 게시글 삭제(Service -> Repository) + (회원 ID && postID) 일치할 경우만
     @Override
     public boolean deletePost(Long postId, Long memberId) {
         return allPostSearch.deleteOne(postId, memberId);
