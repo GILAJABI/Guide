@@ -99,12 +99,13 @@
                 <p id="content" th:text="${post.content}"></p>
                 <p class="text">댓글</p>
                 <p id="commentCnt" th:text="'댓글 ' + ${post.commentCount} + '개'"></p>
-                <form th:action="@{/post/comment}" method="post">
+                <form id="comment-form" th:action="@{/post/comment}" method="post">
                     <input type="hidden" name="postId" th:value="${post.postId}" />
                     <input type="hidden" name="memberId" th:value="${memberId}" />
                     <input type="text" name="commentContent" id="comment-input" placeholder="댓글을 입력하세요">
-                    <button type="submit">입력</button>
+                    <button type="button" id="comment-button">입력</button>
                 </form>
+
                 <div class="comment">
                     <ul id="commentList">
                         <li></li>
@@ -116,14 +117,12 @@
             <div id="right">
                 <p class="text" id="sell">여행자</p>
                 <div class="user">
-                    <div class="profile-container">
-                    </div> <!--profile-container-->
-                    <div class="profile-info">
-<!--                        <img th:unless="${member.profileInfo != null}" th:src="'/api/photo/' + ${member.profileInfo.uuid + '_' + member.profileInfo.fileName}">-->
-                        <p id="name" th:text="${post.member.getName()}"></p>
-                        <!--                        <p id="age" th:text="${post.member.getYear()}"></p>-->
-                        <!--                        <p id="gender" th:text="${post.member.getGender()}"></p>-->
-                    </div> <!--profile-info-->
+                    <div class="go">
+                        <p id="name" th:text="${post.member.getName()} + '님 프로필 정보'"></p>
+                        <a th:href="@{/post/carrotWrite}">
+                            <button type="submit" id="go">보러가기</button>
+                        </a>
+                    </div>
                 </div> <!--user-->
                 <p class="text" id="loc">위치</p>
                 <div id="map" style="width:380px;height:480px;margin-top: 10px;margin-left: 10px;">
@@ -139,7 +138,7 @@
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
-
+<script th:src="@{/js/post/commentSession.js}"></script>
 <script th:inline="javascript">
 
 

@@ -28,7 +28,7 @@
 #sortMenu {
     display: flex;
     justify-content: space-between;
-    width: 400px;
+    width: 300px;
     color: #363636;
 }
 
@@ -64,7 +64,7 @@
 #use {
     display: flex;
     justify-content: space-between;
-    width: 400px;
+    width: 350px;
 }
 
 form {
@@ -98,7 +98,7 @@ form {
     height: 40px;
     border: none;
     border-radius: 20px;
-    background-color: #FF6392;
+    background-color: #363636;
     color: #fafafa;
     font-family: 'BMJUA';
     font-size: 20px;
