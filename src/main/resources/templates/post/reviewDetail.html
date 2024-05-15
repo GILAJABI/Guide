@@ -119,7 +119,7 @@
                 <div class="user">
                     <div class="go">
                         <p id="name" th:text="${post.member.getName()} + '님 프로필 정보'"></p>
-                        <a th:href="@{/post/carrotWrite}">
+                        <a th:href="@{/member/otherPage/{memberId}(memberId=${post.member.memberId})}">
                             <button type="submit" id="go">보러가기</button>
                         </a>
                     </div>
