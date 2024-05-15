@@ -1,7 +1,7 @@
 // const roomId = "YOUR_ROOM_ID"; // 실제 채팅방의 식별자로 대체해야 합니다.
 
 // STOMP 클라이언트 생성
-const socket = new SockJS('http:192.168.0.13:8888/connection');
+const socket = new SockJS('http:172.16.101.68:8888/connection');
 // const socket = new SockJS('http://192.168.0.12:8888/connection');
 const stompClient = Stomp.over(socket);
 
