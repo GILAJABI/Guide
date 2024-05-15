@@ -20,7 +20,7 @@
         <div id="sortMenu">
             <a href="#" class="filter-link" th:href="@{/post/carrotMain}">최신순</a>
             <a href="#" class="filter-link" th:href="@{/post/carrotMain/view}">많이 본 순</a>
-            <a href="#" class="filter-link">댓글순</a>
+            <a href="#" class="filter-link" th:href="@{/post/carrotMain/comments}">댓글순</a>
         </div>
         <div id="use">
             <form th:action="@{/post/carrotMain/search}" method="get">
