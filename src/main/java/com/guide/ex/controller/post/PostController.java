@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +64,22 @@ public class PostController {
                              @RequestParam(defaultValue = "6") int size) {
         return carrotMain(model, page, size, "views");
     }
+    @GetMapping("/carrotMain/search")
+    public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
+                              @RequestParam("postType") String postType,
+                              @RequestParam(defaultValue = "registerDate") String sort,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "6") int size,
+                              Model model) {
 
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/carrotMain";
+    }
 
     @GetMapping("/reviewMain")
     public String reviewMain(Model model,
@@ -79,6 +96,22 @@ public class PostController {
                              @RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "6") int size) {
         return reviewMain(model, page, size, "views");
+    }
+
+    @GetMapping("/reviewMain/search")
+    public String reviewSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/reviewMain";
     }
 
     @GetMapping("/joinMain")
@@ -99,23 +132,22 @@ public class PostController {
         return joinMain(model, page, size, "views");
     }
 
+    @GetMapping("/joinMain/search")
+    public String joinSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
 
-    //    검색기능
-    @PostMapping("/carrotMain/search")
-    public String searchValue(@RequestParam("searchValue") String searchValue,
-                              @RequestParam("postType") String postType,
-                              Model model) {
-        switch (postType) {
-            case "Carrot":
-            case "Review":
-            case "Join":
-                postService.postSelectAll(searchValue, postType);
-        }
-
-        postService.postSelectAll(searchValue, postType);
-
-        return "redirect:/post/carrotMain";
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/joinMain";
     }
+
 
 
     @GetMapping("/carrotDetail")

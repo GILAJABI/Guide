@@ -14,7 +14,7 @@ public interface AllPostSearch {
 
     List<Post> searchPost(String postType);
 
-    List<Post> searchPostContaining(String searchValue, String postType);
+    Page<Post> searchPostContaining(String searchValue, String postType, Pageable pageable);
 
     Page<Carrot> searchCarrotPaging(int size, int page, Sort sort);
     Page<Review> searchReviewPaging(int size, int page, Sort sort);
@@ -22,6 +22,7 @@ public interface AllPostSearch {
 
     Post searchOne(Long postId);
     void updateViews(Long postId);
+
 
     boolean deleteOne(Long postId, Long memberId);
 }
