@@ -27,7 +27,8 @@
                         <img th:class="profile" th:src="@{/image/profile.png}">
                     </div>
                     <div class="list_div">
-                        <span class="name" th:text="${room.receiver.name}">username1</span>
+                        <span class="name" th:if="${session.member_name == room.receiver.name}" th:text="${room.sender.name}">username1</span>
+                        <span class="name" th:if="${session.member_name != room.receiver.name}" th:text="${room.receiver   .name}">username1</span>
                     </div>
                     <div class="delete_div">
                         <button class="delete_btn">
