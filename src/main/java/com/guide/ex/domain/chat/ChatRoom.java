@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter // 필요에 따라 Setter 추가
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

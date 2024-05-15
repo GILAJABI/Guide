@@ -48,19 +48,34 @@ public class ChatServiceImpl implements ChatService {
         Member sender = memberRepository.findById(chatRoomDTO.getSenderId()).orElseThrow(() -> new IllegalArgumentException("Sender not found"));
         Member receiver = memberRepository.findById(chatRoomDTO.getReceiverId()).orElseThrow(() -> new IllegalArgumentException("Receiver not found"));
 
-        // ChatRoom 객체 생성
-        ChatRoom chatRoom = ChatRoom.builder()
-                .sender(sender)
-                .receiver(receiver)
-                .chatMessages(new ArrayList<>())
-                .build();
+        // 존재하는 채팅방 확인
+        Optional<ChatRoom> result = chatRoomRepository.findRoomBySenderAndReceiver(sender, receiver);
+        Optional<ChatRoom> existingChatRoom = chatRoomRepository.findRoomBySenderAndReceiver(sender, receiver);
+        if (existingChatRoom.isPresent()) {
+            System.out.println("---------------------------------------------------");
+            System.out.println(existingChatRoom.get().getRoomId());
+            System.out.println("---------------------------------------------------");
+            return existingChatRoom.get().getRoomId(); // Return the existing chat room ID
+        } else {
 
-        // 채팅방 저장
-        chatRoom = chatRoomRepository.save(chatRoom);
+            System.out.println("---------------------------------------------------");
+            System.out.println("no find room");
+            System.out.println("---------------------------------------------------");
+            // Create a new chat room
+            ChatRoom chatRoom = ChatRoom.builder()
+                    .sender(sender)
+                    .receiver(receiver)
+                    .chatMessages(new ArrayList<>())
+                    .build();
 
-        // 생성된 채팅방 ID 반환
-        return chatRoom.getRoomId();
+            // Save the chat room
+            chatRoom = chatRoomRepository.save(chatRoom);
+
+            // Return the ID of the newly created chat room
+            return chatRoom.getRoomId();
+        }
     }
+
 
     @Override
     public void sendMessage(ChatMessageDTO chatMessageDTO) {
@@ -84,28 +99,39 @@ public class ChatServiceImpl implements ChatService {
         Optional<Member> result = memberRepository.findById(memberId);
         Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
 
-        List<ChatRoom> rooms = chatRoomRepository.findBySender(member);
+        List<ChatRoom> rooms = chatRoomRepository.findBySenderOrReceiver(member);
 
         List<ChatRoomDTO> memberChatrooms = rooms.stream()
                 .map(room -> {
-
                     ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
                     chatRoomDTO.setRoomId(room.getRoomId());
                     chatRoomDTO.setSenderId(room.getSender().getId());
                     chatRoomDTO.setReceiverId(room.getReceiver().getId());
 
-                    Optional<Member> resultReceiver = memberRepository.findById(room.getReceiver().getId());
-                    Member receiver = resultReceiver.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+                    // Retrieve sender's profile
+                    Optional<MemberProfile> senderProfileResult = memberProfileRepository.findByMember(room.getSender());
+                    MemberProfile senderProfile = senderProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
 
-
-                    Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(receiver);
-                    MemberProfile memberProfile = memberProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
-
+                    // Map sender information
                     chatRoomDTO.setSender(modelMapper.map(room.getSender(), MemberDTO.class));
+
+                    // Set sender's image if available
+                    if (senderProfile != null) {
+                        chatRoomDTO.getSender().setProfileInfo(modelMapper.map(senderProfile, MemberProfileDTO.class));
+                    } else {
+                        chatRoomDTO.getSender().setProfileInfo(null);
+                    }
+
+                    // Retrieve receiver's profile
+                    Optional<MemberProfile> receiverProfileResult = memberProfileRepository.findByMember(room.getReceiver());
+                    MemberProfile receiverProfile = receiverProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
+
+                    // Map receiver information
                     chatRoomDTO.setReceiver(modelMapper.map(room.getReceiver(), MemberDTO.class));
 
-                    if (memberProfile != null) {
-                        chatRoomDTO.getReceiver().setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+                    // Set receiver's image if available
+                    if (receiverProfile != null) {
+                        chatRoomDTO.getReceiver().setProfileInfo(modelMapper.map(receiverProfile, MemberProfileDTO.class));
                     } else {
                         chatRoomDTO.getReceiver().setProfileInfo(null);
                     }
@@ -116,4 +142,5 @@ public class ChatServiceImpl implements ChatService {
 
         return memberChatrooms;
     }
+
 }

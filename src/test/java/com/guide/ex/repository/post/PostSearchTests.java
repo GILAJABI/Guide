@@ -76,15 +76,7 @@ public class PostSearchTests {
 //            System.out.println("POST ID: " + post.getPostId());
 //            // 필요한 다른 속성들도 출력
 //        });
-//    }
-//
-//    @Test
-//    void testSearchPostContaining() {
-//        // Given
-//        String searchValue = "리뷰";
-//
-//        // When
-//        List<Post> posts = allPostSearch.searchPostContaining("ㅁㄴㅇ", "Review");
+
 //
 //        // Then
 //        assertNotNull(posts);

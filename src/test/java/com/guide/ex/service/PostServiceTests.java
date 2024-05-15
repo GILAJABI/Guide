@@ -34,10 +34,7 @@ public class PostServiceTests {
 //    @Test
 //    public void testSearchPostOne() {       // 게시글 상세 검색
 //        allPostSearch.searchOne(60L,"Review");
-//        postService.postDetailRead(1L);
-//
-//    }
-//
+
 //    @Test
 //    public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
 //        Page<CarrotDTO> postPage = postService.carrotTypeReadAll(6, 5);
@@ -51,7 +48,7 @@ public class PostServiceTests {
 //            // 필요한 다른 속성들도 출력
 //        });
 //    }
-//
+
 //    @Test
 //    public void testSelectAll() {
 //        List<PostDTO> postPage = postService.postSelectAll("타조", "Review");
@@ -63,7 +60,6 @@ public class PostServiceTests {
 //
 //    @Test
 //    public void testSearchPostAll() {
-//        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(6, 1, Sort.by(Sort.Order.desc()));
 
 //        System.out.println("페이징 결과:");
 //        System.out.println("전체 항목 수: " + postPage.getTotalElements());
@@ -81,10 +77,7 @@ public class PostServiceTests {
 //            });
 //        });
 //    }
-//
-//    @Test
-//    void testSearchPostContaining() {
-//         Given
+
 //        String searchValue = "도라에몽";
 //
 //        // When
@@ -101,9 +94,5 @@ public class PostServiceTests {
 //            log.info("-----------------------------------");
 //        }
 //    }
-//
-//    @Test
-//    public void testDelete() {
-//        postService.deletePost(18L, 2L);
-//    }
+
 }
