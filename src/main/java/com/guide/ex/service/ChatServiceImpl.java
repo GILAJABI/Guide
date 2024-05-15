@@ -1,11 +1,14 @@
 package com.guide.ex.service;
 
+import com.guide.ex.domain.chat.ChatMessage;
 import com.guide.ex.domain.chat.ChatRoom;
 import com.guide.ex.domain.member.Member;
 import com.guide.ex.domain.member.MemberProfile;
+import com.guide.ex.dto.chat.ChatMessageDTO;
 import com.guide.ex.dto.chat.ChatRoomDTO;
 import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.dto.member.MemberProfileDTO;
+import com.guide.ex.repository.chat.ChatMessageRepository;
 import com.guide.ex.repository.chat.ChatRoomRepository;
 import com.guide.ex.repository.member.MemberProfileRepository;
 import com.guide.ex.repository.member.MemberRepository;
@@ -32,15 +35,16 @@ public class ChatServiceImpl implements ChatService {
     private ChatRoomRepository chatRoomRepository;
 
     @Autowired
+    private ChatMessageRepository chatMessageRepository;
 
-    private MemberRepository memberRepository; // MemberRepository 주입
+    @Autowired
+    private MemberRepository memberRepository;
     private final MemberProfileRepository memberProfileRepository;
     private final ModelMapper modelMapper;
 
-
     @Override
     public Long createChatRoom(ChatRoomDTO chatRoomDTO) {
-        // DTO에서 senderId와 receiverId를 이용해 실제 Member 엔티티 조회
+
         Member sender = memberRepository.findById(chatRoomDTO.getSenderId()).orElseThrow(() -> new IllegalArgumentException("Sender not found"));
         Member receiver = memberRepository.findById(chatRoomDTO.getReceiverId()).orElseThrow(() -> new IllegalArgumentException("Receiver not found"));
 
@@ -48,7 +52,7 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = ChatRoom.builder()
                 .sender(sender)
                 .receiver(receiver)
-                .chatMessages(new ArrayList<>()) // 채팅 메시지 리스트 초기화
+                .chatMessages(new ArrayList<>())
                 .build();
 
         // 채팅방 저장
@@ -56,6 +60,23 @@ public class ChatServiceImpl implements ChatService {
 
         // 생성된 채팅방 ID 반환
         return chatRoom.getRoomId();
+    }
+
+    @Override
+    public void sendMessage(ChatMessageDTO chatMessageDTO) {
+
+        Member member = memberRepository.findById(chatMessageDTO.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+        ChatRoom chatRoom = chatRoomRepository.findById(chatMessageDTO.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid room ID"));
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .chatMsg(chatMessageDTO.getChatMsg())
+                .memberId(member)
+                .roomId(chatRoom)
+                .build();
+
+        chatMessageRepository.save(chatMessage);
     }
 
     @Override
@@ -67,7 +88,9 @@ public class ChatServiceImpl implements ChatService {
 
         List<ChatRoomDTO> memberChatrooms = rooms.stream()
                 .map(room -> {
+
                     ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
+                    chatRoomDTO.setRoomId(room.getRoomId());
                     chatRoomDTO.setSenderId(room.getSender().getId());
                     chatRoomDTO.setReceiverId(room.getReceiver().getId());
 
@@ -93,8 +116,4 @@ public class ChatServiceImpl implements ChatService {
 
         return memberChatrooms;
     }
-
-
-
-
 }

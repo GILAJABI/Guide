@@ -14,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatRoomDTO {
 
+    private Long roomId;
+
     private Long senderId;
     private Long receiverId;
 

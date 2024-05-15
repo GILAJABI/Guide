@@ -1,9 +1,9 @@
 package com.guide.ex.controller.chat;
 
 import com.guide.ex.dto.chat.ChatMessageDTO;
-import com.guide.ex.repository.chat.ChatMessageRepository;
-import com.guide.ex.repository.chat.ChatRoomRepository;
+import com.guide.ex.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -12,18 +12,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
+    @Autowired
+    private ChatService chatService;
+
     private final SimpMessageSendingOperations messagingTemplate;
-    private final ChatMessageRepository chatMessageRepository;
-    private final ChatRoomRepository chatRoomRepository;
 
     @MessageMapping("/message")
-    public void sendMessage(ChatMessageDTO message) {
-
-        Long roomId = message.getRoomId();
-//        ChatRoom room = chatRoomRepository.findById(message.getChatRoom().getRoomId()).orElse(null);
-//        if (room != null) {
-//            chatMessageRepository.save(message);
-        messagingTemplate.convertAndSend("/topic/chat/room/" + roomId, message);
-        //}
+    public void sendMessage(ChatMessageDTO chatMessageDTO) {
+        chatService.sendMessage(chatMessageDTO);
+        Long roomId = chatMessageDTO.getRoomId();
+        messagingTemplate.convertAndSend("/topic/chat/room/" + roomId, chatMessageDTO);
     }
 }

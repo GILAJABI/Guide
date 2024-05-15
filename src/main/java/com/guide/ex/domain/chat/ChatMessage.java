@@ -27,9 +27,9 @@ public class ChatMessage {
     @Column(name = "chat_msg", nullable = false)
     private String chatMsg;
 
-    @CreatedDate
-    @Column(name = "regist_date", nullable = false, updatable = false)
-    private LocalDateTime registDate;
+    //@CreatedDate
+    //@Column(name = "regist_date", nullable = false, updatable = false)
+    //private LocalDateTime registDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
