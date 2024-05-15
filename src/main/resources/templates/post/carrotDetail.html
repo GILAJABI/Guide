@@ -83,7 +83,6 @@
                 <div class="view">
                     <p th:text="'👀  ' + ${post.views} + ' 명이 조회했어요'"></p>
                 </div>
-                <p id="location">📍 위치</p>
                 <p id="title" th:text="${post.title}"></p>
                 <p class="text">거래 정보</p>
                 <div class="infoBox">
@@ -93,8 +92,8 @@
                 <p class="text">상품 소개</p>
                 <p id="content" th:text="${post.content}"></p>
                 <p class="text">댓글</p>
-                <p id="commentCnt">댓글 0개</p>
-                <form th:action="@{/post/comment}" method="post">
+                <p id="commentCnt" th:text="'댓글 ' + ${post.commentCount} + '개'"></p>
+                <form th:action="@{/post/comment}" id="formBtn" method="post">
                     <input type="hidden" name="postId" th:value="${post.postId}" />
                     <input type="hidden" name="memberId" th:value="${memberId}" />
                     <input type="text" name="commentContent" id="comment-input" placeholder="댓글을 입력하세요">
@@ -117,16 +116,16 @@
                     </div> <!--profile-container-->
                     <div class="profile-info">
                         <p id="name" th:text="${post.member.getName()}"></p>
-<!--                        <p id="age" th:text="${post.member.getYear()}"></p>-->
-<!--                        <p id="gender" th:text="${post.member.getGender()}"></p>-->
+                        <!--                        <p id="age" th:text="${post.member.getYear()}"></p>-->
+                        <!--                        <p id="gender" th:text="${post.member.getGender()}"></p>-->
                     </div> <!--profile-info-->
                 </div> <!--user-->
                 <p class="text" id="loc">위치</p>
-                <div id="map" style="width:600px;height:450px;">
-<!--                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35799.901099154966!2d126.99122613009443!3d37.52456387269132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca15aee9ab0cb%3A0x31793fc63e0cf9d3!2z67mE7Yq47Lqg7ZSE!5e0!3m2!1sko!2skr!4v1709707618933!5m2!1sko!2skr"-->
-<!--                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"-->
-<!--                            referrerpolicy="no-referrer-when-downgrade">-->
-<!--                    </iframe>-->
+                <div id="map" style="width:380px;height:480px;margin-top: 10px;margin-left: 10px;">
+                    <!--                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35799.901099154966!2d126.99122613009443!3d37.52456387269132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca15aee9ab0cb%3A0x31793fc63e0cf9d3!2z67mE7Yq47Lqg7ZSE!5e0!3m2!1sko!2skr!4v1709707618933!5m2!1sko!2skr"-->
+                    <!--                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"-->
+                    <!--                            referrerpolicy="no-referrer-when-downgrade">-->
+                    <!--                    </iframe>-->
                 </div>
             </div> <!--right-->
         </div> <!--sec-container-->
@@ -136,7 +135,6 @@
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
 
 <script th:inline="javascript">
-
 
     document.addEventListener("DOMContentLoaded", function () {
         createKakaoMap();
@@ -167,7 +165,6 @@
         marker.setMap(map);
     }
 </script>
-
 <script>
     form.addEventListener("submit", function(e) {
         e.preventDefault();
