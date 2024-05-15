@@ -21,7 +21,7 @@
             <li class="chat_div" th:each="room : ${rooms}" th:data-room-id="${room.roomId}">
                 <div class="chat_list">
                     <div class="circle" th:if="${room.receiver.profileInfo != null and session.member_name == room.receiver.name}">
-                        <img th:class="profile" th:src="'/api/photo/' + ${room.sender.profileInfo.uuid + '_' + room.sneder.profileInfo.fileName}">
+                        <img th:class="profile" th:src="'/api/photo/' + ${room.sender.profileInfo.uuid + '_' + room.sender.profileInfo.fileName}">
                     </div>
 
                     <div class="circle" th:if="${room.receiver.profileInfo != null and session.member_name != room.receiver.name}">

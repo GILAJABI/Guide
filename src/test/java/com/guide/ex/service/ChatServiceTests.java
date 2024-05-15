@@ -26,7 +26,7 @@ public class ChatServiceTests {
     @Test
     @Transactional
     public void findByMember() {
-        List<ChatRoomDTO> chatRoomDTOList = chatService.memberChatRooms(9l);
+        List<ChatRoomDTO> chatRoomDTOList = chatService.memberChatRooms(5l);
         log.info("==================================================================");
         log.info(chatRoomDTOList.toString());
         log.info("==================================================================");
