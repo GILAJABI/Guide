@@ -106,7 +106,8 @@
     </section>
 </div>
 <footer>
-    <div></div>
+    <div th:include="/include/footer.html"></div>
+
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script th:if="session.member_id != null">
@@ -159,7 +160,7 @@
     setInterval(toggleImages, 5000);
 </script>
 
-<
+
 <script th:inline="javascript">
     var profiles = [];
 
