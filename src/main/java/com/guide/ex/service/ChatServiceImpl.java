@@ -48,7 +48,15 @@ public class ChatServiceImpl implements ChatService {
         Member sender = memberRepository.findById(chatRoomDTO.getSenderId()).orElseThrow(() -> new IllegalArgumentException("Sender not found"));
         Member receiver = memberRepository.findById(chatRoomDTO.getReceiverId()).orElseThrow(() -> new IllegalArgumentException("Receiver not found"));
 
-        // ChatRoom 객체 생성
+        // 존재하는 채팅방 확인
+//        Optional<ChatRoom> existingRoom = chatRoomRepository.findBySenderIdAndReceiverId(chatRoomDTO.getSenderId(), chatRoomDTO.getReceiverId());
+
+//        if (existingRoom.isPresent()) {
+//            // 존재하는 채팅방이 있다면 그 채팅방의 ID를 반환
+//            return existingRoom.get().getRoomId();
+//        }
+
+        // 존재하는 채팅방이 없다면 새로운 채팅방 생성
         ChatRoom chatRoom = ChatRoom.builder()
                 .sender(sender)
                 .receiver(receiver)
@@ -61,6 +69,7 @@ public class ChatServiceImpl implements ChatService {
         // 생성된 채팅방 ID 반환
         return chatRoom.getRoomId();
     }
+
 
     @Override
     public void sendMessage(ChatMessageDTO chatMessageDTO) {
