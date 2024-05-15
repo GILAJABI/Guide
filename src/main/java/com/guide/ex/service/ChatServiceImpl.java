@@ -103,24 +103,35 @@ public class ChatServiceImpl implements ChatService {
 
         List<ChatRoomDTO> memberChatrooms = rooms.stream()
                 .map(room -> {
-
                     ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
                     chatRoomDTO.setRoomId(room.getRoomId());
                     chatRoomDTO.setSenderId(room.getSender().getId());
                     chatRoomDTO.setReceiverId(room.getReceiver().getId());
 
-                    Optional<Member> resultReceiver = memberRepository.findById(room.getReceiver().getId());
-                    Member receiver = resultReceiver.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+                    // Retrieve sender's profile
+                    Optional<MemberProfile> senderProfileResult = memberProfileRepository.findByMember(room.getSender());
+                    MemberProfile senderProfile = senderProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
 
-
-                    Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(receiver);
-                    MemberProfile memberProfile = memberProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
-
+                    // Map sender information
                     chatRoomDTO.setSender(modelMapper.map(room.getSender(), MemberDTO.class));
+
+                    // Set sender's image if available
+                    if (senderProfile != null) {
+                        chatRoomDTO.getSender().setProfileInfo(modelMapper.map(senderProfile, MemberProfileDTO.class));
+                    } else {
+                        chatRoomDTO.getSender().setProfileInfo(null);
+                    }
+
+                    // Retrieve receiver's profile
+                    Optional<MemberProfile> receiverProfileResult = memberProfileRepository.findByMember(room.getReceiver());
+                    MemberProfile receiverProfile = receiverProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
+
+                    // Map receiver information
                     chatRoomDTO.setReceiver(modelMapper.map(room.getReceiver(), MemberDTO.class));
 
-                    if (memberProfile != null) {
-                        chatRoomDTO.getReceiver().setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
+                    // Set receiver's image if available
+                    if (receiverProfile != null) {
+                        chatRoomDTO.getReceiver().setProfileInfo(modelMapper.map(receiverProfile, MemberProfileDTO.class));
                     } else {
                         chatRoomDTO.getReceiver().setProfileInfo(null);
                     }
@@ -131,4 +142,5 @@ public class ChatServiceImpl implements ChatService {
 
         return memberChatrooms;
     }
+
 }
