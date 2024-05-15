@@ -46,6 +46,7 @@ header img {
     height: 200px;
     border: none;
     padding-left: 0px;
+    background: none;
 }
 button > img {
     height: 300px;
