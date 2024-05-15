@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface AllPostSearch {
 
-    List<Post> searchPost(String postType);
-
     Page<Post> searchPostContaining(String searchValue, String postType, Pageable pageable);
 
     Page<Carrot> searchCarrotPaging(int size, int page, Sort sort);

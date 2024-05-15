@@ -166,19 +166,34 @@ form > button {
 
 .user {
     width: 380px;
-    height: 200px;
+    height: 100px;
     border: none;
     box-shadow: 10px 10px 10px rgb(227, 227, 227);
     border-radius: 10px;
     margin-left: 10px;
 }
 
-#circle {
-    width: 20px;
-    height: 20px;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 40px;
+.go {
+    margin: 30px;
+}
+
+.go > p {
+    color: #363636;
+    font-size: 19px;
+    text-align: center;
+}
+
+#go {
+    width: 330px;
+    height: 40px;
+    color: #fafafa;
+    background-color: #FF6392;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    font-family: 'BMJUA';
+    font-size: 19px;
+    text-align: center;
 }
 
 #name {

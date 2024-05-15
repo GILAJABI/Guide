@@ -1,7 +1,6 @@
 package com.guide.ex.controller.post;
 
 import com.guide.ex.domain.post.Post;
-import com.guide.ex.domain.post.Review;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
@@ -16,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +41,7 @@ public class PostController {
     private CommentRepository commentRepository;
 
 
+    // 메인
     @GetMapping("/carrotMain")
     public String carrotMain(Model model,
                              @RequestParam(defaultValue = "1") int page,
@@ -58,98 +56,7 @@ public class PostController {
         return "post/carrotMain";  // View name for Thymeleaf template
     }
 
-    @GetMapping("/carrotMain/view")
-    public String carrotView(Model model,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
-        return carrotMain(model, page, size, "views");
-    }
-    @GetMapping("/carrotMain/search")
-    public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
-                              @RequestParam("postType") String postType,
-                              @RequestParam(defaultValue = "registerDate") String sort,
-                              @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "6") int size,
-                              Model model) {
-
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        return "post/carrotMain";
-    }
-
-    @GetMapping("/reviewMain")
-    public String reviewMain(Model model,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size,
-                             @RequestParam(defaultValue = "registerDate") String sort) {
-        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        return "post/reviewMain";
-    }
-    @GetMapping("/reviewMain/view")
-    public String reviewView(Model model,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
-        return reviewMain(model, page, size, "views");
-    }
-
-    @GetMapping("/reviewMain/search")
-    public String reviewSearchDetail(Model model,
-                             @RequestParam("searchValue") String searchValue,
-                             @RequestParam("postType") String postType,
-                             @RequestParam(defaultValue = "registerDate") String sort,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        return "post/reviewMain";
-    }
-
-    @GetMapping("/joinMain")
-    public String joinMain(Model model,
-                           @RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "6") int size,
-                           @RequestParam(defaultValue = "registerDate") String sort) {
-        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        return "post/joinMain";
-    }
-
-    @GetMapping("/joinMain/view")
-    public String joinView(Model model,
-                           @RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "6") int size) {
-        return joinMain(model, page, size, "views");
-    }
-
-    @GetMapping("/joinMain/search")
-    public String joinSearchDetail(Model model,
-                             @RequestParam("searchValue") String searchValue,
-                             @RequestParam("postType") String postType,
-                             @RequestParam(defaultValue = "registerDate") String sort,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        return "post/joinMain";
-    }
-
-
-
+    // 게시글 상세보기
     @GetMapping("/carrotDetail")
     public String carrotDetail(Model model, Long postId) {
         Post post = postService.postDetailRead(postId);
@@ -169,36 +76,38 @@ public class PostController {
         return "post/carrotDetail";
     }
 
-    @GetMapping("/reviewDetail")
-    public String reviewDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId);
+    // 조회순으로 게시글 확인
+    @GetMapping("/carrotMain/view")
+    public String carrotView(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return carrotMain(model, page, size, "views");
+    }
+    // 댓글 갯수로 게시글 확인
+    @GetMapping("/carrotMain/comments")
+    public String carrotCommentCount(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return carrotMain(model, page, size, "comments");
+    }
+    @GetMapping("/carrotMain/search")
+    public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
+                              @RequestParam("postType") String postType,
+                              @RequestParam(defaultValue = "registerDate") String sort,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "6") int size,
+                              Model model) {
 
-        List<ImageDTO> imageDTOS = post.getPostImages().stream()
-                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
-                .collect(Collectors.toList());
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
 
-
-        model.addAttribute("post", post);
-        model.addAttribute("imageDTOS", imageDTOS);
-
-        return "post/reviewDetail";
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/carrotMain";
     }
 
-    @GetMapping("/joinDetail")
-    public String joinDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId);
-
-        List<ImageDTO> imageDTOS = post.getPostImages().stream()
-                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
-                .collect(Collectors.toList());
-
-
-        model.addAttribute("post", post);
-        model.addAttribute("imageDTOS", imageDTOS);
-
-        return "post/joinDetail";
-    }
-
+    // 게시글 작성
     @GetMapping("/carrotWrite")
     public String carrotWrite(HttpSession session) {
         if (session.getAttribute("member_id") == null) {
@@ -214,19 +123,60 @@ public class PostController {
         return "redirect:/post/carrotMain";
     }
 
-    @GetMapping("/joinWrite")
-    public String joinWrite(HttpSession session) {
-        if (session.getAttribute("member_id") == null) {
-            return "redirect:/member/login";
-        }
-        return "/post/joinWrite";
+//    ------------------------------------------------------------
+
+    @GetMapping("/reviewMain")
+    public String reviewMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size,
+                             @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/reviewMain";
+    }
+    @GetMapping("/reviewMain/view")
+    public String reviewView(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return reviewMain(model, page, size, "views");
+    }
+    @GetMapping("/reviewMain/comments")
+    public String reviewCommentCount(Model model,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "6") int size) {
+        return reviewMain(model, page, size, "comments");
     }
 
-    @PostMapping("/joinWrite")
-    public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
-        postService.joinRegister(joinDTO, file, session);
-        memberService.updateBoardCount(session);
-        return "redirect:/post/joinMain";
+    @GetMapping("/reviewMain/search")
+    public String reviewSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/reviewMain";
+    }
+
+    @GetMapping("/reviewDetail")
+    public String reviewDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId);
+
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("post", post);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/reviewDetail";
     }
 
     @GetMapping("/reviewWrite")
@@ -244,6 +194,79 @@ public class PostController {
         return "redirect:/post/reviewMain";
     }
 
+    //    ------------------------------------------------------------
+
+    @GetMapping("/joinMain")
+    public String joinMain(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "6") int size,
+                           @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/joinMain";
+    }
+
+    @GetMapping("/joinMain/view")
+    public String joinView(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "6") int size) {
+        return joinMain(model, page, size, "views");
+    }
+
+    @GetMapping("/joinMain/comments")
+    public String joinCommentCount(Model model,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "6") int size) {
+        return joinMain(model, page, size, "comments");
+    }
+    @GetMapping("/joinMain/search")
+    public String joinSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/joinMain";
+    }
+
+    @GetMapping("/joinDetail")
+    public String joinDetail(Model model, Long postId) {
+        Post post = postService.postDetailRead(postId);
+
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+
+
+        model.addAttribute("post", post);
+        model.addAttribute("imageDTOS", imageDTOS);
+
+        return "post/joinDetail";
+    }
+
+    @GetMapping("/joinWrite")
+    public String joinWrite(HttpSession session) {
+        if (session.getAttribute("member_id") == null) {
+            return "redirect:/member/login";
+        }
+        return "/post/joinWrite";
+    }
+
+    @PostMapping("/joinWrite")
+    public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
+        postService.joinRegister(joinDTO, file, session);
+        memberService.updateBoardCount(session);
+        return "redirect:/post/joinMain";
+    }
+//  ----------------------------------------------------------------------
+
     @PostMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
         try {
@@ -259,23 +282,6 @@ public class PostController {
             return "redirect:/error-page";
         }
     }
-
-//    @PostMapping("/delete/{postId}")
-//    public String postSearchValue(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
-//        try {
-//            if (postService.deletePost(postId, memberId)) {
-//                redirectAttributes.addFlashAttribute("successMessage", "게시글이 성공적으로 삭제되었습니다.");
-//                return "redirect:/post/carrotMain";
-//            } else {
-//                redirectAttributes.addFlashAttribute("errorMessage", "게시글 삭제에 실패하였습니다.");
-//                return "redirect:/post/carrotMain";
-//            }
-//        } catch (Exception e) {
-//            redirectAttributes.addFlashAttribute("errorMessage", "오류 발생: " + e.getMessage());
-//            return "redirect:/error-page";
-//        }
-//    }
-
 
     @PostMapping("/comment") // 요청 경로 수정
     public String addComment(HttpSession session,

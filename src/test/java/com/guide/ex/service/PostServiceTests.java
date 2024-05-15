@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,20 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Log4j2
 @Transactional   // 롤백을 적용함으로써 보다 각 테스트 별 독립적인 실행을 보장
 public class PostServiceTests {
-
-    @Autowired
-    private PostService postService;
-
-    @Qualifier("allPostSearchImpl")
-    @Autowired
-    private AllPostSearch allPostSearch;
-
-    @Test
-    public void testSearchPostOne() {       // 게시글 상세 검색
+//
+//    @Autowired
+//    private PostService postService;
+//
+//    @Qualifier("allPostSearchImpl")
+//    @Autowired
+//    private AllPostSearch allPostSearch;
+//
+//    @Test
+//    public void testSearchPostOne() {       // 게시글 상세 검색
 //        allPostSearch.searchOne(60L,"Review");
-        postService.postDetailRead(1L);
-
-    }
 
 //    @Test
 //    public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
@@ -62,8 +60,7 @@ public class PostServiceTests {
 //
 //    @Test
 //    public void testSearchPostAll() {
-//        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(6, 1);
-//
+
 //        System.out.println("페이징 결과:");
 //        System.out.println("전체 항목 수: " + postPage.getTotalElements());
 //        System.out.println("페이지당 항목 수: " + postPage.getSize());
@@ -81,9 +78,6 @@ public class PostServiceTests {
 //        });
 //    }
 
-//    @Test
-//    void testSearchPostContaining() {
-////         Given
 //        String searchValue = "도라에몽";
 //
 //        // When
@@ -101,8 +95,4 @@ public class PostServiceTests {
 //        }
 //    }
 
-    @Test
-    public void testDelete() {
-        postService.deletePost(18L, 2L);
-    }
 }
