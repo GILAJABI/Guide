@@ -99,7 +99,7 @@ public class ChatServiceImpl implements ChatService {
         Optional<Member> result = memberRepository.findById(memberId);
         Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
 
-        List<ChatRoom> rooms = chatRoomRepository.findBySender(member);
+        List<ChatRoom> rooms = chatRoomRepository.findBySenderOrReceiver(member);
 
         List<ChatRoomDTO> memberChatrooms = rooms.stream()
                 .map(room -> {

@@ -19,4 +19,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
             "OR (cr.sender = :receiver AND cr.receiver = :sender)")
     Optional<ChatRoom> findRoomBySenderAndReceiver(@Param("sender") Member sender, @Param("receiver") Member receiver);
 
+    @Query("SELECT cr FROM ChatRoom cr WHERE cr.sender = :member OR cr.receiver = :member")
+    List<ChatRoom> findBySenderOrReceiver(@Param("member") Member member);
+
 }
