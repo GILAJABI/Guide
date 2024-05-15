@@ -21,12 +21,16 @@
 
     <section id="sec1">
         <div id="sec11">
-            <button>
-                <img src="/image/joinBtn.png"/>
-            </button>
-            <button>
-                <img src="/image/carrotBtn.png"/>
-            </button>
+            <a th:href="@{/post/joinMain}">
+                <button>
+                    <img src="/image/joinBtn.png"/>
+                </button>
+            </a>
+            <a th:href="@{/post/carrotMain}">
+                <button>
+                    <img src="/image/carrotBtn.png"/>
+                </button>
+            </a>
             <div id="sec11_3">
                 <div id="user">
                     <div class="img_area" th:if="${session.member_id != null and session.member_profile != null}">
