@@ -1,6 +1,9 @@
 package com.guide.ex.repository.chat;
 
 import com.guide.ex.domain.chat.ChatRoom;
+import com.guide.ex.domain.member.Member;
+import com.guide.ex.dto.chat.ChatRoomDTO;
+import com.guide.ex.dto.member.MemberDTO;
 import com.guide.ex.repository.chat.ChatRoomRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +76,34 @@ public class ChatRoomRepositoryTests {
         log.info("==============================================================");
         log.info(chatRooms.toString());
         log.info("==============================================================");
+    }
+
+    @Test
+    public void testFindRoom() {
+        Member sender = Member.builder().memberId(7L).build();
+        Member receiver = Member.builder().memberId(9L).build();
+
+        Optional<ChatRoom> chatRoom = chatRoomRepository.findRoomBySenderAndReceiver(sender, receiver);
+
+        Optional<ChatRoomDTO> chatRoomDTO = chatRoom.map(room -> {
+            return ChatRoomDTO.builder()
+                    .roomId(room.getRoomId())
+                    .senderId(room.getSender().getMemberId())
+                    .receiverId(room.getReceiver().getMemberId())
+                    .sender(MemberDTO.builder()
+                            .memberId(room.getSender().getMemberId())
+                            // 다른 필요한 필드들도 여기에 추가하세요
+                            .build())
+                    .receiver(MemberDTO.builder()
+                            .memberId(room.getReceiver().getMemberId())
+                            // 다른 필요한 필드들도 여기에 추가하세요
+                            .build())
+                    .build();
+        });
+
+        log.info("----------------------------------------------");
+        log.info(chatRoomDTO.toString());
+        log.info("----------------------------------------------");
     }
 
 

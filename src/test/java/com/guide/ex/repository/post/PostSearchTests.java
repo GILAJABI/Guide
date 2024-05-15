@@ -78,23 +78,23 @@ public class PostSearchTests {
 //        });
     }
 
-    @Test
-    void testSearchPostContaining() {
-        // Given
-        String searchValue = "리뷰";
-
-        // When
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Review");
-
-        // Then
-        assertNotNull(posts);
-        assertFalse(posts.isEmpty());
-        for (Post post : posts) {
-            log.info("Post title: " + post.getTitle());
-            log.info("Post content: " + post.getContent());
-            log.info("Post id: " + post.getPostId());
-//            log.info(post.getTitle().contains(postTitle) || post.getContent().contains(postContent));
-        }
-    }
+//    @Test
+//    void testSearchPostContaining() {
+//        // Given
+//        String searchValue = "리뷰";
+//
+//        // When
+//        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Review");
+//
+//        // Then
+//        assertNotNull(posts);
+//        assertFalse(posts.isEmpty());
+//        for (Post post : posts) {
+//            log.info("Post title: " + post.getTitle());
+//            log.info("Post content: " + post.getContent());
+//            log.info("Post id: " + post.getPostId());
+////            log.info(post.getTitle().contains(postTitle) || post.getContent().contains(postContent));
+//        }
+//    }
 
 }

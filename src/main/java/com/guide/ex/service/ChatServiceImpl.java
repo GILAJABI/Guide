@@ -49,25 +49,31 @@ public class ChatServiceImpl implements ChatService {
         Member receiver = memberRepository.findById(chatRoomDTO.getReceiverId()).orElseThrow(() -> new IllegalArgumentException("Receiver not found"));
 
         // 존재하는 채팅방 확인
-//        Optional<ChatRoom> existingRoom = chatRoomRepository.findBySenderIdAndReceiverId(chatRoomDTO.getSenderId(), chatRoomDTO.getReceiverId());
+        Optional<ChatRoom> result = chatRoomRepository.findRoomBySenderAndReceiver(sender, receiver);
+        Optional<ChatRoom> existingChatRoom = chatRoomRepository.findRoomBySenderAndReceiver(sender, receiver);
+        if (existingChatRoom.isPresent()) {
+            System.out.println("---------------------------------------------------");
+            System.out.println(existingChatRoom.get().getRoomId());
+            System.out.println("---------------------------------------------------");
+            return existingChatRoom.get().getRoomId(); // Return the existing chat room ID
+        } else {
 
-//        if (existingRoom.isPresent()) {
-//            // 존재하는 채팅방이 있다면 그 채팅방의 ID를 반환
-//            return existingRoom.get().getRoomId();
-//        }
+            System.out.println("---------------------------------------------------");
+            System.out.println("no find room");
+            System.out.println("---------------------------------------------------");
+            // Create a new chat room
+            ChatRoom chatRoom = ChatRoom.builder()
+                    .sender(sender)
+                    .receiver(receiver)
+                    .chatMessages(new ArrayList<>())
+                    .build();
 
-        // 존재하는 채팅방이 없다면 새로운 채팅방 생성
-        ChatRoom chatRoom = ChatRoom.builder()
-                .sender(sender)
-                .receiver(receiver)
-                .chatMessages(new ArrayList<>())
-                .build();
+            // Save the chat room
+            chatRoom = chatRoomRepository.save(chatRoom);
 
-        // 채팅방 저장
-        chatRoom = chatRoomRepository.save(chatRoom);
-
-        // 생성된 채팅방 ID 반환
-        return chatRoom.getRoomId();
+            // Return the ID of the newly created chat room
+            return chatRoom.getRoomId();
+        }
     }
 
 

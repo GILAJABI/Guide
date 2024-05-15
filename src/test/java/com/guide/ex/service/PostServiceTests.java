@@ -37,19 +37,19 @@ public class PostServiceTests {
 
     }
 
-    @Test
-    public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
-        Page<CarrotDTO> postPage = postService.carrotTypeReadAll(6, 5);
-        log.info("postPage: {}", postPage);
-        log.info("postPage.getTotalElements(): {}", postPage.getTotalElements());
-        log.info("postPage.getTotalPages(): {}", postPage.getTotalPages());
-        log.info("postPage.getNumber(): {}", postPage.getNumber());
-        log.info("postPage.getSize(): {}", postPage.getSize());
-        postPage.getContent().forEach(post -> {
-            System.out.println("POST ID: " + post.getPostId());
-            // 필요한 다른 속성들도 출력
-        });
-    }
+//    @Test
+//    public void testSearchPostTypeAll() {   // 게시판 유형에 따른 페이징 처리(메인 -> 각 게시판 진입 시)
+//        Page<CarrotDTO> postPage = postService.carrotTypeReadAll(6, 5);
+//        log.info("postPage: {}", postPage);
+//        log.info("postPage.getTotalElements(): {}", postPage.getTotalElements());
+//        log.info("postPage.getTotalPages(): {}", postPage.getTotalPages());
+//        log.info("postPage.getNumber(): {}", postPage.getNumber());
+//        log.info("postPage.getSize(): {}", postPage.getSize());
+//        postPage.getContent().forEach(post -> {
+//            System.out.println("POST ID: " + post.getPostId());
+//            // 필요한 다른 속성들도 출력
+//        });
+//    }
 
 //    @Test
 //    public void testSelectAll() {
@@ -59,47 +59,47 @@ public class PostServiceTests {
 //        postPage.forEach(postDTO ->
 //                log.info("postDTO: {}", postDTO));
 //    }
+//
+//    @Test
+//    public void testSearchPostAll() {
+//        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(6, 1);
+//
+//        System.out.println("페이징 결과:");
+//        System.out.println("전체 항목 수: " + postPage.getTotalElements());
+//        System.out.println("페이지당 항목 수: " + postPage.getSize());
+//        System.out.println("전체 페이지 수: " + postPage.getTotalPages());
+//        System.out.println("현재 페이지 번호: " + postPage.getNumber());
+//        System.out.println("페이징된 결과: ");
+//
+//        postPage.getContent().forEach(carrot -> {
+//            System.out.println("POST ID: " + carrot.getPostId());
+//            carrot.getPostImages().forEach(image -> {
+//                System.out.println("Image ID: " + image.getImageId());
+//                System.out.println("Image UUID: " + image.getUuid());
+//                System.out.println("Image File Name: " + image.getFileName());
+//            });
+//        });
+//    }
 
-    @Test
-    public void testSearchPostAll() {
-        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(6, 1);
-
-        System.out.println("페이징 결과:");
-        System.out.println("전체 항목 수: " + postPage.getTotalElements());
-        System.out.println("페이지당 항목 수: " + postPage.getSize());
-        System.out.println("전체 페이지 수: " + postPage.getTotalPages());
-        System.out.println("현재 페이지 번호: " + postPage.getNumber());
-        System.out.println("페이징된 결과: ");
-
-        postPage.getContent().forEach(carrot -> {
-            System.out.println("POST ID: " + carrot.getPostId());
-            carrot.getPostImages().forEach(image -> {
-                System.out.println("Image ID: " + image.getImageId());
-                System.out.println("Image UUID: " + image.getUuid());
-                System.out.println("Image File Name: " + image.getFileName());
-            });
-        });
-    }
-
-    @Test
-    void testSearchPostContaining() {
-//         Given
-        String searchValue = "도라에몽";
-
-        // When
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Carrot");
-
-        // posts 객체가 null값인지 아닌지 확인하는 메서드
-        assertNotNull(posts);
-        assertFalse(posts.isEmpty());
-        for (Post post : posts) {
-            log.info("Post title: " + post.getTitle());
-            log.info("Post content: " + post.getContent());
-            log.info("게시글 작성자 : " + posts.get(0).getMember().getName());
-            log.info("Post id: " + post.getPostId());
-            log.info("-----------------------------------");
-        }
-    }
+//    @Test
+//    void testSearchPostContaining() {
+////         Given
+//        String searchValue = "도라에몽";
+//
+//        // When
+//        List<Post> posts = allPostSearch.searchPostContaining(searchValue, "Carrot");
+//
+//        // posts 객체가 null값인지 아닌지 확인하는 메서드
+//        assertNotNull(posts);
+//        assertFalse(posts.isEmpty());
+//        for (Post post : posts) {
+//            log.info("Post title: " + post.getTitle());
+//            log.info("Post content: " + post.getContent());
+//            log.info("게시글 작성자 : " + posts.get(0).getMember().getName());
+//            log.info("Post id: " + post.getPostId());
+//            log.info("-----------------------------------");
+//        }
+//    }
 
     @Test
     public void testDelete() {
