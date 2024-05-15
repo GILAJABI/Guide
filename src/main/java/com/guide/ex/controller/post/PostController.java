@@ -59,7 +59,22 @@ public class PostController {
                              @RequestParam(defaultValue = "6") int size) {
         return carrotMain(model, page, size, "views");
     }
+    @GetMapping("/carrotMain/search")
+    public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
+                              @RequestParam("postType") String postType,
+                              @RequestParam(defaultValue = "registerDate") String sort,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "6") int size,
+                              Model model) {
 
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/carrotMain";
+    }
 
     @GetMapping("/reviewMain")
     public String reviewMain(Model model,
@@ -76,6 +91,22 @@ public class PostController {
                              @RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "6") int size) {
         return reviewMain(model, page, size, "views");
+    }
+
+    @GetMapping("/reviewMain/search")
+    public String reviewSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/reviewMain";
     }
 
     @GetMapping("/joinMain")
@@ -97,7 +128,7 @@ public class PostController {
     }
 
     @GetMapping("/joinMain/search")
-    public String joinSearch(Model model,
+    public String joinSearchDetail(Model model,
                              @RequestParam("searchValue") String searchValue,
                              @RequestParam("postType") String postType,
                              @RequestParam(defaultValue = "registerDate") String sort,
@@ -111,43 +142,6 @@ public class PostController {
         model.addAttribute("sort", sort);
         return "post/joinMain";
     }
-
-
-
-    @GetMapping("/carrotMain/search")
-    public String searchValue(@RequestParam("searchValue") String searchValue,
-                              @RequestParam("postType") String postType,
-                              @RequestParam(defaultValue = "registerDate") String sort,
-                              @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "6") int size,
-                              Model model) {
-
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        return "post/carrotMain";
-    }
-
-//    @GetMapping("/joinMain/search")
-//    public String searchReviewPost(@RequestParam("searchValue") String searchValue,
-//                                   @RequestParam("postType") String postType,
-//                                   @RequestParam(defaultValue = "registerDate") String sort,
-//                                   @RequestParam(defaultValue = "1") int page,
-//                                   @RequestParam(defaultValue = "6") int size,
-//                                   Model model) {
-//
-//        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-//        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-//        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-//
-//        model.addAttribute("posts", posts);
-//        model.addAttribute("sort", sort);
-//        return "post/joinMain";
-//    }
-
-
 
 
 

@@ -300,9 +300,79 @@ public class PostServiceImpl implements PostService {
         if (!validPostTypes.contains(postType)) {
             throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
         }
-        Page<Post> posts = allPostSearch.searchPostContaining(searchValue, postType, pageable);
-        return posts.map(post -> modelMapper.map(post, PostDTO.class));
+
+        Page<Post> postPage = allPostSearch.searchPostContaining(searchValue, postType, pageable);
+
+        return postPage.map(post -> {
+            PostDTO postDTO;
+
+            switch (postType) {
+                case "Review":
+                    postDTO = modelMapper.map(post, ReviewDTO.class);
+                    List<ImageDTO> reviewImages = post.getPostImages().stream()
+                            .map(image -> {
+                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                                log.info("Review ImageDTO: " + imgDTO);  // Log each ImageDTO
+                                return imgDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    if (reviewImages.isEmpty() || reviewImages.contains(null)) {
+                        log.warn("No images found for Review ID " + post.getId());
+                    } else {
+                        log.info("Number of images for Review ID " + post.getId() + ": " + reviewImages.size());
+                    }
+
+                    ((ReviewDTO) postDTO).setImageDTOs(reviewImages);
+                    break;
+
+                case "Carrot":
+                    postDTO = modelMapper.map(post, CarrotDTO.class);
+                    List<ImageDTO> carrotImages = post.getPostImages().stream()
+                            .map(image -> {
+                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                                log.info("Carrot ImageDTO: " + imgDTO);  // Log each ImageDTO
+                                return imgDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    if (carrotImages.isEmpty() || carrotImages.contains(null)) {
+                        log.warn("No images found for Carrot ID " + post.getId());
+                    } else {
+                        log.info("Number of images for Carrot ID " + post.getId() + ": " + carrotImages.size());
+                    }
+
+                    ((CarrotDTO) postDTO).setImageDTOs(carrotImages);
+                    break;
+
+                case "Join":
+                    postDTO = modelMapper.map(post, JoinDTO.class);
+                    List<ImageDTO> joinImages = post.getPostImages().stream()
+                            .map(image -> {
+                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                                log.info("Join ImageDTO: " + imgDTO);  // Log each ImageDTO
+                                return imgDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    if (joinImages.isEmpty() || joinImages.contains(null)) {
+                        log.warn("No images found for Join ID " + post.getId());
+                    } else {
+                        log.info("Number of images for Join ID " + post.getId() + ": " + joinImages.size());
+                    }
+
+                    ((JoinDTO) postDTO).setImageDTOs(joinImages);
+                    break;
+
+                default:
+                    postDTO = modelMapper.map(post, PostDTO.class);
+                    break;
+            }
+            return postDTO;
+        });
     }
+
+
 
 
     @Override

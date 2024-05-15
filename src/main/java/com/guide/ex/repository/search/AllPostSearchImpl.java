@@ -146,6 +146,7 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         List<Post> results = query.select(post)
                 .from(post)
                 .where(booleanBuilder)
+                .orderBy(post.registerDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -153,8 +154,6 @@ public class AllPostSearchImpl extends QuerydslRepositorySupport implements AllP
         long total = query.fetchCount();
         return new PageImpl<>(results, pageable, total);
     }
-
-
 
 
     @Transactional

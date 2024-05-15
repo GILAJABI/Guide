@@ -44,24 +44,23 @@
     <header>
         <div id="selectMenu">
             <a th:href="@{/post/joinMain}">모집</a>
-            <a th:href="@{/post/reviewMain}">후기</a>
-            <a th:href="@{/post/carrotMain}" style="color:#FF6392">거래</a>
+            <a th:href="@{/post/reviewMain}" style="color:#FF6392">후기</a>
+            <a th:href="@{/post/carrotMain}" >거래</a>
         </div>
         <div id="selectMenu2">
             <div id="sortMenu">
                 <a href="#" class="filter-link" th:href="@{/post/reviewMain}">최신순</a>
-                <a href="#" class="filter-link">인기순</a>
                 <a href="#" class="filter-link" th:href="@{/post/reviewMain/view}">많이 본 순</a>
                 <a href="#" class="filter-link">댓글순</a>
             </div>
             <div id="use">
-<!--                <form th:action="@{/post/reviewMain/search}" method="get">-->
-<!--                    <input type="text" name="searchValue" id="searchInp" placeholder="검색어를 입력하세요">-->
-<!--                    <input type="hidden" name="postType" value="Review"> &lt;!&ndash; postType을 Review로 설정 &ndash;&gt;-->
-<!--                    <button type="submit" id="searchBtn">-->
-<!--                        <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">-->
-<!--                    </button>-->
-<!--                </form>-->
+                <form th:action="@{/post/reviewMain/search}" method="get">
+                    <input type="text" name="searchValue" id="searchInp" placeholder="검색어를 입력하세요">
+                    <input type="hidden" name="postType" value="Review"> <!-- postType을 Review로 설정 -->
+                    <button type="submit" id="searchBtn">
+                        <img th:src="@{/image/searchBtn.png}" alt="검색 버튼">
+                    </button>
+                </form>
                 <a th:href="@{/post/reviewWrite}">
                     <button type="submit" id="postBtn">+ 올리기</button>
                 </a>
@@ -69,7 +68,10 @@
         </div>
     </header>
     <section>
-        <div th:each="post : ${posts}" class="carrotBox">
+        <div th:if="${posts.isEmpty()}">
+            <p>게시물이 존재하지 않습니다.</p>
+        </div>
+        <div th:each="post : ${posts}" class="carrotBox" th:if="${not posts.isEmpty()}">
             <div class="image-section">
                 <a th:href="@{/post/reviewDetail(postId=${post.postId})}">
                     <img th:if="${post.imageDTOs != null && !post.imageDTOs.isEmpty()}"
@@ -90,7 +92,7 @@
             </div>
         </div>
     </section>
-    <div class="container mt-3">
+    <div class="container mt-3" th:if="${not posts.isEmpty()}">
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <!-- 이전 페이지 버튼 -->
