@@ -83,10 +83,10 @@
                 </a>
             </div>
             <div class="text-section">
-                <span class="board-title" th:text="${post.title}">판매 물품 제목</span>
+                <span class="board-title" th:text="${post.title}">후기글 제목</span>
                 <div class="additional-text">
                     <p id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
-                    <p th:text="${post.likeCount} + ' likes'">좋아요수</p>
+                    <p th:text="${post.commentCount} + ' replies'">댓글수</p>
                     <p th:text="${post.views} + ' views'">조회수</p>
                 </div>
             </div>
