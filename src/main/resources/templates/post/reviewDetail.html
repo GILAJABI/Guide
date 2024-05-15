@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>후기-상세</title>
     <link rel="stylesheet" th:href="@{/css/post/reviewDetail.css}">
     <script>
         var postId = `[[${post.postId}]]`;
@@ -87,9 +87,7 @@
                     <img th:src="@{/image/eye.png}" alt="조회수 아이콘" id="viewIcon">
                     <p class="icon-text" th:text="'조회수 ' + ${post.views}">조회수</p>
                 </div>
-                <p id="location">📍 위치</p>
                 <p id="title" th:text="${post.title}"></p>
-                <div id="heartContainer"></div>
                 <p class="text">여행정보</p>
                 <div class="infoBox">
                     <p th:text="'📝 평점 : ' + ${post.grade}"></p>
@@ -119,10 +117,9 @@
                 <p class="text" id="sell">여행자</p>
                 <div class="user">
                     <div class="profile-container">
-                        <div id="circle">
-                        </div>
                     </div> <!--profile-container-->
                     <div class="profile-info">
+                        <img th:src="'/api/photo/' + ${member.profileInfo.uuid + '_' + member.profileInfo.fileName}">
                         <p id="name" th:text="${post.member.getName()}"></p>
                         <!--                        <p id="age" th:text="${post.member.getYear()}"></p>-->
                         <!--                        <p id="gender" th:text="${post.member.getGender()}"></p>-->
@@ -176,22 +173,6 @@
     }
 </script>
 <script>
-    function changeHeartIcon() {
-        var heartIcon = document.getElementById('heartIcon');
-        var likeCount = document.getElementById('likeCount');
-
-        if (heartIcon.src.includes('red.png')) {
-            heartIcon.src = '../image/greyheart.png';
-            likeCount.textContent = parseInt(likeCount.textContent) - 1;
-        } else {
-            heartIcon.src = '../image/red.png';
-            likeCount.textContent = parseInt(likeCount.textContent) + 1;
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        displayHeartIcons([[${post.grade}]]);
-    });
     form.addEventListener("submit", function(e) {
         e.preventDefault();
         const formData = new FormData(form);

@@ -5,6 +5,7 @@ import com.guide.ex.domain.post.Review;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
+import com.guide.ex.repository.search.CommentRepository;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.MemberService;
 import com.guide.ex.service.PostService;
@@ -13,6 +14,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,8 @@ public class PostController {
     private CommentService commentService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private CommentRepository commentRepository;
 
 
     @GetMapping("/carrotMain")
@@ -268,7 +273,6 @@ public class PostController {
             default:
                 return "redirect:/post/carrotMain";
         }
-
     }
 
     @GetMapping("/comment")
