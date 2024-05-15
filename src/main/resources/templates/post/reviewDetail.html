@@ -119,7 +119,7 @@
                     <div class="profile-container">
                     </div> <!--profile-container-->
                     <div class="profile-info">
-                        <img th:src="'/api/photo/' + ${member.profileInfo.uuid + '_' + member.profileInfo.fileName}">
+<!--                        <img th:unless="${member.profileInfo != null}" th:src="'/api/photo/' + ${member.profileInfo.uuid + '_' + member.profileInfo.fileName}">-->
                         <p id="name" th:text="${post.member.getName()}"></p>
                         <!--                        <p id="age" th:text="${post.member.getYear()}"></p>-->
                         <!--                        <p id="gender" th:text="${post.member.getGender()}"></p>-->
