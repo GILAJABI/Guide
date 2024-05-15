@@ -112,7 +112,7 @@ section {
     height: 100px;
     border: none;
     border-radius: 7px;
-    background-color: #8D8D8D;
+    background-color: #363636;
     color: #fafafa;
     align-content: center;
     margin-bottom: 40px;
@@ -121,7 +121,7 @@ section {
 .infoBox > p {
     font-family: 'Pretendard-Regular';
     font-size: 17px;
-    background-color: #8D8D8D;
+    background-color: #363636;
     border-radius: 7px;
     color: #fafafa;
     margin-left: 40px;
@@ -138,6 +138,10 @@ section {
     border-radius: 7px;
     width: 527px;
     height: 30px;
+}
+
+#comment-input:focus {
+    outline: none;
 }
 
 form > button {
@@ -188,19 +192,12 @@ form > button {
     color: #363636;
 }
 
-.map {
-    width: 380px;
+#map {
+    width: 400px;
     height: 500px;
     border: none;
     box-shadow: 10px 10px 10px rgb(227, 227, 227);
     border-radius: 10px;
-    margin-left: 10px;
-}
-
-.map > iframe {
-    width: 360px;
-    height: 480px;
-    margin-top: 10px;
     margin-left: 10px;
 }
 

@@ -6,6 +6,7 @@ import com.guide.ex.dto.post.*;
 import com.guide.ex.repository.member.MemberRepository;
 import com.guide.ex.repository.post.*;
 import com.guide.ex.repository.search.AllPostSearchImpl;
+import com.guide.ex.repository.search.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -23,9 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -46,6 +45,8 @@ public class PostServiceImpl implements PostService {
     private final JoinRepository joinRepository;
     private final AllPostSearchImpl allPostSearch;
     private final ImageRepository imageRepository;
+    private final CommentRepository commentRepository;
+
 
     @Override
     public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
@@ -287,7 +288,7 @@ public class PostServiceImpl implements PostService {
 //    }
 
     @Override
-    public List<PostDTO> postSelectAll(String searchValue, String postType) {
+    public Page<PostDTO> postSelectAll(String searchValue, String postType, Pageable pageable) {
         if (searchValue == null || searchValue.trim().isEmpty()) {
             throw new IllegalArgumentException("검색 값이 제공되지 않았습니다.");
         }
@@ -299,16 +300,84 @@ public class PostServiceImpl implements PostService {
         if (!validPostTypes.contains(postType)) {
             throw new IllegalArgumentException("유효하지 않은 게시판 유형입니다: " + postType);
         }
-        List<Post> posts = allPostSearch.searchPostContaining(searchValue, postType);
-        // 엔티티를 DTO로 변환
-        return posts.stream()
-                .map(post -> modelMapper.map(post, PostDTO.class))
-                .collect(Collectors.toList());
+
+        Page<Post> postPage = allPostSearch.searchPostContaining(searchValue, postType, pageable);
+
+        return postPage.map(post -> {
+            PostDTO postDTO;
+
+            switch (postType) {
+                case "Review":
+                    postDTO = modelMapper.map(post, ReviewDTO.class);
+                    List<ImageDTO> reviewImages = post.getPostImages().stream()
+                            .map(image -> {
+                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                                log.info("Review ImageDTO: " + imgDTO);  // Log each ImageDTO
+                                return imgDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    if (reviewImages.isEmpty() || reviewImages.contains(null)) {
+                        log.warn("No images found for Review ID " + post.getId());
+                    } else {
+                        log.info("Number of images for Review ID " + post.getId() + ": " + reviewImages.size());
+                    }
+
+                    ((ReviewDTO) postDTO).setImageDTOs(reviewImages);
+                    break;
+
+                case "Carrot":
+                    postDTO = modelMapper.map(post, CarrotDTO.class);
+                    List<ImageDTO> carrotImages = post.getPostImages().stream()
+                            .map(image -> {
+                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                                log.info("Carrot ImageDTO: " + imgDTO);  // Log each ImageDTO
+                                return imgDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    if (carrotImages.isEmpty() || carrotImages.contains(null)) {
+                        log.warn("No images found for Carrot ID " + post.getId());
+                    } else {
+                        log.info("Number of images for Carrot ID " + post.getId() + ": " + carrotImages.size());
+                    }
+
+                    ((CarrotDTO) postDTO).setImageDTOs(carrotImages);
+                    break;
+
+                case "Join":
+                    postDTO = modelMapper.map(post, JoinDTO.class);
+                    List<ImageDTO> joinImages = post.getPostImages().stream()
+                            .map(image -> {
+                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                                log.info("Join ImageDTO: " + imgDTO);  // Log each ImageDTO
+                                return imgDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    if (joinImages.isEmpty() || joinImages.contains(null)) {
+                        log.warn("No images found for Join ID " + post.getId());
+                    } else {
+                        log.info("Number of images for Join ID " + post.getId() + ": " + joinImages.size());
+                    }
+
+                    ((JoinDTO) postDTO).setImageDTOs(joinImages);
+                    break;
+
+                default:
+                    postDTO = modelMapper.map(post, PostDTO.class);
+                    break;
+            }
+            return postDTO;
+        });
     }
 
+
+
+
     @Override
-    public Page<CarrotDTO> carrotTypeReadAll(int size, int page) {
-        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page);
+    public Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort) {
+        Page<Carrot> postPage = allPostSearch.searchCarrotPaging(size, page, sort);
 
         return postPage.map(carrot -> {
             CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
@@ -335,8 +404,8 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Page<ReviewDTO> reviewTypeReadAll(int size, int page) {
-        Page<Review> postPage = allPostSearch.searchReviewPaging(size, page);
+    public Page<ReviewDTO> reviewTypeReadAll(int size, int page, Sort sort) {
+        Page<Review> postPage = allPostSearch.searchReviewPaging(size, page, sort);
 
         return postPage.map(review -> {
             ReviewDTO reviewDTO = modelMapper.map(review, ReviewDTO.class);
@@ -362,8 +431,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<JoinDTO> joinTypeReadAll(int size, int page) {
-        Page<Join> postPage = allPostSearch.searchJoinPaging(size, page);
+    public Page<JoinDTO> joinTypeReadAll(int size, int page, Sort sort) {
+        Page<Join> postPage = allPostSearch.searchJoinPaging(size, page, sort);
 
         return postPage.map(join -> {
             JoinDTO joinDTO = modelMapper.map(join, JoinDTO.class);
@@ -387,47 +456,26 @@ public class PostServiceImpl implements PostService {
             return joinDTO;
         });
     }
-
-    @Override
-    public Page<CarrotDTO> carrotViewRead(int size, int page) {
-        Page<Carrot> postPage = allPostSearch.searchCarrotViewCount(size, page);
-
-        return postPage.map(carrot -> {
-            CarrotDTO carrotDTO = modelMapper.map(carrot, CarrotDTO.class);
-            List<ImageDTO> imageDTOs = carrot.getPostImages()
-                    .stream()
-                    .map(image -> {
-                        ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
-                        log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
-                        return imgDTO;
-                    })
-                    .collect(Collectors.toList());
-
-            // Check if imageDTOs list is empty or contains null elements
-            if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
-                log.warn("No images found for Carrot ID " + carrot.getId());
-            } else {
-                log.info("Number of images for Carrot ID " + carrot.getId() + ": " + imageDTOs.size());
-            }
-
-            carrotDTO.setImageDTOs(imageDTOs);
-            return carrotDTO;
-        });
-    }
-
-    @Override
-    public Page<ReviewDTO> reviewViewRead(int size, int page) {
-        return null;
-    }
-
-    @Override
-    public Page<JoinDTO> joinViewRead(int size, int page) {
-        return null;
-    }
-
+//----------------------------------------
 
     @Override
     public boolean deletePost(Long postId, Long memberId) {
         return allPostSearch.deleteOne(postId, memberId);
+    }
+
+    @Override
+    public String findPostTypeByPostId(Long postId) {
+        Optional<Post> result = postRepository.findById(postId);
+        Post post = result.orElseThrow(() -> new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다."));
+        return post.getPostType();
+    }
+
+    @Override
+    public void updatePostCommentCount(Long postId) {
+        Optional<Post> result = postRepository.findById(postId);
+        Post post = result.orElseThrow(() -> new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다."));
+        int commentCount = commentRepository.countByPost(post);
+        post.setCommentCount(commentCount);
+        postRepository.save(post);
     }
 }

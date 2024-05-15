@@ -5,13 +5,19 @@ import com.guide.ex.domain.post.Review;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
+import com.guide.ex.repository.search.CommentRepository;
 import com.guide.ex.service.CommentService;
+import com.guide.ex.service.MemberService;
 import com.guide.ex.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,54 +38,116 @@ public class PostController {
     private PostService postService;
     @Autowired
     private CommentService commentService;
-    private PageRequestDTO pageRequestDTO;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private CommentRepository commentRepository;
 
 
     @GetMapping("/carrotMain")
-    public String carrotMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page);
+    public String carrotMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size,
+                             @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<CarrotDTO> posts = postService.carrotTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
         log.info("Carrot posts fetched: Total elements={}, Total pages={}, Current page index={}, Content !!{}",
                 posts.getTotalElements(), posts.getTotalPages(), posts.getNumber(), posts.getContent());
 
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/carrotMain";  // View name for Thymeleaf template
     }
+
     @GetMapping("/carrotMain/view")
-    public String carrotView(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<CarrotDTO> posts = postService.carrotViewRead(size, page);
+    public String carrotView(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return carrotMain(model, page, size, "views");
+    }
+    @GetMapping("/carrotMain/search")
+    public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
+                              @RequestParam("postType") String postType,
+                              @RequestParam(defaultValue = "registerDate") String sort,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "6") int size,
+                              Model model) {
+
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/carrotMain";
     }
 
     @GetMapping("/reviewMain")
-    public String reviewMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page);
+    public String reviewMain(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size,
+                             @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<ReviewDTO> posts = postService.reviewTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/reviewMain";
+    }
+    @GetMapping("/reviewMain/view")
+    public String reviewView(Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        return reviewMain(model, page, size, "views");
+    }
+
+    @GetMapping("/reviewMain/search")
+    public String reviewSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/reviewMain";
     }
 
     @GetMapping("/joinMain")
-        public String joinMain(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page);
+    public String joinMain(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "6") int size,
+                           @RequestParam(defaultValue = "registerDate") String sort) {
+        Page<JoinDTO> posts = postService.joinTypeReadAll(size, page, Sort.by(Sort.Direction.DESC, sort));
         model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
         return "post/joinMain";
     }
 
-    @PostMapping("/carrotMain/search")
-    public String searchValue(@RequestParam("searchValue") String searchValue,
-                              @RequestParam("postType") String postType,
-                              Model model) {
-        switch (postType) {
-            case "Carrot":
-            case "Review":
-            case "Join":
-                postService.postSelectAll(searchValue, postType);
-        }
-
-        postService.postSelectAll(searchValue, postType);
-
-        return "redirect:/post/carrotMain";
+    @GetMapping("/joinMain/view")
+    public String joinView(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "6") int size) {
+        return joinMain(model, page, size, "views");
     }
+
+    @GetMapping("/joinMain/search")
+    public String joinSearchDetail(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size) {
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        return "post/joinMain";
+    }
+
 
 
     @GetMapping("/carrotDetail")
@@ -142,7 +210,8 @@ public class PostController {
     @PostMapping("/carrotWrite")
     public String carrotWriteInput(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
         postService.carrotRegister(carrotDTO, file, session);
-        return "redirect:/main";
+        memberService.updateBoardCount(session);
+        return "redirect:/post/carrotMain";
     }
 
     @GetMapping("/joinWrite")
@@ -156,7 +225,8 @@ public class PostController {
     @PostMapping("/joinWrite")
     public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
         postService.joinRegister(joinDTO, file, session);
-        return "redirect:/main";
+        memberService.updateBoardCount(session);
+        return "redirect:/post/joinMain";
     }
 
     @GetMapping("/reviewWrite")
@@ -170,10 +240,9 @@ public class PostController {
     @PostMapping("/reviewWrite")
     public String reviewWriteInput(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
         postService.reviewRegister(reviewDTO, file, session);
-        return "redirect:/main";
+        memberService.updateBoardCount(session);
+        return "redirect:/post/reviewMain";
     }
-
-
 
     @PostMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {
@@ -221,7 +290,21 @@ public class PostController {
         commentDTO.setMemberId(memberId);
 
         commentService.register(commentDTO);
-        return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+        memberService.updateCommentCount(memberId);
+        postService.updatePostCommentCount(postId);
+
+        String postType = postService.findPostTypeByPostId(postId);
+
+        switch (postType) {
+            case "Carrot":
+                return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+            case "Join":
+                return "redirect:/post/joinDetail?postId=" + commentDTO.getPostId();
+            case "Review":
+                return "redirect:/post/reviewDetail?postId=" + commentDTO.getPostId();
+            default:
+                return "redirect:/post/carrotMain";
+        }
     }
 
     @GetMapping("/comment")

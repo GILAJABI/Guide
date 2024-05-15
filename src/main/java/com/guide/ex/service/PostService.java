@@ -19,16 +19,14 @@ public interface PostService {
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
     Post postDetailRead(Long memberId);
 //    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
-    List<PostDTO> postSelectAll(String searchValue, String postType);
+    Page<PostDTO> postSelectAll(String searchValue, String postType, Pageable pageable);
 
-    Page<CarrotDTO> carrotTypeReadAll(int size, int page);
-    Page<ReviewDTO> reviewTypeReadAll(int size, int page);
-    Page<JoinDTO> joinTypeReadAll(int size, int page);
-
-    Page<CarrotDTO> carrotViewRead(int size, int page);
-    Page<ReviewDTO> reviewViewRead(int size, int page);
-    Page<JoinDTO> joinViewRead(int size, int page);
+    Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort);
+    Page<ReviewDTO> reviewTypeReadAll(int size, int page, Sort sort);
+    Page<JoinDTO> joinTypeReadAll(int size, int page, Sort sort);
 
     boolean deletePost(Long postId, Long memberId);
+    String findPostTypeByPostId(Long postId);
 
+    void updatePostCommentCount(Long postId);
 }

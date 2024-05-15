@@ -14,17 +14,15 @@ public interface AllPostSearch {
 
     List<Post> searchPost(String postType);
 
-//    Page<Post> searchPostPaging(String postType,int size, int page);
+    Page<Post> searchPostContaining(String searchValue, String postType, Pageable pageable);
 
-    List<Post> searchPostContaining(String searchValue, String postType);
+    Page<Carrot> searchCarrotPaging(int size, int page, Sort sort);
+    Page<Review> searchReviewPaging(int size, int page, Sort sort);
+    Page<Join> searchJoinPaging(int size, int page, Sort sort);
 
-    Page<Carrot> searchCarrotPaging(int size, int page);
-    Page<Review> searchReviewPaging(int size, int page);
-    Page<Join> searchJoinPaging(int size, int page);
-
-    Page<Carrot> searchCarrotViewCount(int size, int page);
     Post searchOne(Long postId);
     void updateViews(Long postId);
+
 
     boolean deleteOne(Long postId, Long memberId);
 }

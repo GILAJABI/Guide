@@ -23,5 +23,6 @@ public interface MemberService {
     void profileRegister(MemberProfileDTO memberProfileDTO);
     List<MemberDTO> findProfileMember();
     Page<PostDTO> memberPosts(HttpSession session, int size, int page);
-
+    void updateCommentCount(Long memberId);
+    void updateBoardCount(HttpSession session);
 }
