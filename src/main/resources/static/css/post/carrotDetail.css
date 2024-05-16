@@ -221,20 +221,23 @@ form > button {
     font-family: 'Pretendard-Regular';
     font-size: 17px;
     color: #363636;
+    padding-left: 0px;
 }
 
 li {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 60px;
 }
 
 li p {
     margin: 0;
+    margin-bottom: 4px;
 }
 
-/* 날짜를 오른쪽에 정렬 */
-li p:last-child {
-    text-align: right;
+#aaa {
+    display: flex;
+    justify-content: space-between;
 }
 
 @font-face {

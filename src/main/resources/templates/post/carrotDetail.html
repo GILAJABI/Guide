@@ -41,7 +41,7 @@
             comments.forEach(function (comment) {
                 // 각 댓글을 리스트 아이템으로 추가
                 var li = document.createElement('li');
-                li.innerHTML = `<p>${comment.member.name}</p><p>${comment.commentContent}</p><p>${comment.regisgerDate}</p>`;
+                li.innerHTML = `<p>${comment.member.name}</p><p>${comment.commentContent}</p>`;
                 commentList.appendChild(li);
             });
         }
@@ -68,20 +68,31 @@
 <body>
 <div th:include="/include/header.html"></div>
 <div class="container">
-    <div id="selectMenu">
-        <a th:href="@{/post/joinMain}">모집</a>
-        <a th:href="@{/post/reviewMain}">후기</a>
-        <a th:href="@{/post/carrotMain}" style="color:#FF6392">거래</a>
+    <div id="aaa">
+        <div id="selectMenu">
+            <a th:href="@{/post/joinMain}">모집</a>
+            <a th:href="@{/post/reviewMain}">후기</a>
+            <a th:href="@{/post/carrotMain}" style="color:#FF6392">거래</a>
+        </div>
+        <div th:if= "${session.member_id == post.member.getMemberId()}">
+            <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
+                <input type="hidden" name="postId" th:value="${post.postId}" />
+                <input type="hidden" name="memberId" th:value="${post.member.memberId}"/>
+                <button type="submit" style="background-color: #363636;">삭제</button>
+            </form>
+        </div>
     </div>
     <section>
         <th:block th:each="image : ${imageDTOS}">
             <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}" alt="Uploaded Image" class="img" th:onerror="@{/images/default.jpg}">
         </th:block>
-        <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
-            <input type="hidden" name="postId" th:value="${post.postId}" />
-            <input type="hidden" name="memberId" th:value="${post.member.memberId}" />
-            <button type="submit">삭제</button>
-        </form>
+        <div th:if= "${session.member_id == post.member.getMemberId()}">
+            <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
+                <input type="hidden" name="postId" th:value="${post.postId}" />
+                <input type="hidden" name="memberId" th:value="${post.member.memberId}"/>
+                <button type="submit">삭제</button>
+            </form>
+        </div>
         <div class="sec-container">
             <div id="left">
                 <p class="regDate" id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
