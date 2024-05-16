@@ -17,11 +17,11 @@
     <section>
         <div id="left">
             <div id="myProfile">
-                <div id="ratingImg">
-                    <img th:if="${member.rating == '금메달'}" th:src="@{/image/high.png}" alt="금메달">
-                    <img th:if="${member.rating == '은메달'}" th:src="@{/image/second.png}" alt="은메달">
-                    <img th:if="${member.rating == '동메달'}" th:src="@{/image/third.png}" alt="동메달">
-                </div>
+<!--                <div id="ratingImg">-->
+<!--                    <img th:if="${member.rating == '금메달'}" th:src="@{/image/high.png}" alt="금메달">-->
+<!--                    <img th:if="${member.rating == '은메달'}" th:src="@{/image/second.png}" alt="은메달">-->
+<!--                    <img th:if="${member.rating == '동메달'}" th:src="@{/image/third.png}" alt="동메달">-->
+<!--                </div>-->
                 <div id="profilePhoto">
                     <div id="circle">
                         <img th:if="${session.member_id != null and session.member_profile != null}"
@@ -31,77 +31,56 @@
                     </div>
                 </div>
                 <div id="name">
-                    <p>[[${member.name}]]</p>
+                    <p style="font-family: 'BMJUA';">[[${member.name}]]</p>
                 </div>
                 <div id="info">
-                    <table id="info_table">
-                        <p>한 줄 소개</p>
-                        <span id="info_content">[[${member.profileInfo.content}]]</span>
-                    </table>
-                </div>
-                <!--                <div id="userInfo">-->
-                <!--                    <p class="cir">[[${member.getAgeRange()}]]</p>-->
-                <!--                    <p class="cir">[[${member.getGenderDescription()}]]</p>-->
-                <!--                </div>-->
-                <div>
-                    <p id="modify">프로필 수정</p>
+                    <span id="info_content">[[${member.profileInfo.content}]]</span>
                 </div>
             </div>
             <div id="myCount">
-                <div id="like">
-                    <img th:src="@{/image/like.png}" alt="좋아요">
-                    <p>[[${member.likeCount}]]</p>
-                </div>
                 <div id="post">
                     <img th:src="@{/image/post.png}" alt="게시물">
                     <p>[[${member.postCount}]]</p>
                 </div>
                 <div id="chat">
-                    <img th:src="@{/image/chat.png}" alt="채팅">
+                    <img th:src="@{/image/chat.png}" alt="댓글수">
                     <p>[[${member.commentCount}]]</p>
                 </div>
             </div>
-            <p id="withdraw">탈퇴</p>
         </div>
         <div id="right">
-            <!--            <div id="userInfo">-->
             <p id="myInfo">상세 정보</p>
-            <!--                </div>-->
             <div id="userInfo">
                 <div class="cir">[[${member.getAgeRange()}]]</div>
                 <div class="cir">[[${member.getGenderDescription()}]]</div>
             </div>
-            <!--            <div id="info">-->
-            <!--                <p>나의 정보</p>-->
-            <!--                <p id="content">[[${member.profileInfo.content}]]</p>-->
-            <!--            </div>-->
             <div id="mbti">
                 <p>나의 여행 유형</p>
                 <p id="userMbti">
                 <p>[[${member.profileInfo.travelType}]]</p></p>
                 <div id="mbtiBox">
-                    <div class="box" th:if="${member.profileInfo.travelType.startsWith('E')}">
+                    <div class="box" style="background-color: #FF6392" th:if="${member.profileInfo.travelType.startsWith('E')}">
                         사람 많은 도시파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.startsWith('I')}">
+                    <div class="box" style="background-color: #FF6392" th:if="${member.profileInfo.travelType.startsWith('I')}">
                         나무 많은 자연파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.contains('S')}">
+                    <div class="box" style="background-color: #FFD23F" th:if="${member.profileInfo.travelType.contains('S')}">
                         정해진 코스 관광파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.contains('N')}">
+                    <div class="box" style="background-color: #FFD23F" th:if="${member.profileInfo.travelType.contains('N')}">
                         상상대로 모험파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.contains('F')}">
+                    <div class="box" style="background-color: #7EC8F8" th:if="${member.profileInfo.travelType.contains('F')}">
                         감성파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.contains('T')}">
+                    <div class="box" style="background-color: #7EC8F8" th:if="${member.profileInfo.travelType.contains('T')}">
                         효율파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.contains('J')}">
+                    <div class="box" style="background-color: #5AA9E6" th:if="${member.profileInfo.travelType.contains('J')}">
                         꼼꼼한 계획파
                     </div>
-                    <div class="box" th:if="${member.profileInfo.travelType.contains('P')}">
+                    <div class="box" style="background-color: #5AA9E6" th:if="${member.profileInfo.travelType.contains('P')}">
                         끌리는대로 행동파
                     </div>
                 </div>
@@ -109,15 +88,7 @@
             <div id="myPost">
                 <div id="more">
                     <p>나의 게시물</p>
-                    <p id="postMore">더보기</p>
                 </div>
-                <!--                <ul>-->
-                <!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
-                <!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
-                <!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
-                <!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
-                <!--                    <li>[모집] 제주도로 떠날 사람 구합니다.</li>-->
-                <!--                </ul>-->
                 <ul th:if="${#lists.isEmpty(member.posts)}">
                     <br>
                     <div>등록한 게시글이 없습니다.</div>
@@ -129,8 +100,8 @@
                         <span th:if="${post.postType == 'Carrot'}"><a th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span th:text="${post.title}"></span></a></span>
                     </li>
                 </ul>
-
             </div>
+        </div>
     </section>
 </div>
 </body>

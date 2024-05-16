@@ -23,7 +23,7 @@ section {
 
 #myProfile {
     width: 270px;
-    height: 343px;
+    height: 300px;
     border: 4px solid rgba(54, 54, 54, 0.1);
     border-radius: 5px;
 }
@@ -47,14 +47,14 @@ div#circle {
     box-sizing: border-box;
     overflow: hidden;
     transform: scale(1.01);
-    position: relative; /* Add this line */
+    position: relative;
 }
 
 div#circle img {
-    width: 100%; /* Add this line */
-    height: 100%; /* Add this line */
-    object-fit: cover; /* Add this line for better image fitting */
-    object-position: center; /* Add this line for better image positioning */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 div#photo {
@@ -85,15 +85,15 @@ div#name > p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 318px;
+    width: 220px;
 }
 
 #userInfo > .cir {
-    width: 150px;
+    width: 100px;
     height: 51px;
-    border-radius: 10px;
+    border-radius: 50px;
     border: none;
-    background-color: #ff6392;
+    background-color: #363636;
     font-family: 'Pretendard-Regular';
     align-items: center;
     color: #fafafa;
@@ -142,13 +142,13 @@ div#chat {
 #info {
     width: 240px;
     height: 70px;
-    margin: 0 auto;
-    border: 1px solid rgba(54, 54, 54, 0.1);
+    margin: 20px auto;
+    text-align: center;
 }
 
 #info > p {
     font-family: 'BMJUA';
-    font-size: 18px;
+    font-size: 19px;
     margin: 5px 5px;
 }
 
@@ -175,7 +175,7 @@ div#chat {
 }
 
 #info_content {
-    font-size: 14px;
+    font-size: 18px;
     margin-left: 5px;
 }
 
@@ -189,12 +189,15 @@ div#chat {
 #mbtiBox {
     display: flex;
     justify-content: space-between;
+    width: 700px;
 }
 
 #mbtiBox > div {
     align-items: center;
     justify-content: center;
     display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .box {
@@ -245,6 +248,7 @@ li {
     height: 32px;
     list-style-type: none;
     margin-bottom: 5px;
+    text-decoration: none;
 }
 
 @font-face {
