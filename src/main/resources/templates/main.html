@@ -22,12 +22,12 @@
     <section id="sec1">
         <div id="sec11">
             <a th:href="@{/post/joinMain}">
-                <button>
+                <button style="border: none; background: none; cursor:pointer">
                     <img src="/image/joinBtn.png"/>
                 </button>
             </a>
             <a th:href="@{/post/carrotMain}">
-                <button>
+                <button style="border: none; background: none; cursor:pointer">
                     <img src="/image/carrotBtn.png"/>
                 </button>
             </a>
@@ -61,12 +61,12 @@
                     </div>
 
                     <div class="user_info" th:if="${session.member_id != null and session.member_profile == null}">
-                        <div> 안녕하세요 여행자님 &nbsp;: )</div>
+                        <div> 환영합니다 👋</div>
                         <div>
-                            <span class="user_name">[(${member_info.name})]님</span>
+                            <span class="user_name">[(${member_info.name})]님 &nbsp;: )</span>
                         </div>
                         <div class="button_area">
-                            <button class="profileBtn">프로필 등록</button>
+                            <button class="profileBtn" style="background-color: #ffcccc">프로필 등록</button>
                             <form method="post" th:action="@{/member/logout}" style="display: inline;">
                                 <button class="logoutBtn" onclick="sessionStorage.clear()">로그아웃</button>
                             </form>
@@ -88,7 +88,7 @@
                     <div id="all_user_title">
                         <span>🍀 TRAVELMAKER 여행자들</span>
                     </div>
-                    <div id="all_user_profile">
+                    <div id="all_user_profile" >
                         <!--                        <div class="profile_area">-->
                         <!--                            <div class="profile_img_area">-->
                         <!--                                <img src="/image/pf_example.png" />-->

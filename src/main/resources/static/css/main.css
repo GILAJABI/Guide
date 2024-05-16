@@ -139,7 +139,8 @@ footer {
     text-align: center;
 }
 .loginBtn,
-.myPageBtn{
+.myPageBtn,
+.profileBtn{
     margin-top: 5px;
     height: 35px;
     background-color: #FF6392;
@@ -194,6 +195,7 @@ footer {
     overflow: hidden;
 }
 .profile_area {
+    cursor:pointer;
     font-family: Pretendard-Regular;
     display: flex;
     flex-direction: column;
@@ -222,16 +224,22 @@ footer {
 .button_area {
     margin-top: 6px;
 }
-.button_area > .profileBtn {
-    border-style: none;
-    color: #ffffff; /* �고븳 遺꾪솉�� */
-    background-color: #ffcccc; /* 留덉슦�� �몃쾭 �� �고븳 遺꾪솉�� 諛곌꼍 */
-    cursor: pointer; /* 留덉슦�� �몃쾭 �� �ъ씤�곕줈 蹂�寃� */
-    outline: none; /* 湲곕낯 踰꾪듉 �뚮몢由� �쒓굅 */
-    border-radius: 5px;
-    transition: background-color 0.3s ease; /* 遺��쒕윭�� �④낵瑜� �꾪븳 �몃옖吏��� */
-}
+/*.button_area > .profileBtn {*/
+/*    border-style: none;*/
+/*    color: #ffffff; */
+/*    background-color: #ffcccc;*/
+/*    cursor: pointer; */
+/*    outline: none; */
+/*    border-radius: 5px;*/
+/*    transition: background-color 0.3s ease; */
+/*}*/
 
 .button_area > .profileBtn:hover {
     background-color: #ff7f7f; /* 留덉슦�� �몃쾭 �� �고븳 遺꾪솉�됱쑝濡� 蹂�寃� */
+}
+
+.my-image-container,
+#all_user_profile
+{
+    cursor:pointer;
 }
