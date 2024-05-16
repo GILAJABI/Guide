@@ -12,6 +12,7 @@
 
 header {
     text-align: center;
+    margin-top: 100px;
 }
 
 #title {
@@ -23,6 +24,7 @@ header {
 
 input:focus {
     outline: none;
+    box-shadow: none;
 }
 
 input[type="text"],
@@ -41,27 +43,16 @@ input[type="checkbox"] {
     cursor: pointer;
 }
 
-.saveLogin {
-    margin: 31px 0px;
-    cursor: pointer;
-}
-
-.saveLogin > label {
-    font-size: 18px;
-}
-
 .loginBtn {
-    /* 버튼 */
     width: 454px;
     height: 52px;
     background-color: #ff6392;
     border-radius: 5px;
     border: none;
-    /* 폰트 */
+    margin-top: 50px;
     color: #fafafa;
     font-family: 'Pretendard-Regular';
     font-size: 20px;
-    /* 마우스 */
     cursor: pointer;
 }
 
@@ -85,15 +76,7 @@ hr {
 
 #signUp a {
     color: #ff6392;
-    text-decoration: none; /* Remove underline */
-}
-
-#kakaoBtn {
-    width: 30px;
-    height: 30px;
-    margin: 0px 197px;
-    border: none;
-    cursor: pointer;
+    text-decoration: none;
 }
 
 @font-face {
