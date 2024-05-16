@@ -29,7 +29,7 @@
         <div class="right-group" th:if="${session.member_id != null}">
             <form id="logoutForm" method="post" action="/member/logout">
                 <li id="mypage">
-                    <a class="a-link" th:href="@{/member/myPage}" target="_parent">마이페이지</a>지
+                    <a class="a-link" th:href="@{/member/myPage}" target="_parent">마이페이지</a>
                 </li>
                 <li id="logout" onclick="logout()">
                     <a class="a-link" href="#">로그아웃</a>
