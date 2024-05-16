@@ -43,6 +43,10 @@
 
 </body>
 
+<footer>
+    <div th:include="/include/footer.html"></div>
+</footer>
+
 <script th:inline="javascript">
     let session_member_id= [[${session_member_id}]]
     let session_member_name= `[[${member_name}]]`
