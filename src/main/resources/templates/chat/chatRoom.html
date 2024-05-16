@@ -14,28 +14,29 @@
 
 <body>
 <header>
-<!--    <div class="chat_close">-->
-<!--        <button>-->
-<!--            <img th:src="@{/image/chat_close.png}" alt="">-->
-<!--        </button>-->
-<!--    </div>-->
+    <!--    <div class="chat_close">-->
+    <!--        <button>-->
+    <!--            <img th:src="@{/image/chat_close.png}" alt="">-->
+    <!--        </button>-->
+    <!--    </div>-->
     <div class="chat_header">
-        <a th:href="@{/main}">
-            <img th:src="@{/image/guide_logo.png}">
-        </a>
+        <img th:src="@{/image/guide_logo.png}">
     </div>
 </header>
 
 <form id="chatForm">
-<div id="chat_list">
-<!--    <div id="chat_msg"></div>-->
-</div>
-<div class="chat_input">
-    <label for="chat_content"></label><input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
-    <button type="submit" id="chat_btn">
-        <img th:src="@{/image/chat_btn.png}" alt="">
-    </button>
-</div>
+    <div id="chat_list">
+        <!--    <div id="chat_msg"></div>-->
+    </div>
+    <div class="chat_input">
+        <label for="chat_content"></label><input type="text" id="chat_content" name="chat_content" placeholder="채팅을 입력해주세요.">
+        <button type="submit" id="chat_btn">
+            <div>
+                <img th:src="@{/image/input_btn.png}" alt="">
+            </div>
+            <!--        <img th:src="@{/image/input_btn.png}" alt="">-->
+        </button>
+    </div>
 </form>
 
 </body>
