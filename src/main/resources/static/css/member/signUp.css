@@ -12,6 +12,7 @@
 
 header {
     text-align: center;
+    margin-top: 100px;
 }
 
 #title {
@@ -22,6 +23,7 @@ header {
 
 input:focus {
     outline: none;
+    box-shadow: none;
 }
 
 input[type="text"],

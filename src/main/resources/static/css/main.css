@@ -1,0 +1,245 @@
+* {
+    /*background-color: #fafafa;*/
+    font-family: "Pretendard-Regular";
+}
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+header img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+.imageWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.imageButtons {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.prevButton {
+    position: absolute;
+    left: 10px;
+}
+
+.nextButton {
+    position: absolute;
+    right: 10px;
+}
+
+#sec1 {
+    height: 300px;
+    margin-top: 30px;
+}
+#sec11 {
+    display: flex;
+    justify-content: space-between;
+}
+#sec11 > button {
+    height: 200px;
+    border: none;
+    padding-left: 0px;
+    background: none;
+}
+button > img {
+    height: 300px;
+}
+#sec11_3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+#user,
+#weather {
+    background-color: white;
+    width: 400px;
+    height: 120px;
+    border-radius: 13px;
+    margin-bottom: 20px;
+    box-shadow: 4px 4px 10px lightgray;
+}
+#all_user {
+    background-color: white;
+    width: 400px;
+    height: 160px;
+    border-radius: 13px;
+    border: none;
+    margin-bottom: 0;
+    font-size: 16px;
+    box-shadow: 2px 4px 10px rgb(172, 172, 172);
+}
+#all_user_title {
+    /* �ы뻾�먮뱾 媛��대뜲 �뺣젹 */
+    font-family: "BMJUA";
+    text-align: center;
+    margin: 10px;
+}
+#sec2 {
+    background-color: white;
+    height: 800px;
+    /*border: 1px solid #363636;*/
+    margin-top: 30px;
+    box-shadow: 4px 4px 10px lightgray;
+    border-radius: 13px;
+    overflow: hidden;
+}
+.title {
+    padding: 10px;
+    font-family: "BMJUA";
+    font-size: 21px;
+    border-radius: 13px;
+    text-align: center;
+}
+footer {
+    height: 100%;
+    /*border: 1px solid #363636;*/
+    margin-top: 30px;
+    text-align: center;
+}
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "BMJUA";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff")
+    format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+.img_area {
+    margin-left: 26px;
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: inline-block;
+}
+.img_area img {
+    width: 100%;
+    height: 100%;
+}
+.user_info {
+    margin-top: 20px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+}
+.loginBtn,
+.myPageBtn,
+.profileBtn{
+    margin-top: 5px;
+    height: 35px;
+    background-color: #FF6392;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.signupBtn,
+.logoutBtn{
+    margin-top: 5px;
+    height: 35px;
+    background-color: #fafafa;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.loginBtn:hover ,
+.myPageBtn:hover{
+    background-color: White;
+    color: #FF6392;
+    transition: background-color 0.3s ease;
+}
+.signupBtn:hover,
+.logoutBtn:hover {
+    background-color: grey;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#all_user_profile {
+    margin-left: 5px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: -6px;
+    display: flex;
+    overflow: hidden;
+}
+.profile_area {
+    cursor:pointer;
+    font-family: Pretendard-Regular;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+    width: 80px;
+    font-size: 6px;
+}
+.profile_img_area img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profile_content_area {
+    font-size: 9px;
+    text-align: center;
+}
+.profile_content_area span {
+    font-size: 14px;
+}
+#notLogin{
+    margin-top: 10px;
+}
+.button_area {
+    margin-top: 6px;
+}
+/*.button_area > .profileBtn {*/
+/*    border-style: none;*/
+/*    color: #ffffff; */
+/*    background-color: #ffcccc;*/
+/*    cursor: pointer; */
+/*    outline: none; */
+/*    border-radius: 5px;*/
+/*    transition: background-color 0.3s ease; */
+/*}*/
+
+.button_area > .profileBtn:hover {
+    background-color: #ff7f7f; /* 留덉슦�� �몃쾭 �� �고븳 遺꾪솉�됱쑝濡� 蹂�寃� */
+}
+
+.my-image-container,
+#all_user_profile
+{
+    cursor:pointer;
+}

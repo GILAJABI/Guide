@@ -1,153 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travelmaker List Page</title>
-    <link rel="stylesheet" href="../../static/css/chat/style.css">
-    <script src="../../static/js/chat/pop.js"></script>
+    <title>Chat List</title>
+    <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
 </head>
 
 <body>
-<header>
-    <div class="chat_header">
+<div class="header" th:include="/include/header.html"></div>
 
-    </div>
-</header>
-<h2 class="chat">채팅</h2>
 <div class="container">
-    <ul>
+    <div>
+        <p id="title">Chat Rooms</p>
+    </div>
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username1</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
+    <div class="chat_box">
+        <ul id="chat_arrange">
+            <li class="chat_div" th:each="room : ${rooms}" th:data-room-id="${room.roomId}">
+                <div class="chat_list">
+                    <div class="circle" th:if="${room.receiver.profileInfo != null and session.member_name == room.receiver.name}">
+                        <img th:class="profile" th:src="'/api/photo/' + ${room.sender.profileInfo.uuid + '_' + room.sender.profileInfo.fileName}">
+                    </div>
 
-            </div>
-        </li>
+                    <div class="circle" th:if="${room.receiver.profileInfo != null and session.member_name != room.receiver.name}">
+                        <img th:class="profile" th:src="'/api/photo/' + ${room.receiver.profileInfo.uuid + '_' + room.receiver.profileInfo.fileName}">
+                    </div>
 
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username2</span>
+                    <div class="circle" th:unless="${room.receiver.profileInfo != null}">
+                        <img th:class="profile" th:src="@{/image/profile.png}">
+                    </div>
+                    <div class="list_div">
+                        <span class="name" th:if="${session.member_name == room.receiver.name}" th:text="${room.sender.name}">username1</span>
+                        <span class="name" th:if="${session.member_name != room.receiver.name}" th:text="${room.receiver   .name}">username1</span>
+                    </div>
+                    <div class="delete_div">
+                        <button class="delete_btn">
+                            <img th:src="@{/image/new_delete.png}">
+                        </button>
+                    </div>
                 </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username3</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username4</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username5</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">username6</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">scrolltest</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="chat_list">
-                <img class="profile" src="../../static/image/profile.png">
-                <div class="list_div">
-                    <span class="name">scrolltest</span>
-                </div>
-                <div class="delete_div">
-                    <button class="delete_btn">
-                        <img src="../../static/image/new_delete.png" alt="Delete">
-                    </button>
-                </div>
-            </div>
-        </li>
-
-    </ul>
-</div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="icon2"><img class="profile" src="../../static/image/profile.png"></div>
-        <div>
-            <span class="name">username1</span>
-            <button>차단하기</button>
-            <button>1:1채팅</button>
-        </div>
+            </li>
+        </ul>
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatListElements = document.querySelectorAll('.chat_div');
+        chatListElements.forEach(function(element) {
+            element.addEventListener('click', function() {
+                var roomId = element.getAttribute('data-room-id');
+                if (roomId) { // roomId가 null이 아닌 경우에만 처리
+                    var url = 'chatRoom/' + roomId;
+                    window.location.href = url;
+                } else {
+                    console.error("roomId is null or undefined");
+                }
+            });
+        });
+    });
 
-<script src="../../static/js/chat/chatList.js"></script>
+</script>
 </body>
 
 </html>

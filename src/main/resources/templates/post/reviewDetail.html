@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>후기-상세</title>
+    <link rel="stylesheet" th:href="@{/css/post/reviewDetail.css}">
+    <script>
+        var postId = `[[${post.postId}]]`;
+        console.log("===============postId======================");
+        console.log(postId);
+        console.log("===========================================");
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // 페이지 로드될 때 댓글을 가져오는 함수 호출
+            loadComments(1);
+        });
+
+        // 댓글을 가져와서 HTML에 표시하는 함수
+        function loadComments(page) {
+            // Ajax를 사용하여 서버에서 특정 페이지의 댓글 데이터를 가져옵니다.
+            fetch("/post/comment?postId=" + postId + "&page=" + page)
+                .then(response => response.json()) // JSON 데이터로 변환
+                .then(data => {
+                    // 서버에서 받은 데이터를 처리하여 HTML에 표시
+                    displayComments(data.dtoList);
+                    // 페이징 버튼을 생성합니다.
+                    displayPagination(data);
+                })
+                .catch(error => {
+                    console.error('댓글을 불러오는 중 에러가 발생했습니다:', error);
+                });
+        }
+
+        // 댓글을 HTML에 표시하는 함수
+        function displayComments(comments) {
+            var commentList = document.getElementById("commentList");
+            commentList.innerHTML = ''; // 기존 댓글을 지웁니다.
+
+            comments.forEach(function (comment) {
+                // 각 댓글을 리스트 아이템으로 추가
+                var li = document.createElement('li');
+                li.innerHTML = `<p>${comment.member.name}</p><p>${comment.commentContent}</p>`;
+                commentList.appendChild(li);
+            });
+        }
+
+        // 페이징 버튼을 생성하는 함수
+        function displayPagination(data) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = ''; // 기존 페이징 버튼을 지웁니다.
+
+            var totalPages = Math.ceil(data.total / data.size); // 전체 페이지 수 계산
+
+            for (var i = 1; i <= totalPages; i++) {
+                var button = document.createElement('button');
+                button.textContent = i;
+                button.addEventListener("click", function () {
+                    loadComments(this.textContent); // 버튼을 클릭하면 해당 페이지의 댓글을 가져옵니다.
+                });
+                pagination.appendChild(button);
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div th:include="/include/header.html"></div>
+<div class="container">
+    <div id="aaa">
+        <div id="selectMenu">
+            <a th:href="@{/post/joinMain}">모집</a>
+            <a th:href="@{/post/reviewMain}" style="color:#FF6392">후기</a>
+            <a th:href="@{/post/carrotMain}">거래</a>
+        </div>
+        <div th:if= "${session.member_id == post.member.getMemberId()}">
+            <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
+                <input type="hidden" name="postId" th:value="${post.postId}" />
+                <input type="hidden" name="memberId" th:value="${post.member.memberId}"/>
+                <button type="submit" style="background-color: #363636;">삭제</button>
+            </form>
+        </div>
+    </div>
+    <section>
+        <th:block th:each="image : ${imageDTOS}">
+            <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}" alt="Uploaded Image" class="img" th:onerror="@{/images/default.jpg}">
+        </th:block>
+        <div class="sec-container">
+            <div id="left">
+                <p class="regDate" id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
+                <!--                <div class="view">-->
+                <!--                    <p th:text="'👀  ' + ${post.views} + ' 명이 조회했어요'"></p>-->
+                <!--                </div>-->
+                <div class="icons">
+                    <img th:src="@{/image/eye.png}" alt="조회수 아이콘" id="viewIcon">
+                    <p class="icon-text" th:text="'조회수 ' + ${post.views}">조회수</p>
+                </div>
+                <p id="title" th:text="${post.title}"></p>
+                <p class="text">여행정보</p>
+                <div class="infoBox">
+                    <p th:text="'📝 평점 : ' + ${post.grade}"></p>
+                    <p th:text="'💰 총 경비 : ' + ${post.expense} + '원'"></p>
+                    <p>🗓️ 여행 시작 날짜 : [[${#temporals.format(post.startTravelDate, 'yyyy-MM-dd')}]]</p>
+                    <p>🗓 여행 종료 날짜 : [[${#temporals.format(post.endTravelDate, 'yyyy-MM-dd')}]]</p>
+                </div>
+                <p class="text">후기글</p>
+                <p id="content" th:text="${post.content}"></p>
+                <p class="text">댓글</p>
+                <p id="commentCnt" th:text="'댓글 ' + ${post.commentCount} + '개'"></p>
+                <form id="comment-form" th:action="@{/post/comment}" method="post">
+                    <input type="hidden" name="postId" th:value="${post.postId}" />
+                    <input type="hidden" name="memberId" th:value="${memberId}" />
+                    <input type="text" name="commentContent" id="comment-input" placeholder="댓글을 입력하세요">
+                    <button type="button" id="comment-button">입력</button>
+                </form>
+
+                <div class="comment">
+                    <ul id="commentList">
+                        <li></li>
+                    </ul>
+                    <div id="pagination">
+                    </div>
+                </div> <!--comment-->
+            </div> <!--left-->
+            <div id="right">
+                <p class="text" id="sell">여행자</p>
+                <div class="user">
+                    <div class="go">
+                        <p id="name" th:text="${post.member.getName()} + '님 프로필 정보'"></p>
+                        <a th:href="@{/member/otherPage/{memberId}(memberId=${post.member.memberId})}">
+                            <button type="submit" id="go">보러가기</button>
+                        </a>
+                    </div>
+                </div> <!--user-->
+                <p class="text" id="loc">위치</p>
+                <div id="map" style="width:380px;height:480px;margin-top: 10px;margin-left: 10px;">
+                    <!--                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35799.901099154966!2d126.99122613009443!3d37.52456387269132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca15aee9ab0cb%3A0x31793fc63e0cf9d3!2z67mE7Yq47Lqg7ZSE!5e0!3m2!1sko!2skr!4v1709707618933!5m2!1sko!2skr"-->
+                    <!--                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"-->
+                    <!--                            referrerpolicy="no-referrer-when-downgrade">-->
+                    <!--                    </iframe>-->
+                </div>
+            </div> <!--right-->
+        </div> <!--sec-container-->
+    </section>
+</div> <!--controller-->
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
+<script th:src="@{/js/post/commentSession.js}"></script>
+<script th:inline="javascript">
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        createKakaoMap();
+    });
+
+    function createKakaoMap() {
+        // 카카오맵을 표시할 위치
+        var container = document.getElementById('map');
+
+        // 중심 좌표 설정
+        var centerLatLng = new kakao.maps.LatLng([[${post.locationX}]], [[${post.locationY}]]); // Thymeleaf 문법을 사용하여 서버에서 전달된 post의 locationX와 locationY 값을 가져옵니다.
+
+        // 지도 옵션 설정
+        var options = {
+            center: centerLatLng,
+            level: 10
+        };
+
+        // 지도 생성
+        var map = new kakao.maps.Map(container, options);
+
+        // 마커 생성
+        var marker = new kakao.maps.Marker({
+            position: centerLatLng // 마커가 표시될 위치
+        });
+
+        // 마커 지도에 추가
+        marker.setMap(map);
+    }
+</script>
+<script>
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const postData = new URLSearchParams();
+
+        for (const pair of formData.entries()) {
+            postData.append(pair[0], pair[1]);
+        }
+
+        // 폼 데이터로부터 postId 추출
+        const postId = formData.get("postId");
+
+        fetch(`/post/comment?postId=${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: postData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) { // 서버에서 응답받은 데이터에 id가 포함되어 있는 경우
+                    const commentItem = document.createElement("li");
+                    commentItem.textContent = `${data.authorName}: ${data.content}`; // 작성자 이름과 내용을 표시
+                    commentList.appendChild(commentItem);
+                    form.reset(); // 폼 초기화
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error posting comment: " + error.message);
+            });
+    });
+</script>
+<footer>
+    <div th:include="/include/footer.html"></div>
+</footer>
+</body>
+
+</html>

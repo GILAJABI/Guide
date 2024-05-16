@@ -25,10 +25,6 @@
             <label for="password"></label>
             <input type="password" id="password" name="pwd" placeholder="비밀번호">
         </div>
-        <div class="saveLogin">
-            <input type="checkbox" id="remember-me" name="remember">
-            <label for="remember-me">로그인 저장</label>
-        </div>
         <button type="submit" class="loginBtn">로그인</button>
     </form>
     <hr>
@@ -36,10 +32,9 @@
         <p>아직 계정이 없으신가요?</p>
         <a th:href="@{/member/signUp}">회원가입</a>
     </div>
-    <button id="kakaoBtn">
-        <img th:src="@{/image/kakao.png}" alt="카카오톡">
-    </button>
 </div>
-
+<footer>
+    <div th:include="/include/footer.html"></div>
+</footer>
 </body>
 </html>

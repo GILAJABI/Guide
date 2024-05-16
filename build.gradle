@@ -73,6 +73,7 @@ dependencies {
 
     //썸네일
     implementation 'net.coobird:thumbnailator:0.4.16'
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 
     //시큐리티
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -80,6 +81,10 @@ dependencies {
 
     //소셜 로그인?
 //    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //S3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.671'
+
 
     annotationProcessor(
 
