@@ -34,7 +34,7 @@
 
 ## 📖 사용 라이브러리
 <img src="https://img.shields.io/badge/KakaoAPI-FFCD00?style=for-the-badge&logo=kakao&logoColor=black"> <img src="https://img.shields.io/badge/socketjs-010101?style=for-the-badge&logo=socketdotio&logoColor=white">
-<img src="https://img.shields.io/badge/socketdotio-010101?style=for-the-badge&logo=socketdotio&logoColor=white">
+<img src="https://img.shields.io/badge/stomp-010101?style=for-the-badge&logo=socketdotio&logoColor=white">
 <br>
 <br>
 
