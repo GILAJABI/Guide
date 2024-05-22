@@ -18,7 +18,7 @@
 <br>
 <br>
 
-## 📚 사용 스택 / Tools
+## 📚 사용 스택
 |  | 이름 |
 |---------|---------|
 | 프론트엔드| <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=CSS3&logoColor=white">  <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white">|
@@ -27,11 +27,23 @@
 <br>
 <br>
 
+## Tools
+<img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white"> <img src="https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=VisualStudioCode&logoColor=white" /> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<br>
+<br> 
+
+## 📖 사용 라이브러리
+<img src="https://img.shields.io/badge/KakaoAPI-FFCD00?style=for-the-badge&logo=kakao&logoColor=black"> <img src="https://img.shields.io/badge/socketjs-010101?style=for-the-badge&logo=socketdotio&logoColor=white">
+<img src="https://img.shields.io/badge/socketdotio-010101?style=for-the-badge&logo=socketdotio&logoColor=white">
+<br>
+<br>
+
 ## 🧾 요구 사항 명세서
 <br>
 <br>
 
 ## 🎨 피그마
+https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=89nA830d1BsoRpDI-1
 <br>
 <br>
 
