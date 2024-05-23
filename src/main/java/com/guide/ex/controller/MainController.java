@@ -17,11 +17,6 @@ public class MainController {
     @Autowired
     private MemberService memberService;
 
-    @GetMapping("/include/header")
-    public void header() {
-
-    }
-
     @GetMapping("/main")
     public void main(HttpSession session, Model model) {
         if(session.getAttribute("member_id") != null){

@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +51,6 @@ public class MemberServiceImpl implements MemberService {
         memberDto.setPwd(hashedPassword);
 
         Member member = modelMapper.map(memberDto, Member.class);
-
         memberRepository.save(member);
     }
 
@@ -86,31 +83,29 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void fileUpload(MemberProfileDTO dto, MultipartFile file) {
-
         if (file.isEmpty()) {
             throw new RuntimeException("업로드된 파일이 비어 있습니다.");
         }
+
         String originalName = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
+        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
 
         try {
-            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
             file.transferTo(savePath);
-            dto.setUuid(uuid);
-            dto.setFileName(originalName);
-
-            MemberProfile memberProfile = modelMapper.map(dto, MemberProfile.class);
-
-            Optional<Member> result = memberRepository.findById(dto.getMemberId());
-            Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
-
-            memberProfile.setMember(member);
-            memberProfileRepository.save(memberProfile);
-
-
         } catch (IOException e) {
             throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
         }
+
+        dto.setUuid(uuid);
+        dto.setFileName(originalName);
+
+        MemberProfile memberProfile = modelMapper.map(dto, MemberProfile.class);
+        Member member = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다."));
+
+        memberProfile.setMember(member);
+        memberProfileRepository.save(memberProfile);
     }
 
     private String generateSalt() {
@@ -122,63 +117,30 @@ public class MemberServiceImpl implements MemberService {
         return DigestUtils.md5DigestAsHex(saltedPassword.getBytes());
     }
 
-//    @Override
-//    public MemberDTO memberReadOne(Long memberId) {
-//        // Member 엔티티 조회
-//        Optional<Member> result = memberRepository.findById(memberId);
-//        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
-//
-//        // MemberDTO로 변환
-//        MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
-//
-//        // MemberProfile 조회
-//        Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
-//        MemberProfile memberProfile = memberProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
-//
-//        // MemberProfile 정보를 MemberDTO에 추가
-//        // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
-//        if (memberProfile != null) {
-//            memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
-//        } else {
-//            memberDTO.setProfileInfo(null); // 또는 빈 MemberProfileDTO 객체를 넣어도 됩니다.
-//        }
-//
-//        return memberDTO;
-//    }
-
     @Override
     public MemberDTO memberReadOne(Long memberId) {
-        // Member 엔티티 조회
-        Optional<Member> result = memberRepository.findById(memberId);
-        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다.")); // 조회된 Member가 없을 경우 예외 발생
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다."));
 
-        // MemberDTO로 변환
         MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
+        MemberProfile memberProfile = memberProfileRepository.findByMember(member).orElse(null);
 
-        // MemberProfile 조회
-        Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
-        MemberProfile memberProfile = memberProfileResult.orElse(null); // 조회된 MemberProfile이 없을 경우 null을 반환
-
-        // MemberProfile 정보를 MemberDTO에 추가
-        // 예를 들어 MemberDTO에 setProfileInfo 메서드를 정의했다고 가정
         if (memberProfile != null) {
             memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
         } else {
-            memberDTO.setProfileInfo(null); // 또는 빈 MemberProfileDTO 객체를 넣어도 됩니다.
+            memberDTO.setProfileInfo(null);
         }
 
         List<Post> memberPosts = postRepository.findTop5ByMemberOrderByPostIdDesc(member);
         List<PostDTO> postDTOs = new ArrayList<>();
-        if (memberPosts != null) {
-            for (Post post : memberPosts) {
-                postDTOs.add(modelMapper.map(post, PostDTO.class));
-            }
-        } else {
-            postDTOs = null;
+        for (Post post : memberPosts) {
+            postDTOs.add(modelMapper.map(post, PostDTO.class));
         }
+
         memberDTO.setPosts(postDTOs);
         return memberDTO;
     }
+
 
     @Override
     public void profileRegister(MemberProfileDTO memberProfileDTO) {
@@ -196,46 +158,13 @@ public class MemberServiceImpl implements MemberService {
         List<MemberDTO> memberDTOList = new ArrayList<>();
 
         for (Member member : members) {
-            Optional<MemberProfile> memberProfileResult = memberProfileRepository.findByMember(member);
-            memberProfileResult.ifPresent(memberProfile -> {
+            memberProfileRepository.findByMember(member).ifPresent(memberProfile -> {
                 MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
-                MemberProfileDTO memberProfileDTO = modelMapper.map(memberProfile, MemberProfileDTO.class);
-                memberDTO.setProfileInfo(memberProfileDTO);
+                memberDTO.setProfileInfo(modelMapper.map(memberProfile, MemberProfileDTO.class));
                 memberDTOList.add(memberDTO);
             });
         }
         return memberDTOList;
-    }
-
-    @Override
-    public Page<PostDTO> memberPosts(HttpSession session, int size, int page) {
-        Optional<Member> result = memberRepository.findById((Long) session.getAttribute("member_id"));
-        Member member = result.orElseThrow(() -> new NoSuchElementException("해당하는 회원을 찾을 수 없습니다."));
-
-        PageRequest pageable = PageRequest.of(page, size);
-        Page<Post> postsPage = postRepository.findAllByMember(member, pageable);
-
-        Page<PostDTO> postDTOPage = postsPage.map(post -> {
-            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
-            return postDTO;
-        });
-
-        return postDTOPage;
-    }
-
-    @Override
-    public void profileModify(MemberProfileDTO memberProfileDTO) {
-        // MemberProfile 엔티티 조회 및 변경
-        MemberProfile memberProfile = memberProfileRepository.findById(memberProfileDTO.getMemberProfileId())
-                .orElseThrow(() -> new RuntimeException("MemberProfile not found"));
-        memberProfile.change(
-                memberProfileDTO.getUuid(),
-                memberProfileDTO.getFileName(),
-                memberProfileDTO.getContent(),
-                memberProfileDTO.getTravelType()
-        );
-        memberProfileRepository.save(memberProfile);
-
     }
 
     @Override
@@ -247,12 +176,6 @@ public class MemberServiceImpl implements MemberService {
         return false;
     }
 
-    //    // 회원 삭제 작업
-//    @Override
-//    public void memberRemove(Long memberId) {
-//        memberProfileRepository.deleteByMemberId(memberId);
-//        memberRepository.deleteById(memberId);
-//    }
     @Override
     public void updateCommentCount(Long memberId) {
         Optional<Member> result = memberRepository.findById(memberId);

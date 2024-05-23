@@ -9,19 +9,26 @@
 </head>
 
 <body>
+<!-- Header -->
 <div th:include="/include/header.html"></div>
+
 <div class="container">
     <header>
         <p id="title">마이페이지</p>
     </header>
+
     <section>
+        <!-- Left section: Profile and Stats -->
         <div id="left">
             <div id="myProfile">
-<!--                <div id="ratingImg">-->
-<!--                    <img th:if="${member.rating == '금메달'}" th:src="@{/image/high.png}" alt="금메달">-->
-<!--                    <img th:if="${member.rating == '은메달'}" th:src="@{/image/second.png}" alt="은메달">-->
-<!--                    <img th:if="${member.rating == '동메달'}" th:src="@{/image/third.png}" alt="동메달">-->
-<!--                </div>-->
+                <!-- Rating Image -->
+                <div id="ratingImg">
+                    <img th:if="${member.rating == '금메달'}" th:src="@{/image/high.png}" alt="금메달">
+                    <img th:if="${member.rating == '은메달'}" th:src="@{/image/second.png}" alt="은메달">
+                    <img th:if="${member.rating == '동메달'}" th:src="@{/image/third.png}" alt="동메달">
+                </div>
+
+                <!-- Profile Photo -->
                 <div id="profilePhoto">
                     <div id="circle">
                         <img th:if="${session.member_id != null and session.member_profile != null}"
@@ -30,13 +37,19 @@
                              th:src="@{/image/user.png}" alt="기본 프로필 사진">
                     </div>
                 </div>
+
+                <!-- Name -->
                 <div id="name">
                     <p style="font-family: 'BMJUA';">[[${member.name}]]</p>
                 </div>
+
+                <!-- Profile Info -->
                 <div id="info">
                     <span id="info_content">[[${member.profileInfo.content}]]</span>
                 </div>
             </div>
+
+            <!-- Post and Comment Counts -->
             <div id="myCount">
                 <div id="post">
                     <img th:src="@{/image/post.png}" alt="게시물">
@@ -48,16 +61,21 @@
                 </div>
             </div>
         </div>
+
+        <!-- Right section: Detailed Information -->
         <div id="right">
             <p id="myInfo">상세 정보</p>
+
+            <!-- User Info -->
             <div id="userInfo">
                 <div class="cir">[[${member.getAgeRange()}]]</div>
                 <div class="cir">[[${member.getGenderDescription()}]]</div>
             </div>
+
+            <!-- MBTI Info -->
             <div id="mbti">
                 <p>나의 여행 유형</p>
-                <p id="userMbti">
-                <p>[[${member.profileInfo.travelType}]]</p></p>
+                <p id="userMbti">[[${member.profileInfo.travelType}]]</p>
                 <div id="mbtiBox">
                     <div class="box" style="background-color: #FF6392" th:if="${member.profileInfo.travelType.startsWith('E')}">
                         사람 많은 도시파
@@ -85,6 +103,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- User Posts -->
             <div id="myPost">
                 <div id="more">
                     <p>나의 게시물</p>
@@ -95,15 +115,23 @@
                 </ul>
                 <ul th:if="${not #lists.isEmpty(member.posts)}">
                     <li th:each="post : ${member.posts}">
-                        <span th:if="${post.postType == 'Review'}"><a th:href="@{/post/reviewDetail(postId=${post.postId})}">[후기] <span th:text="${post.title}"></span></a></span>
-                        <span th:if="${post.postType == 'Join'}"><a th:href="@{/post/joinDetail(postId=${post.postId})}">[모집] <span th:text="${post.title}"></span></a></span>
-                        <span th:if="${post.postType == 'Carrot'}"><a th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span th:text="${post.title}"></span></a></span>
+                            <span th:if="${post.postType == 'Review'}">
+                                <a th:href="@{/post/reviewDetail(postId=${post.postId})}">[후기] <span th:text="${post.title}"></span></a>
+                            </span>
+                        <span th:if="${post.postType == 'Join'}">
+                                <a th:href="@{/post/joinDetail(postId=${post.postId})}">[모집] <span th:text="${post.title}"></span></a>
+                            </span>
+                        <span th:if="${post.postType == 'Carrot'}">
+                                <a th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span th:text="${post.title}"></span></a>
+                            </span>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
 </div>
+
+<!-- Footer -->
 <footer>
     <div th:include="/include/footer.html"></div>
 </footer>

@@ -19,10 +19,8 @@ public interface MemberService {
     void fileUpload(MemberProfileDTO dto, MultipartFile file);
     boolean setProfileSession(Long member_id);
     MemberDTO memberReadOne(Long member_id);
-    void profileModify(MemberProfileDTO memberProfileDTO);
     void profileRegister(MemberProfileDTO memberProfileDTO);
     List<MemberDTO> findProfileMember();
-    Page<PostDTO> memberPosts(HttpSession session, int size, int page);
     void updateCommentCount(Long memberId);
     void updateBoardCount(HttpSession session);
 }

@@ -9,19 +9,18 @@
 </head>
 
 <body>
+<!-- Header -->
 <div th:include="/include/header.html"></div>
+
 <div class="container">
     <header>
         <p id="title">[[${member.name}]]님의 페이지</p>
     </header>
+
     <section>
+        <!-- Left Section: Profile and Stats -->
         <div id="left">
             <div id="otherProfile">
-<!--                <div id="ratingImg">-->
-<!--                    <img th:if="${member.rating == '금메달'}" th:src="@{/image/high.png}" alt="금메달">-->
-<!--                    <img th:if="${member.rating == '은메달'}" th:src="@{/image/second.png}" alt="은메달">-->
-<!--                    <img th:if="${member.rating == '동메달'}" th:src="@{/image/third.png}" alt="동메달">-->
-<!--                </div>-->
                 <div id="profilePhoto">
                     <div id="circle">
                         <img th:src="'/api/photo/' + ${member.profileInfo.uuid + '_' + member.profileInfo.fileName}">
@@ -48,6 +47,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Right Section: Detailed Information -->
         <div id="right">
             <p id="otherInfo">상세 정보</p>
             <div id="userInfo">
@@ -56,8 +57,7 @@
             </div>
             <div id="mbti">
                 <p>나의 여행 유형</p>
-                <p id="userMbti">
-                <p>[[${member.profileInfo.travelType}]]</p></p>
+                <p id="userMbti">[[${member.profileInfo.travelType}]]</p>
                 <div id="mbtiBox">
                     <div class="box" style="background-color: #FF6392" th:if="${member.profileInfo.travelType.startsWith('E')}">
                         사람 많은 도시파
@@ -95,15 +95,15 @@
                 </ul>
                 <ul th:if="${not #lists.isEmpty(member.posts)}">
                     <li th:each="post : ${member.posts}">
-                        <span th:if="${post.postType == 'Review'}"><a
-                                th:href="@{/post/reviewDetail(postId=${post.postId})}">[후기] <span
-                                th:text="${post.title}"></span></a></span>
-                        <span th:if="${post.postType == 'Join'}"><a
-                                th:href="@{/post/joinDetail(postId=${post.postId})}">[모집] <span
-                                th:text="${post.title}"></span></a></span>
-                        <span th:if="${post.postType == 'Carrot'}"><a
-                                th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span
-                                th:text="${post.title}"></span></a></span>
+                            <span th:if="${post.postType == 'Review'}">
+                                <a th:href="@{/post/reviewDetail(postId=${post.postId})}">[후기] <span th:text="${post.title}"></span></a>
+                            </span>
+                        <span th:if="${post.postType == 'Join'}">
+                                <a th:href="@{/post/joinDetail(postId=${post.postId})}">[모집] <span th:text="${post.title}"></span></a>
+                            </span>
+                        <span th:if="${post.postType == 'Carrot'}">
+                                <a th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span th:text="${post.title}"></span></a>
+                            </span>
                     </li>
                 </ul>
             </div>
@@ -112,9 +112,9 @@
 </div>
 
 <script th:inline="javascript">
-    /* 서버로부터 받은 로그인한 사용자의 memberId */
+    // 서버로부터 받은 로그인한 사용자의 memberId
     const senderId = [[${senderId}]];
-    /* 선택된 상대방 사용자의 memberId */
+    // 선택된 상대방 사용자의 memberId
     const receiverId = [[${receiverId}]];
 
     document.getElementById('startChat').addEventListener('click', function () {
@@ -128,6 +128,8 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
+
+<!-- Footer -->
 <footer>
     <div th:include="/include/footer.html"></div>
 </footer>
