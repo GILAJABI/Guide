@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,24 +58,28 @@ public class PostController {
     }
 
     // 게시글 상세보기
-    @GetMapping("/carrotDetail")
-    public String carrotDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId);
+    @GetMapping({"/carrotDetail", "/reviewDetail", "/joinDetail"})
+    public void detailRead(Model model, Long postId) {
+        // postId를 사용하여 게시글의 유형을 가져옵니다.
+        String type = postService.getPostType(postId);
+        System.out.println("Typesss : " + type);
 
-        System.out.println("-----------------------");
-        System.out.println(post.getContent());
-        System.out.println("-----------------------");
-        log.info("postImage {}, postId {}", post.getPostImages(), post.getPostId());
-        List<ImageDTO> imageDTOS = post.getPostImages().stream()
-                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
-                .collect(Collectors.toList());
-
-
-        model.addAttribute("post", post);
-        model.addAttribute("imageDTOS", imageDTOS);
-
-        return "post/carrotDetail";
+        // 유형에 따라 다른 서비스 메서드를 호출하여 모델에 추가합니다.
+        switch (type) {
+            case "Carrot":
+                model.addAttribute("post", postService.postCarrotRead(postId));
+                break;
+            case "Review":
+                model.addAttribute("post", postService.postReadReview(postId));
+                break;
+            case "Join":
+                model.addAttribute("post", postService.postReadJoin(postId));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid post type: " + type);
+        }
     }
+
 
     // 조회순으로 게시글 확인
     @GetMapping("/carrotMain/view")
@@ -83,20 +88,22 @@ public class PostController {
                              @RequestParam(defaultValue = "6") int size) {
         return carrotMain(model, page, size, "views");
     }
+
     // 댓글 갯수로 게시글 확인
     @GetMapping("/carrotMain/comments")
     public String carrotCommentCount(Model model,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "6") int size) {
         return carrotMain(model, page, size, "comments");
     }
+
     @GetMapping("/carrotMain/search")
     public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
-                              @RequestParam("postType") String postType,
-                              @RequestParam(defaultValue = "registerDate") String sort,
-                              @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "6") int size,
-                              Model model) {
+                                     @RequestParam("postType") String postType,
+                                     @RequestParam(defaultValue = "registerDate") String sort,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "6") int size,
+                                     Model model) {
 
         Sort sorting = Sort.by(Sort.Direction.DESC, sort);
         Pageable pageable = PageRequest.of(page - 1, size, sorting);
@@ -108,12 +115,26 @@ public class PostController {
     }
 
     // 게시글 작성
-    @GetMapping("/carrotWrite")
-    public String carrotWrite(HttpSession session) {
+    @GetMapping({"/carrotWrite", "/reviewWrite", "/joinWrite"})
+    public String writePost(HttpSession session, HttpServletRequest request) {
         if (session.getAttribute("member_id") == null) {
             return "redirect:/member/login";
         }
-        return "/post/carrotWrite";
+
+        // 요청 URL을 가져옵니다.
+        String requestURI = request.getRequestURI();
+
+        // URL에 따라 적절한 뷰 이름을 반환합니다.
+        if (requestURI.contains("carrotWrite")) {
+            return "post/carrotWrite";
+        } else if (requestURI.contains("reviewWrite")) {
+            return "post/reviewWrite";
+        } else if (requestURI.contains("joinWrite")) {
+            return "post/joinWrite";
+        }
+
+        // 기본적으로는 메인 페이지로 리다이렉트
+        return "redirect:/";
     }
 
     @PostMapping("/carrotWrite")
@@ -135,12 +156,14 @@ public class PostController {
         model.addAttribute("sort", sort);
         return "post/reviewMain";
     }
+
     @GetMapping("/reviewMain/view")
     public String reviewView(Model model,
                              @RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "6") int size) {
         return reviewMain(model, page, size, "views");
     }
+
     @GetMapping("/reviewMain/comments")
     public String reviewCommentCount(Model model,
                                      @RequestParam(defaultValue = "1") int page,
@@ -150,11 +173,11 @@ public class PostController {
 
     @GetMapping("/reviewMain/search")
     public String reviewSearchDetail(Model model,
-                             @RequestParam("searchValue") String searchValue,
-                             @RequestParam("postType") String postType,
-                             @RequestParam(defaultValue = "registerDate") String sort,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
+                                     @RequestParam("searchValue") String searchValue,
+                                     @RequestParam("postType") String postType,
+                                     @RequestParam(defaultValue = "registerDate") String sort,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "6") int size) {
         Sort sorting = Sort.by(Sort.Direction.DESC, sort);
         Pageable pageable = PageRequest.of(page - 1, size, sorting);
         Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
@@ -164,37 +187,12 @@ public class PostController {
         return "post/reviewMain";
     }
 
-    @GetMapping("/reviewDetail")
-    public String reviewDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId);
-
-        List<ImageDTO> imageDTOS = post.getPostImages().stream()
-                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
-                .collect(Collectors.toList());
-
-
-        model.addAttribute("post", post);
-        model.addAttribute("imageDTOS", imageDTOS);
-
-        return "post/reviewDetail";
-    }
-
-    @GetMapping("/reviewWrite")
-    public String reviewWrite(HttpSession session) {
-        if (session.getAttribute("member_id") == null) {
-            return "redirect:/member/login";
-        }
-        return "/post/reviewWrite";
-    }
-
     @PostMapping("/reviewWrite")
     public String reviewWriteInput(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
         postService.reviewRegister(reviewDTO, file, session);
         memberService.updateBoardCount(session);
         return "redirect:/post/reviewMain";
     }
-
-    //    ------------------------------------------------------------
 
     @GetMapping("/joinMain")
     public String joinMain(Model model,
@@ -216,17 +214,18 @@ public class PostController {
 
     @GetMapping("/joinMain/comments")
     public String joinCommentCount(Model model,
-                                     @RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(defaultValue = "6") int size) {
+                                   @RequestParam(defaultValue = "1") int page,
+                                   @RequestParam(defaultValue = "6") int size) {
         return joinMain(model, page, size, "comments");
     }
+
     @GetMapping("/joinMain/search")
     public String joinSearchDetail(Model model,
-                             @RequestParam("searchValue") String searchValue,
-                             @RequestParam("postType") String postType,
-                             @RequestParam(defaultValue = "registerDate") String sort,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "6") int size) {
+                                   @RequestParam("searchValue") String searchValue,
+                                   @RequestParam("postType") String postType,
+                                   @RequestParam(defaultValue = "registerDate") String sort,
+                                   @RequestParam(defaultValue = "1") int page,
+                                   @RequestParam(defaultValue = "6") int size) {
         Sort sorting = Sort.by(Sort.Direction.DESC, sort);
         Pageable pageable = PageRequest.of(page - 1, size, sorting);
         Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
@@ -236,36 +235,12 @@ public class PostController {
         return "post/joinMain";
     }
 
-    @GetMapping("/joinDetail")
-    public String joinDetail(Model model, Long postId) {
-        Post post = postService.postDetailRead(postId);
-
-        List<ImageDTO> imageDTOS = post.getPostImages().stream()
-                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
-                .collect(Collectors.toList());
-
-
-        model.addAttribute("post", post);
-        model.addAttribute("imageDTOS", imageDTOS);
-
-        return "post/joinDetail";
-    }
-
-    @GetMapping("/joinWrite")
-    public String joinWrite(HttpSession session) {
-        if (session.getAttribute("member_id") == null) {
-            return "redirect:/member/login";
-        }
-        return "/post/joinWrite";
-    }
-
     @PostMapping("/joinWrite")
     public String joinWriteInput(HttpSession session, JoinDTO joinDTO, @RequestParam("file") MultipartFile file) {
         postService.joinRegister(joinDTO, file, session);
         memberService.updateBoardCount(session);
         return "redirect:/post/joinMain";
     }
-//  ----------------------------------------------------------------------
 
     @PostMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId, @RequestParam Long memberId, RedirectAttributes redirectAttributes) {

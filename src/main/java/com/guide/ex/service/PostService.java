@@ -29,4 +29,10 @@ public interface PostService {
     String findPostTypeByPostId(Long postId);
 
     void updatePostCommentCount(Long postId);
+
+    CarrotDTO postCarrotRead(Long postId);
+    ReviewDTO postReadReview(Long postId);
+    JoinDTO postReadJoin(Long postId);
+
+    String getPostType(Long postId);
 }

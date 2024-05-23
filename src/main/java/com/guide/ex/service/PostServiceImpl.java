@@ -277,6 +277,9 @@ public class PostServiceImpl implements PostService {
         if (post == null) {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
         }
+
+//        modelMapper.map(post, postDTO);
+
         return post;
     }
 
@@ -471,5 +474,68 @@ public class PostServiceImpl implements PostService {
         int commentCount = commentRepository.countByPost(post);
         post.setCommentCount(commentCount);
         postRepository.save(post);
+    }
+
+    @Override
+    public CarrotDTO postCarrotRead(Long postId) {
+        // 데이터베이스에서 Post 객체를 검색
+        Post post = allPostSearch.searchOne(postId);
+        if (post == null) {
+            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
+        }
+
+        CarrotDTO carrotDTO = modelMapper.map(post, CarrotDTO.class);
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+        carrotDTO.setImageDTOs(imageDTOS);
+        carrotDTO.setMemberId(post.getMember().getMemberId());
+        carrotDTO.setMemberName(post.getMember().getName());
+        return carrotDTO;
+    }
+
+    @Override
+    public ReviewDTO postReadReview(Long postId) {
+        // 데이터베이스에서 Post 객체를 검색
+        Post post = allPostSearch.searchOne(postId);
+        if (post == null) {
+            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
+        }
+
+        ReviewDTO reviewDTO = modelMapper.map(post, ReviewDTO.class);
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+        reviewDTO.setImageDTOs(imageDTOS);
+        reviewDTO.setMemberId(post.getMember().getMemberId());
+        reviewDTO.setMemberName(post.getMember().getName());
+        return reviewDTO;
+    }
+
+    @Override
+    public JoinDTO postReadJoin(Long postId) {
+        // 데이터베이스에서 Post 객체를 검색
+        Post post = allPostSearch.searchOne(postId);
+        if (post == null) {
+            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
+        }
+
+        JoinDTO joinDTO = modelMapper.map(post, JoinDTO.class);
+        List<ImageDTO> imageDTOS = post.getPostImages().stream()
+                .map(image -> new ImageDTO(image.getImageId(), image.getUuid(), image.getFileName()))
+                .collect(Collectors.toList());
+        joinDTO.setImageDTOs(imageDTOS);
+        joinDTO.setMemberId(post.getMember().getMemberId());
+        joinDTO.setMemberName(post.getMember().getName());
+        return joinDTO;
+    }
+
+    @Override
+    public String getPostType(Long postId) {
+        Optional<Post> result = postRepository.findById(postId);
+        Post post = result.orElse(null);
+        assert post != null;
+        log.info("!!!!!@!!!!"+post.toString());
+        return post.getPostType();
     }
 }

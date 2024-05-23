@@ -74,17 +74,17 @@
             <a th:href="@{/post/reviewMain}">후기</a>
             <a th:href="@{/post/carrotMain}">거래</a>
         </div>
-        <div th:if= "${session.member_id == post.member.getMemberId()}">
+        <div th:if= "${session.member_id == post.getMemberId()}">
             <form th:action="@{/post/delete/{postId}(postId=${post.postId})}" method="post">
                 <input type="hidden" name="postId" th:value="${post.postId}" />
-                <input type="hidden" name="memberId" th:value="${post.member.memberId}"/>
+                <input type="hidden" name="memberId" th:value="${post.memberId}"/>
                 <button type="submit" style="background-color: #363636;">삭제</button>
             </form>
         </div>
     </div>
     <section>
-        <th:block th:each="image : ${imageDTOS}">
-            <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}" alt="Uploaded Image" th:onerror="@{/images/default.jpg}">
+        <th:block th:each="image : ${post.imageDTOs}">
+            <img th:src="@{'/api/photo/' + ${image.uuid} + '_' + ${image.fileName}}" alt="Uploaded Image" class="img" th:onerror="@{/images/default.jpg}">
         </th:block>
         <div class="sec-container">
             <div id="left">
@@ -107,7 +107,7 @@
                 <p id="commentCnt" th:text="'댓글 ' + ${post.commentCount} + '개'"></p>
                 <form id="comment-form" th:action="@{/post/comment}" method="post">
                     <input type="hidden" name="postId" th:value="${post.postId}" />
-                    <input type="hidden" name="memberId" th:value="${memberId}" />
+                    <input type="hidden" name="memberId" th:value="${post.memberId}" />
                     <input type="text" name="commentContent" id="comment-input" placeholder="댓글을 입력하세요">
                     <button type="button" id="comment-button">입력</button>
                 </form>
@@ -123,8 +123,8 @@
                 <p class="text" id="sell">여행자</p>
                 <div class="user">
                     <div class="go">
-                        <p id="name" th:text="${post.member.getName()} + '님 프로필 정보'"></p>
-                        <a th:href="@{/member/otherPage/{memberId}(memberId=${post.member.memberId})}">
+                        <p id="name" th:text="${post.memberName} + '님 프로필 정보'"></p>
+                        <a th:href="@{/member/otherPage/{memberId}(memberId=${post.memberId})}">
                             <button type="submit" id="go">보러가기</button>
                         </a>
                     </div>

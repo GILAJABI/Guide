@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -44,4 +46,10 @@ public class PostDTO {
     private String postType;
     
     private Long memberId;
+
+    private String memberName;
+
+    private List<ImageDTO> imageDTOs;
+
+
 }
