@@ -73,9 +73,15 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 
 ## 📣 기능 소개
 ### 메인 페이지
-<b>Header :</b> 사용자는 로그인 유무에 따라 보여지는 항목이 달라집니다. [로그인, 회원가입] -> [마이페이지, 로그아웃]<br>
-<b>회원 정보 영역 :</b> 사용자의 프로필 등록 여부, 로그인 상태에 따라 보여지는 내용이 달라집니다.<br>
-<b>회원 슬라이더 :</b> 프로필을 등록한 사용자들을 조회할 수 있습니다.<br>
+
+**Header**
+  - 사용자는 로그인 유무에 따라 보여지는 항목이 달라집니다. [로그인, 회원가입] -> [마이페이지, 로그아웃]
+  
+**회원 정보 영역**
+  - 사용자의 프로필 등록 여부, 로그인 상태에 따라 보여지는 내용이 달라집니다.
+  
+**회원 슬라이더**
+  - 프로필을 등록한 사용자들을 조회할 수 있습니다.
 <img width="1710" alt="main" src="https://github.com/GILAJABI/guide/assets/93421611/6a86f00a-0335-4ee2-8926-634dc2647988">
 
 ### 회원 기능
@@ -107,9 +113,47 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 <img width="1710" alt="2024-05-16_2 27 38" src="https://github.com/GILAJABI/guide/assets/93421611/39a59e09-9270-4a93-b692-1a14163dd4a2">
 <img width="1710" alt="2024-05-16_2 27 50" src="https://github.com/GILAJABI/guide/assets/93421611/b1d43e56-6c1d-4e9a-ab76-c82f0edf0258">
 
-<br>
-<br>
+### 게시판 기능
+**게시판 작성**
+  - 로그인된 회원만 게시글 작성이 가능하도록 합니다. 로그인이 되지 않은 회원은 로그인 페이지로 이동됩니다.
+  - 게시글 유형(리뷰, 모집, 중고거래)에 따라 저장되는 형태가 달라집니다.
+  - KakaoMap API를 활용하여 여행위치, 거래위치 정보를 저장합니다.
+  - 게시물 작성 성공시 회원 테이블의 회원 게시물 작성 수가 반영됩니다.
 
-## 🎥 시연 영상
-<br>
-<br>
+**게시판 삭제**
+  - 글을 작성한 사용자는 본인이 작성한 게시글을 조회하면 삭제 버튼을 볼 수 있으며, 클릭시 등록한 게시물이 삭제됩니다.
+**게시판 목록 조회**
+  - 게시판 이미지와, 제목, 조회수, 댓글 수 등 게시판 정보를 보여주며 6개 단위로 페이징 처리하여 보여줍니다.
+**게시판 상세 조회**
+  - 게시글 상세 정보 조회가 가능합니다.
+  - 조회시 조회수가 증가합니다.
+  - 작성자 타회원 조회 페이지로 이동이 가능합니다.
+**게시판 댓글 작성**
+  - 로그인 된 회원은 댓글 작성이 가능합니다.
+  - 로그인 하지 않을 경우 '로그인을 진행해주세요'라는 alert문구를 보여줍니다.
+  - 댓글 작성시 회원 테이블의 회원 댓글 수가 반영됩니다.
+**게시판 댓글 조회**
+  - 해당 게시글에 작성된 댓글 조회가 가능합니다.
+  - 이름, 내용, 시간 형태로 6개 단위로 페이징 처리하여 보여줍니다.
+
+<img width="1710" alt="2024-05-16_2 27 56" src="https://github.com/GILAJABI/guide/assets/93421611/276f680d-a96c-4641-a4c3-e77b70aff4e0">
+<img width="1710" alt="2024-05-16_2 28 00" src="https://github.com/GILAJABI/guide/assets/93421611/bb6e005d-9596-4555-9876-1d27aba54e90">
+<img width="1710" alt="2024-05-16_2 28 04" src="https://github.com/GILAJABI/guide/assets/93421611/9ca44b9d-4614-4f34-912c-ec44b2a3f877">
+<img width="1710" alt="2024-05-16_2 28 11" src="https://github.com/GILAJABI/guide/assets/93421611/16dfa1cd-25fd-40b3-8ffb-713d4dfc42d1">
+<img width="1710" alt="2024-05-16_2 28 18" src="https://github.com/GILAJABI/guide/assets/93421611/7a92e41a-43fe-40e0-ad76-50d97459a8e7">
+<img width="1710" alt="2024-05-16_2 28 26" src="https://github.com/GILAJABI/guide/assets/93421611/f89ac541-1f14-4544-ba83-6813f3a01512">
+<img width="1710" alt="2024-05-16_2 29 44" src="https://github.com/GILAJABI/guide/assets/93421611/18807878-4b98-45d6-837a-73246fa25b94">
+
+### 채팅 기능
+**1대1 채팅 기능**
+  - 회원은 다른 회원과 1대1 채팅이 가능합니다.
+  - 타회원조회 페이지를 통해 채팅방 생성이 가능하며, 기존의 채팅방이 존재하면 기존 채팅방으로 이동됩니다.
+  - 
+**채팅방 목록**
+  - 사용자는 생성된 채팅방 목록을 조회할 수 있습니다.
+<img width="1710" alt="image" src="https://github.com/GILAJABI/guide/assets/93421611/81111fc9-be44-4c74-8514-58940040aae9">
+<img width="1710" alt="2024-05-16_2 30 15" src="https://github.com/GILAJABI/guide/assets/93421611/1e29bc0b-56b6-427e-845b-003626963596">
+
+
+
+
