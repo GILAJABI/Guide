@@ -82,7 +82,8 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 <br>
 
 ## 🛢️ ERD 설계
-![guide_erd_d](https://github.com/GILAJABI/guide/assets/93421611/9eab9190-c60c-4a55-9a78-2e9fa24132ca)
+![스크린샷 2024-05-23 120255](https://github.com/GILAJABI/guide/assets/93421611/06edd656-ff0a-4fa2-bc36-222417c9812c)
+
 
 <br>
 <br>
