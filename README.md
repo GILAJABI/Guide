@@ -76,10 +76,14 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 <br>
 
 ## 🗺️ 프로젝트 아키텍쳐
+![ac](https://github.com/GILAJABI/guide/assets/93421611/aa514af2-01bd-43e2-bea1-23d7285b0f44)
+
 <br>
 <br>
 
 ## 🛢️ ERD 설계
+![guide_erd_d](https://github.com/GILAJABI/guide/assets/93421611/9eab9190-c60c-4a55-9a78-2e9fa24132ca)
+
 <br>
 <br>
 
