@@ -145,6 +145,10 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 <img width="1710" alt="2024-05-16_2 29 44" src="https://github.com/GILAJABI/guide/assets/93421611/18807878-4b98-45d6-837a-73246fa25b94">
 
 ### 채팅 기능
+**채팅 기능 구조**
+![image](https://github.com/GILAJABI/guide/assets/93421611/78dbab7f-c943-456d-a455-fd42d5838da9) 
+<br>
+<br>
 **1대1 채팅 기능**
   - 회원은 다른 회원과 1대1 채팅이 가능합니다.
   - 타회원조회 페이지를 통해 채팅방 생성이 가능하며, 기존의 채팅방이 존재하면 기존 채팅방으로 이동됩니다.
