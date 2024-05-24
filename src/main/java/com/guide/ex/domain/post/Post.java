@@ -92,4 +92,14 @@ public class Post {
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
     }
+
+    @Override
+    public String toString() {
+        return "PostImage{" +
+                "id=" + postId +
+                ", postType='" + postType + '\'' +
+                ", title ='" + title + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

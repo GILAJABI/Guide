@@ -58,8 +58,8 @@ public class PostController {
     }
 
     // 게시글 상세보기
-    @GetMapping({"/carrotDetail", "/reviewDetail", "/joinDetail"})
-    public void detailRead(Model model, Long postId) {
+    @GetMapping({"/carrotDetail/{postId}", "/reviewDetail/{postId}", "/joinDetail/{postId}"})
+    public String detailRead(@PathVariable Long postId, Model model) {
         // postId를 사용하여 게시글의 유형을 가져옵니다.
         String type = postService.getPostType(postId);
         System.out.println("Typesss : " + type);
@@ -68,18 +68,17 @@ public class PostController {
         switch (type) {
             case "Carrot":
                 model.addAttribute("post", postService.postCarrotRead(postId));
-                break;
+                return "post/carrotDetail"; // 템플릿 경로 반환
             case "Review":
                 model.addAttribute("post", postService.postReadReview(postId));
-                break;
+                return "post/reviewDetail"; // 템플릿 경로 반환
             case "Join":
                 model.addAttribute("post", postService.postReadJoin(postId));
-                break;
+                return "post/joinDetail"; // 템플릿 경로 반환
             default:
                 throw new IllegalArgumentException("Invalid post type: " + type);
         }
     }
-
 
     // 조회순으로 게시글 확인
     @GetMapping("/carrotMain/view")
@@ -111,7 +110,9 @@ public class PostController {
 
         model.addAttribute("posts", posts);
         model.addAttribute("sort", sort);
-        return "post/carrotMain";
+        model.addAttribute("searchValue", searchValue); // 추가
+        model.addAttribute("postType", postType);
+        return "post/carrotSearch";
     }
 
     // 게시글 작성
@@ -184,7 +185,9 @@ public class PostController {
 
         model.addAttribute("posts", posts);
         model.addAttribute("sort", sort);
-        return "post/reviewMain";
+        model.addAttribute("searchValue", searchValue);
+        model.addAttribute("postType", postType);
+        return "post/reviewSearch";
     }
 
     @PostMapping("/reviewWrite")
@@ -232,7 +235,9 @@ public class PostController {
 
         model.addAttribute("posts", posts);
         model.addAttribute("sort", sort);
-        return "post/joinMain";
+        model.addAttribute("searchValue", searchValue); // 추가
+        model.addAttribute("postType", postType);
+        return "post/joinSearch";
     }
 
     @PostMapping("/joinWrite")
@@ -278,11 +283,11 @@ public class PostController {
 
         switch (postType) {
             case "Carrot":
-                return "redirect:/post/carrotDetail?postId=" + commentDTO.getPostId();
+                return "redirect:/post/carrotDetail/" + commentDTO.getPostId();
             case "Join":
-                return "redirect:/post/joinDetail?postId=" + commentDTO.getPostId();
+                return "redirect:/post/joinDetail/" + commentDTO.getPostId();
             case "Review":
-                return "redirect:/post/reviewDetail?postId=" + commentDTO.getPostId();
+                return "redirect:/post/reviewDetail/" + commentDTO.getPostId();
             default:
                 return "redirect:/post/carrotMain";
         }

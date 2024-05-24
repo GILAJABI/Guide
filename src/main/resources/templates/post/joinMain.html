@@ -42,7 +42,7 @@
         </div>
         <div th:each="post : ${posts.content}" class="carrotBox" th:if="${not posts.isEmpty()}">
             <div class="image-section">
-                <a th:href="@{/post/joinDetail(postId=${post.postId})}">
+                <a th:href="@{/post/joinDetail/{postId}(postId=${post.postId})}">
                     <img th:if="${post.imageDTOs != null && !post.imageDTOs.isEmpty()}"
                          th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}"
                          alt="사용자가 게시한 이미지"

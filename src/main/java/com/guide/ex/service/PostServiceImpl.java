@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -269,20 +270,6 @@ public class PostServiceImpl implements PostService {
         log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
     }
 
-    // 게시글 상세 검색(Service -> Repository)
-    @Override
-    public Post postDetailRead(Long postId) {
-        // 데이터베이스에서 Post 객체를 검색
-        Post post = allPostSearch.searchOne(postId);
-        if (post == null) {
-            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + postId);
-        }
-
-//        modelMapper.map(post, postDTO);
-
-        return post;
-    }
-
 
     // 게시글 검색(Service -> Repository)
     @Override
@@ -302,73 +289,45 @@ public class PostServiceImpl implements PostService {
         Page<Post> postPage = allPostSearch.searchPostContaining(searchValue, postType, pageable);
 
         return postPage.map(post -> {
-            PostDTO postDTO;
+            PostDTO postDTO = createPostDTO(post, postType);
+            List<ImageDTO> imageDTOs = convertImagesToDTOs(post.getPostImages());
 
-            switch (postType) {
-                case "Review":
-                    postDTO = modelMapper.map(post, ReviewDTO.class);
-                    List<ImageDTO> reviewImages = post.getPostImages().stream()
-                            .map(image -> {
-                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
-                                log.info("Review ImageDTO: " + imgDTO);  // Log each ImageDTO
-                                return imgDTO;
-                            })
-                            .collect(Collectors.toList());
-
-                    if (reviewImages.isEmpty() || reviewImages.contains(null)) {
-                        log.warn("No images found for Review ID " + post.getId());
-                    } else {
-                        log.info("Number of images for Review ID " + post.getId() + ": " + reviewImages.size());
-                    }
-
-                    ((ReviewDTO) postDTO).setImageDTOs(reviewImages);
-                    break;
-
-                case "Carrot":
-                    postDTO = modelMapper.map(post, CarrotDTO.class);
-                    List<ImageDTO> carrotImages = post.getPostImages().stream()
-                            .map(image -> {
-                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
-                                log.info("Carrot ImageDTO: " + imgDTO);  // Log each ImageDTO
-                                return imgDTO;
-                            })
-                            .collect(Collectors.toList());
-
-                    if (carrotImages.isEmpty() || carrotImages.contains(null)) {
-                        log.warn("No images found for Carrot ID " + post.getId());
-                    } else {
-                        log.info("Number of images for Carrot ID " + post.getId() + ": " + carrotImages.size());
-                    }
-
-                    ((CarrotDTO) postDTO).setImageDTOs(carrotImages);
-                    break;
-
-                case "Join":
-                    postDTO = modelMapper.map(post, JoinDTO.class);
-                    List<ImageDTO> joinImages = post.getPostImages().stream()
-                            .map(image -> {
-                                ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
-                                log.info("Join ImageDTO: " + imgDTO);  // Log each ImageDTO
-                                return imgDTO;
-                            })
-                            .collect(Collectors.toList());
-
-                    if (joinImages.isEmpty() || joinImages.contains(null)) {
-                        log.warn("No images found for Join ID " + post.getId());
-                    } else {
-                        log.info("Number of images for Join ID " + post.getId() + ": " + joinImages.size());
-                    }
-
-                    ((JoinDTO) postDTO).setImageDTOs(joinImages);
-                    break;
-
-                default:
-                    postDTO = modelMapper.map(post, PostDTO.class);
-                    break;
-            }
+            postDTO.setImageDTOs(imageDTOs);
             return postDTO;
         });
     }
+
+    private PostDTO createPostDTO(Post post, String postType) {
+        switch (postType) {
+            case "Review":
+                return modelMapper.map(post, ReviewDTO.class);
+            case "Carrot":
+                return modelMapper.map(post, CarrotDTO.class);
+            case "Join":
+                return modelMapper.map(post, JoinDTO.class);
+            default:
+                return modelMapper.map(post, PostDTO.class);
+        }
+    }
+
+    private List<ImageDTO> convertImagesToDTOs(List<PostImage> images) {
+        List<ImageDTO> imageDTOs = images.stream()
+                .map(image -> {
+                    ImageDTO imgDTO = modelMapper.map(image, ImageDTO.class);
+                    log.info("ImageDTO: " + imgDTO);  // Log each ImageDTO
+                    return imgDTO;
+                })
+                .collect(Collectors.toList());
+
+        if (imageDTOs.isEmpty() || imageDTOs.contains(null)) {
+            log.warn("No images found or null images present");
+        } else {
+            log.info("Number of images: " + imageDTOs.size());
+        }
+
+        return imageDTOs;
+    }
+
 
     // 거래 게시판 글 모두 출력(Service -> Repository)
     @Override

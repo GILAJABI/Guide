@@ -17,8 +17,7 @@ public interface PostService {
     void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
     void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
     void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
-    Post postDetailRead(Long memberId);
-//    Page<PostDTO> postTypeReadAll(String postType,int size, int page);
+
     Page<PostDTO> postSelectAll(String searchValue, String postType, Pageable pageable);
 
     Page<CarrotDTO> carrotTypeReadAll(int size, int page, Sort sort);
