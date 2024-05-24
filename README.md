@@ -109,6 +109,15 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 <img width="1710" alt="2024-05-16_2 27 50" src="https://github.com/GILAJABI/guide/assets/93421611/b1d43e56-6c1d-4e9a-ab76-c82f0edf0258">
 
 ### 게시판 기능
+**게시판 테이블 구조**
+  - 상속 관계 매핑 전략
+  - @Inheritance(strategy = InheritanceType.JOINED) : 상위 클래스 Post Entity에 설정 (정규화에 강점)
+  - @DiscriminatorValue : 하위 클래스(Join, Review, Carrot)에서 설정하고, Post Entity를 상속 받아 사용한다.
+  - 결과로 아래 ERD형태로 데이터가 저장된다. 유형에 따라 3가지 형태의 게시글이 등록되지만, post 테이블에 모든 게시물의 데이터가 있기 때문에 1개의 댓글 테이블로 모든 게시글의 댓글을 연결하여 사용 가능하다.
+
+![스크린샷 2024-05-24 145453](https://github.com/GILAJABI/guide/assets/93421611/8b6f4f6f-09c0-49c1-90ae-bca5aec159d9)
+![스크린샷 2024-05-24 151719](https://github.com/GILAJABI/guide/assets/93421611/397018c3-dd60-4f6d-8b65-7394f611060a)
+
 **게시판 작성**
   - 로그인된 회원만 게시글 작성이 가능하도록 합니다. 로그인이 되지 않은 회원은 로그인 페이지로 이동됩니다.
   - 게시글 유형(리뷰, 모집, 중고거래)에 따라 저장되는 형태가 달라집니다.
