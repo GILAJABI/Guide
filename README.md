@@ -151,6 +151,8 @@ https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=
 ### 채팅 기능
 **채팅 기능 구조**
 ![image](https://github.com/GILAJABI/guide/assets/93421611/78dbab7f-c943-456d-a455-fd42d5838da9) 
+![스크린샷 2024-05-24 162238](https://github.com/GILAJABI/guide/assets/93421611/c34fc5b4-5dcf-45b6-bb1c-28ae555012d5)
+
 <br>
 <br>
 **1대1 채팅 기능**
