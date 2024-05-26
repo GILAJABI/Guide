@@ -95,15 +95,21 @@
                 </ul>
                 <ul th:if="${not #lists.isEmpty(member.posts)}">
                     <li th:each="post : ${member.posts}">
-                        <span th:if="${post.postType == 'Review'}"><a
-                                th:href="@{/post/reviewDetail(postId=${post.postId})}">[후기] <span
-                                th:text="${post.title}"></span></a></span>
-                        <span th:if="${post.postType == 'Join'}"><a
-                                th:href="@{/post/joinDetail(postId=${post.postId})}">[모집] <span
-                                th:text="${post.title}"></span></a></span>
-                        <span th:if="${post.postType == 'Carrot'}"><a
-                                th:href="@{/post/carrotDetail(postId=${post.postId})}">[당근] <span
-                                th:text="${post.title}"></span></a></span>
+                        <span th:if="${post.postType == 'Review'}">
+                            <a th:href="@{/post/reviewDetail/{postId}(postId=${post.postId})}">[후기]
+                                <span th:text="${post.title}"></span>
+                            </a>
+                        </span>
+                        <span th:if="${post.postType == 'Join'}">
+                            <a th:href="@{/post/joinDetail/{postId}(postId=${post.postId})}">[모집]
+                                <span th:text="${post.title}"></span>
+                            </a>
+                        </span>
+                        <span th:if="${post.postType == 'Carrot'}">
+                            <a th:href="@{/post/carrotDetail/{postId}(postId=${post.postId})}">[당근]
+                                <span th:text="${post.title}"></span>
+                            </a>
+                        </span>
                     </li>
                 </ul>
             </div>
