@@ -411,7 +411,6 @@ public class PostServiceImpl implements PostService {
             return joinDTO;
         });
     }
-//----------------------------------------
 
     // 게시글 삭제(Service -> Repository) + (회원 ID && postID) 일치할 경우만
     @Override
@@ -452,6 +451,7 @@ public class PostServiceImpl implements PostService {
         carrotDTO.setMemberName(post.getMember().getName());
         return carrotDTO;
     }
+
 
     @Override
     public ReviewDTO postReadReview(Long postId) {
