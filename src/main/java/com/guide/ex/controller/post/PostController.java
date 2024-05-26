@@ -1,10 +1,8 @@
 package com.guide.ex.controller.post;
 
-import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
-import com.guide.ex.repository.search.CommentRepository;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.MemberService;
 import com.guide.ex.service.PostService;
@@ -23,8 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @Log4j2
@@ -38,9 +34,6 @@ public class PostController {
     private CommentService commentService;
     @Autowired
     private MemberService memberService;
-    @Autowired
-    private CommentRepository commentRepository;
-
 
     // 메인
     @GetMapping("/carrotMain")
@@ -96,25 +89,6 @@ public class PostController {
         return carrotMain(model, page, size, "comments");
     }
 
-    @GetMapping("/carrotMain/search")
-    public String carrotSearchDetail(@RequestParam("searchValue") String searchValue,
-                                     @RequestParam("postType") String postType,
-                                     @RequestParam(defaultValue = "registerDate") String sort,
-                                     @RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(defaultValue = "6") int size,
-                                     Model model) {
-
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        model.addAttribute("searchValue", searchValue); // 추가
-        model.addAttribute("postType", postType);
-        return "post/carrotSearch";
-    }
-
     // 게시글 작성
     @GetMapping({"/carrotWrite", "/reviewWrite", "/joinWrite"})
     public String writePost(HttpSession session, HttpServletRequest request) {
@@ -145,7 +119,38 @@ public class PostController {
         return "redirect:/post/carrotMain";
     }
 
-//    ------------------------------------------------------------
+    // 게시글 상세검색
+    @GetMapping({"/carrotMain/search", "/reviewMain/search", "/joinMain/search"})
+    public String searchPost(Model model,
+                             @RequestParam("searchValue") String searchValue,
+                             @RequestParam("postType") String postType,
+                             @RequestParam(defaultValue = "registerDate") String sort,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "6") int size,
+                             HttpServletRequest request) {
+
+        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sorting);
+        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
+
+        String requestURI = request.getRequestURI();
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("sort", sort);
+        model.addAttribute("searchValue", searchValue);
+        model.addAttribute("postType", postType);
+
+        // URL에 따라 적절한 뷰 이름을 반환합니다.
+        if (requestURI.contains("carrotMain")) {
+            return "post/carrotSearch";
+        } else if (requestURI.contains("reviewMain")) {
+            return "post/reviewSearch";
+        } else if (requestURI.contains("joinMain")) {
+            return "post/joinSearch";
+        }
+
+        return "redirect:/";
+    }
 
     @GetMapping("/reviewMain")
     public String reviewMain(Model model,
@@ -170,24 +175,6 @@ public class PostController {
                                      @RequestParam(defaultValue = "1") int page,
                                      @RequestParam(defaultValue = "6") int size) {
         return reviewMain(model, page, size, "comments");
-    }
-
-    @GetMapping("/reviewMain/search")
-    public String reviewSearchDetail(Model model,
-                                     @RequestParam("searchValue") String searchValue,
-                                     @RequestParam("postType") String postType,
-                                     @RequestParam(defaultValue = "registerDate") String sort,
-                                     @RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(defaultValue = "6") int size) {
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        model.addAttribute("searchValue", searchValue);
-        model.addAttribute("postType", postType);
-        return "post/reviewSearch";
     }
 
     @PostMapping("/reviewWrite")
@@ -220,24 +207,6 @@ public class PostController {
                                    @RequestParam(defaultValue = "1") int page,
                                    @RequestParam(defaultValue = "6") int size) {
         return joinMain(model, page, size, "comments");
-    }
-
-    @GetMapping("/joinMain/search")
-    public String joinSearchDetail(Model model,
-                                   @RequestParam("searchValue") String searchValue,
-                                   @RequestParam("postType") String postType,
-                                   @RequestParam(defaultValue = "registerDate") String sort,
-                                   @RequestParam(defaultValue = "1") int page,
-                                   @RequestParam(defaultValue = "6") int size) {
-        Sort sorting = Sort.by(Sort.Direction.DESC, sort);
-        Pageable pageable = PageRequest.of(page - 1, size, sorting);
-        Page<PostDTO> posts = postService.postSelectAll(searchValue, postType, pageable);
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("sort", sort);
-        model.addAttribute("searchValue", searchValue); // 추가
-        model.addAttribute("postType", postType);
-        return "post/joinSearch";
     }
 
     @PostMapping("/joinWrite")
