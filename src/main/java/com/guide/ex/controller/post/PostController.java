@@ -1,6 +1,7 @@
 package com.guide.ex.controller.post;
 
 import com.guide.ex.domain.post.Carrot;
+import com.guide.ex.domain.post.Join;
 import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
@@ -117,7 +118,7 @@ public class PostController {
     }
 
     @GetMapping("/carrotModify/{postId}")
-    public String showModificationForm(@PathVariable Long postId, Model model) {
+    public String carrotModify(@PathVariable Long postId, Model model) {
         CarrotDTO post = postService.postCarrotRead(postId);
         model.addAttribute("post", post);
         return "post/carrotModify";  // 뷰 이름을 반환
@@ -125,12 +126,40 @@ public class PostController {
 
     @PostMapping("/carrotModify")
     public String carrotModify(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
-        postService.carrotRegister(carrotDTO, file, session);
+        postService.carrotModify(carrotDTO, file, session);
         memberService.updateBoardCount(session);
         return "redirect:/post/carrotMain";
     }
 
+    @GetMapping("/reviewModify/{postId}")
+    public String reviewModify(@PathVariable Long postId, Model model) {
+        ReviewDTO post = postService.postReadReview(postId);
+        model.addAttribute("post", post);
+        return "post/reviewModify";  // 뷰 이름을 반환
+    }
 
+    @PostMapping("/reviewModify")
+    public String reviewModify(HttpSession session, ReviewDTO reviewDTO, @RequestParam("file") MultipartFile file) {
+        log.info("ReviewDTO received: {}", reviewDTO);
+        postService.reviewModify(reviewDTO, file, session);
+        memberService.updateBoardCount(session);
+        return "redirect:/post/reviewMain";
+    }
+
+    @GetMapping("/joinModify/{postId}")
+    public String joinModify(@PathVariable Long postId, Model model) {
+        JoinDTO post = postService.postReadJoin(postId);
+        model.addAttribute("post", post);
+        return "post/joinModify";  // 뷰 이름을 반환
+    }
+
+    @PostMapping("/joinModify")
+    public String joinModify(JoinDTO joinDTO, HttpSession session, @RequestParam("file") MultipartFile file) {
+        log.info("JoinDTO received: {}", joinDTO);
+        postService.joinModify(joinDTO, file, session);
+        memberService.updateBoardCount(session);
+        return "redirect:/post/joinMain";
+    }
 
     // 게시글 삭제
     @PostMapping("/delete/{postId}")

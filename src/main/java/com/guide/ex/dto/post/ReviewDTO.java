@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +19,10 @@ public class ReviewDTO extends PostDTO{
     private long grade;
     private int expense;
 
-    private LocalDateTime startTravelDate;
-    private LocalDateTime endTravelDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startTravelDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endTravelDate;
 
     private List<ImageDTO> imageDTOs;
 

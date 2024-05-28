@@ -37,8 +37,7 @@ public class Post {
     private LocalDateTime registerDate;
 
     @LastModifiedDate
-    @Column(updatable = false)
-    private LocalDateTime modifyDate;
+    LocalDateTime modifyDate;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal locationX;

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -158,116 +159,211 @@ public class PostServiceImpl implements PostService {
 
     // 거래 게시글 수정
     @Override
-    public void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO) {
-        // Post 엔티티 찾기
-        Post post = postRepository.findById(postDTO.getPostId())
-                .orElseThrow(() -> new RuntimeException("Post not found with id : " + postDTO.getPostId()));
-
-        // 게시글 소유자 확인
-        if (!post.getMember().getMemberId().equals(postDTO.getMemberId())) {
-            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + postDTO.getMemberId());
+    public void carrotModify(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+        if (memberId == null) {
+            throw new RuntimeException("Member ID not found in session");
         }
 
-        post.change(
-                postDTO.getTitle(),
-                postDTO.getContent()
-        );
-
-        post.changeDate(
-                postDTO.getModifyDate()
-        );
-
-        // 변경사항 저장
-        postRepository.save(post);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
         // Carrot 엔티티 찾기
         Carrot carrot = carrotRepository.findById(carrotDTO.getPostId())
-                .orElseThrow(() -> new RuntimeException("Carrot post not found with id : " + carrotDTO.getPostId()));
-
-        // Carrot 엔티티 업데이트
-        carrot.change(carrotDTO.getPrice());
-
-        // 변경사항 저장
-        carrotRepository.save(carrot);
-
-        log.info("Updated Post ID: {}, Carrot Post ID: {}, by Member ID: {}", post.getPostId(), carrot.getPostId(), postDTO.getMemberId());
-    }
-
-    @Override
-    public void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO) {
-        // Post 엔티티 찾기
-        Post post = postRepository.findById(postDTO.getPostId())
-                .orElseThrow(() -> new RuntimeException("Post not found with id : " + postDTO.getPostId()));
+                .orElseThrow(() -> new RuntimeException("Carrot not found with id: " + carrotDTO.getPostId()));
 
         // 게시글 소유자 확인
-        if (!post.getMember().getMemberId().equals(postDTO.getMemberId())) {
-            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + postDTO.getMemberId());
+        if (!carrot.getMember().getMemberId().equals(memberId)) {
+            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + memberId);
         }
-        post.change(
-                postDTO.getTitle(),
-                postDTO.getContent()
-        );
-        post.changeDate(
-                postDTO.getModifyDate()
-        );
-
-        // 변경사항 저장
-        postRepository.save(post);
-
-        // Carrot 엔티티 찾기
-        Review review = reviewRepository.findById(reviewDTO.getPostId())
-                .orElseThrow(() -> new RuntimeException("Carrot post not found with id : " + reviewDTO.getPostId()));
 
         // Carrot 엔티티 업데이트
-        review.change(reviewDTO.getExpense(),
+        carrot.change(
+                carrotDTO.getTitle(),
+                carrotDTO.getContent(),
+                carrotDTO.getPrice()
+        );
+
+        // 엔티티의 수정 시간 현재 시간으로 업데이트
+        LocalDateTime now = LocalDateTime.now();
+        carrot.changeDate(now);
+        log.info("Updated Carrot Post ID: {}, Modification Date: {}, by Member ID: {}", carrot.getPostId(), now, memberId);
+
+
+        // 기존 이미지 삭제 처리
+        if (carrot.getPostImages() != null && !carrot.getPostImages().isEmpty()) {
+            for (PostImage postImage : carrot.getPostImages()) {
+                imageRepository.delete(postImage);
+            }
+            carrot.getPostImages().clear();
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(carrot.getId());
+
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(carrot);
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+            carrot.getPostImages().add(postImage); // 새로운 이미지 추가
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+
+
+        carrotRepository.save(carrot);
+        log.info("Updated Carrot Modification Date: {}", carrot.getModifyDate());
+        log.info("Updated Carrot Post ID: {}, by Member ID: {}", carrot.getPostId(), memberId);
+    }
+
+
+    @Override
+    public void reviewModify(ReviewDTO reviewDTO, MultipartFile file, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+        if (memberId == null) {
+            throw new RuntimeException("Member ID not found in session");
+        }
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+
+        Review review = reviewRepository.findById(reviewDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Carrot not found with id: " + reviewDTO.getPostId()));
+
+        // 게시글 소유자 확인
+        if (!review.getMember().getMemberId().equals(memberId)) {
+            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + memberId);
+        }
+
+        log.info("Before reviewDTO Start : " + reviewDTO.getStartTravelDate());
+        log.info("Before reviewDTO End : " + reviewDTO.getEndTravelDate());
+        review.change(
+                reviewDTO.getTitle(),
+                reviewDTO.getContent(),
+                reviewDTO.getExpense(),
                 reviewDTO.getGrade(),
                 reviewDTO.getStartTravelDate(),
-                reviewDTO.getEndTravelDate());
+                reviewDTO.getEndTravelDate()
+        );
 
-        // 변경사항 저장
+        // 엔티티의 수정 시간 현재 시간으로 업데이트
+        LocalDateTime now = LocalDateTime.now();
+        review.changeDate(now);
+        log.info("Updated Review Post ID: {}, Modification Date: {}, by Member ID: {}", review.getPostId(), now, memberId);
+
+        // 기존 이미지 삭제 처리
+        if (review.getPostImages() != null && !review.getPostImages().isEmpty()) {
+            for (PostImage postImage : review.getPostImages()) {
+                imageRepository.delete(postImage);
+            }
+            review.getPostImages().clear();
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(review.getId());
+
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(review);
+
+        reviewDTO.setStartTravelDate(reviewDTO.getStartTravelDate());
+        reviewDTO.setEndTravelDate(reviewDTO.getEndTravelDate());
+        log.info("After reviewDTO Start : " + reviewDTO.getStartTravelDate());
+        log.info("After reviewDTO End : " + reviewDTO.getEndTravelDate());
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+            review.getPostImages().add(postImage); // 새로운 이미지 추가
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+
+
         reviewRepository.save(review);
-
-        log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), review.getPostId(), postDTO.getMemberId());
+        log.info("Updated Review Modification Date: {}", review.getModifyDate());
+        log.info("Updated Join Post ID: {}, by StartDate: {}, by EndDate: {}\"", review.getPostId(), reviewDTO.getStartTravelDate(), reviewDTO.getEndTravelDate());
     }
 
     @Override
-    public void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO) {
-        // Post 엔티티 찾기
-        Post post = postRepository.findById(postDTO.getPostId())
-                .orElseThrow(() -> new RuntimeException("Post not found with id : " + postDTO.getPostId()));
-
-        // 게시글 소유자 확인
-        if (!post.getMember().getMemberId().equals(postDTO.getMemberId())) {
-            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + postDTO.getMemberId());
+    public void joinModify(JoinDTO joinDTO, MultipartFile file, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+        if (memberId == null) {
+            throw new RuntimeException("Member ID not found in session");
         }
 
-        post.change(
-                postDTO.getTitle(),
-                postDTO.getContent()
-        );
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
-        post.changeDate(
-                postDTO.getModifyDate()
-        );
-
-        // 변경사항 저장
-        postRepository.save(post);
-
-        // Carrot 엔티티 찾기
         Join join = joinRepository.findById(joinDTO.getPostId())
-                .orElseThrow(() -> new RuntimeException("Carrot post not found with id : " + joinDTO.getPostId()));
+                .orElseThrow(() -> new RuntimeException("Join not found with id: " + joinDTO.getPostId()));
 
-        // Carrot 엔티티 업데이트
+        log.info("Before Join Post ID: {}, by StartDate: {}, by EndDate: {}\"", join.getPostId(), joinDTO.getStartTravelDate(), joinDTO.getEndTravelDate());
+        // 게시글 소유자 확인
+        if (!join.getMember().getMemberId().equals(memberId)) {
+            throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + memberId);
+        }
+
         join.change(
+                joinDTO.getTitle(),
+                joinDTO.getContent(),
                 joinDTO.getExpense(),
                 joinDTO.getNumPeople(),
                 joinDTO.getStartTravelDate(),
-                joinDTO.getEndTravelDate());
-
-        // 변경사항 저장
+                joinDTO.getEndTravelDate()
+        );
         joinRepository.save(join);
 
-        log.info("Updated Post ID: {}, Review Post ID: {}, by Member ID: {}", post.getPostId(), join.getPostId(), postDTO.getMemberId());
+        // 엔티티의 수정 시간 현재 시간으로 업데이트
+        LocalDateTime now = LocalDateTime.now();
+        join.changeDate(now);
+
+        // 기존 이미지 삭제 처리
+        if (join.getPostImages() != null && !join.getPostImages().isEmpty()) {
+            for (PostImage postImage : join.getPostImages()) {
+                imageRepository.delete(postImage);
+            }
+            join.getPostImages().clear();
+        }
+
+        String originalName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setFileName(originalName);
+        imageDTO.setUuid(uuid);
+        imageDTO.setPostId(join.getId());
+
+        PostImage postImage = modelMapper.map(imageDTO, PostImage.class);
+        postImage.setPost(join);
+
+        try {
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+            file.transferTo(savePath);
+            imageRepository.save(postImage);
+            join.getPostImages().add(postImage); // 새로운 이미지 추가
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 저장하는 도중 에러가 발생했습니다.", e);
+        }
+
+
+        joinRepository.save(join);
+        log.info("Updated Join Modification Date: {}", join.getModifyDate());
+        // 현재 시작, 종료날짜에 대한 값이 갱신이 되지않음.
+        log.info("Updated Join Post ID: {}, by Member ID: {}, by StartDate: {}, by EndDate: {}\"", join.getPostId(), join.getPostId(), joinDTO.getStartTravelDate(), joinDTO.getEndTravelDate());
     }
 
 
@@ -468,6 +564,8 @@ public class PostServiceImpl implements PostService {
         reviewDTO.setImageDTOs(imageDTOS);
         reviewDTO.setMemberId(post.getMember().getMemberId());
         reviewDTO.setMemberName(post.getMember().getName());
+        log.info("reviewDTO Start : " + reviewDTO.getStartTravelDate());
+        log.info("reviewDTO End : " + reviewDTO.getEndTravelDate());
         return reviewDTO;
     }
 
@@ -486,6 +584,8 @@ public class PostServiceImpl implements PostService {
         joinDTO.setImageDTOs(imageDTOS);
         joinDTO.setMemberId(post.getMember().getMemberId());
         joinDTO.setMemberName(post.getMember().getName());
+        log.info("joinDTO Start : " + joinDTO.getStartTravelDate());
+        log.info("joinDTO End : " + joinDTO.getEndTravelDate());
         return joinDTO;
     }
 
@@ -494,7 +594,7 @@ public class PostServiceImpl implements PostService {
         Optional<Post> result = postRepository.findById(postId);
         Post post = result.orElse(null);
         assert post != null;
-        log.info("!!!!!@!!!!"+post.toString());
+        log.info("!!!!!@!!!!" + post.toString());
         return post.getPostType();
     }
 }

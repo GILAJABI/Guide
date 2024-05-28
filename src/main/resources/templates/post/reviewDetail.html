@@ -80,6 +80,11 @@
                 <input type="hidden" name="memberId" th:value="${post.memberId}"/>
                 <button type="submit" style="background-color: #363636;">삭제</button>
             </form>
+            <form th:action="@{/post/reviewModify/{postId}(postId=${post.postId})}" method="get">
+                <input type="hidden" name="postId" th:value="${post.postId}" />
+                <input type="hidden" name="memberId" th:value="${post.memberId}" />
+                <button type="submit" style="background-color: #363636;">수정</button>
+            </form>
         </div>
     </div>
     <section>
@@ -88,7 +93,7 @@
         </th:block>
         <div class="sec-container">
             <div id="left">
-                <p class="regDate" id="dateCSS">[[${#temporals.format(post.registerDate, 'yyyy-MM-dd')}]]</p>
+                <p class="regDate" id="dateCSS">[[${#temporals.format(post.modifyDate, 'yyyy-MM-dd')}]]</p>
                 <!--                <div class="view">-->
                 <!--                    <p th:text="'👀  ' + ${post.views} + ' 명이 조회했어요'"></p>-->
                 <!--                </div>-->

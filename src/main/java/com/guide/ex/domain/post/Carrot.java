@@ -1,16 +1,22 @@
 package com.guide.ex.domain.post;
 
+import com.guide.ex.dto.post.ImageDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@SuperBuilder
+@Table(name = "carrot")
 @Getter
+@Setter
 @NoArgsConstructor
-@DiscriminatorValue("carrot")
+@AllArgsConstructor
 public class Carrot extends Post{
 
     @Column(nullable = false)
@@ -23,4 +29,12 @@ public class Carrot extends Post{
         this.price = price;
     }
 
+    public void change(String title, String content, int price) {
+        this.title = title;
+        this.content = content;
+        this.price = price;
+    }
+    public void changeDate(LocalDateTime modifyDate) {
+        this.modifyDate = modifyDate;
+    }
 }

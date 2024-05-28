@@ -14,9 +14,9 @@ public interface PostService {
     void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session);
     void joinRegister(JoinDTO joinDTO, MultipartFile file, HttpSession session);
     void reviewRegister(ReviewDTO reviewDTO, MultipartFile file, HttpSession session);
-    void carrotModify(PostDTO postDTO, CarrotDTO carrotDTO, ImageDTO imageDTO);
-    void reviewModify(PostDTO postDTO, ReviewDTO reviewDTO, ImageDTO imageDTO);
-    void joinModify(PostDTO postDTO, JoinDTO joinDTO, ImageDTO imageDTO);
+    void carrotModify(CarrotDTO carrotDTO,  MultipartFile file, HttpSession session);
+    void reviewModify(ReviewDTO reviewDTO,  MultipartFile file, HttpSession session);
+    void joinModify(JoinDTO joinDTO, MultipartFile file, HttpSession session);
 
     Page<PostDTO> postSelectAll(String searchValue, String postType, Pageable pageable);
 

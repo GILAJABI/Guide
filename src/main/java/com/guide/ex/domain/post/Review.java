@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,16 +23,20 @@ public class Review extends Post{
     private Long grade;
     private int expense;
 
-    @CreatedDate
-    private LocalDateTime startTravelDate;
+    private LocalDate startTravelDate;
 
-    @LastModifiedDate
-    private LocalDateTime endTravelDate;
+    private LocalDate endTravelDate;
 
-    public void change(int expense, Long grade, LocalDateTime startTravelDate, LocalDateTime endTravelDate) {
+    public void change(String title, String content, int expense, Long grade, LocalDate startTravelDate, LocalDate endTravelDate) {
+        this.title = title;
+        this.content = content;
         this.expense = expense;
         this.grade = grade;
         this.startTravelDate = startTravelDate;
         this.endTravelDate = endTravelDate;
     }
+    public void changeDate(LocalDateTime modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
 }

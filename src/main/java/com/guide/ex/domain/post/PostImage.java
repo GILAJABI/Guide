@@ -44,4 +44,8 @@ public class PostImage {
     public Long getImageId() {
         return this.imageId;
     }
+    public void change(String uuid, String fileName) {
+        this.uuid = uuid;
+        this.fileName = fileName;
+    }
 }

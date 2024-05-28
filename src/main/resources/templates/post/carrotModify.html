@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>당근 수정</title>
+    <link rel="stylesheet" th:href="@{/css/post/write.css}">
+    <style th:inline="css">
+        .goods-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .my-image {
+            margin-top: 10px;
+            width: 85%;
+            height: 200px;
+        }
+        #profile-image {
+            width: 180px;
+            height: 180px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="/include/header.html"></div>
+<div id="container">
+    <form th:action="@{/post/carrotModify}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="postId" th:value="${post.postId}" />
+        <h1>당근 수정</h1>
+        <input name="title" type="text" th:value="${post.title}" placeholder="제목을 입력하세요"> <br>
+        <input name="price" type="text" th:value="${post.price}" placeholder="판매 가격을 입력하세요"><br>
+        <textarea name="content" cols="40" rows="4" placeholder="내용을 입력하세요" th:text="${post.content}"></textarea> <br><br>
+        <input type="hidden" name="postType" value="Carrot">
+        <label>사진 첨부</label>
+        <div class="goods-img">
+            <div class="my-image">
+                <label for="select" class="file-upload-label">
+                    <img id="profile-image" th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}" alt="기존 이미지">
+                </label>
+                <div class="file-upload-container">
+                    <input id="select" type="file" accept="image/png" name="file" onchange='handleImageUpload(event)'/>
+                </div>
+            </div>
+        </div>
+        <div class="address-container">
+            <input type="text" name="road_address" id="sample6_address" placeholder="거래 장소">
+            <button class="btn btn-sm btn-primary" type="button" onclick="sample6_execDaumPostcode()">검색</button>
+        </div>
+        <input type="hidden" name="locationX" id="sample6_latitude">
+        <input type="hidden" name="locationY" id="sample6_longitude">
+        <div id="map" style="width:500px;height:350px;"></div>
+        <button type="submit">글쓰기 완료</button>
+    </form>
+</div>
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/js/post/write.js}"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
+<script>
+    var locationX = [[${post.locationX}]];
+    var locationY = [[${post.locationY}]];
+
+    console.log("locationX"+locationX)
+    console.log("locationY"+locationY)
+    var mapContainer = document.getElementById('map'),
+        mapOption = {
+            center: new daum.maps.LatLng(locationX, locationY),
+            level: 10
+        };
+
+    // 지도 객체 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    // 주소-좌표 변환 객체 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    // 마커 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng([[post.locationX]], [[post.locationY]]),
+        map: map
+    });
+
+    function getLatLngFromRoadName(roadName) {
+        geocoder.addressSearch(roadName, function (results, status) {
+            if (status === daum.maps.services.Status.OK) {
+                var result = results[0];
+                var latitude = result.y;
+                var longitude = result.x;
+                document.getElementById("sample6_latitude").value = latitude;
+                document.getElementById("sample6_longitude").value = longitude;
+
+                var coords = new daum.maps.LatLng(latitude, longitude);
+                map.setCenter(coords);
+                marker.setPosition(coords);
+            } else {
+                console.log("주소 검색 실패:", status);
+            }
+        });
+    }
+
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+
+                var addr = '';
+                var extraAddr = '';
+
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                if (data.userSelectedType === 'R') {
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+
+                }
+                var addrs = data.address;
+                document.getElementById("sample6_address").value = addrs;
+                getLatLngFromRoadName(addrs);
+            }
+        }).open();
+    }
+</script>
+<script th:src="@{/js/post/mepFindLocCloser.js}"></script>
+<footer>
+    <div th:include="/include/footer.html"></div>
+</footer>
+</body>
+</html>

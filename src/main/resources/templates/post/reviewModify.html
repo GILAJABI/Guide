@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 등록</title>
+    <link rel="stylesheet" th:href="@{/css/post/write.css}">
+</head>
+<body>
+<div th:include="/include/header.html"></div>
+<div id="container">
+    <form th:action="@{/post/reviewModify}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="postId" th:value="${post.postId}" />
+        <h1>리뷰 수정</h1>
+        <p style="color: #CCCCCC">스크롤해서 별점을 주세요</p>
+        <div class="star_rating">
+            <span class="star" value="1"></span>
+            <span class="star" value="2"></span>
+            <span class="star" value="3"></span>
+            <span class="star" value="4"></span>
+            <span class="star" value="5"></span>
+        </div>
+
+        <input type="hidden" name="grade" id="grade" th:value="${post.grade}"> <!-- 별점 값을 저장할 hidden input 추가 -->
+
+        <input name="title" type="text" th:value="${post.title}" placeholder="제목을 입력하세요"> <br>
+        <input name="expense" type="text" th:value="${post.expense}" placeholder="대략적인 여행 총 경비"><br>
+        <textarea name="content" cols="40" rows="4" th:text="${post.content}" placeholder="내용을 입력하세요"></textarea> <br><br>
+
+        <div class="ddd">
+            <label for="profile-image">사진 첨부</label>
+            <div class="my-image-container">
+                <div class="my-image">
+                    <label for="select" class="file-upload-label">
+                        <img id="profile-image" th:src="@{'/api/photo/' + ${post.imageDTOs[0].uuid} + '_' + ${post.imageDTOs[0].fileName}}" alt="기존 이미지">
+                    </label>
+                    <div class="file-upload-container">
+                        <input id="select" type="file" name="file" accept="image/png" required="required"
+                               onchange='handleImageUpload(event)'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-plan">
+                <label for="startTravelDate">여행 기간</label>
+                <p>
+                    <input type="date" id="startTravelDate" name="startTravelDate" th:value="${#temporals.format(post.startTravelDate, 'yyyy-MM-dd')}">
+                    <input type="date" id="endTravelDate" name="endTravelDate" th:value="${#temporals.format(post.endTravelDate, 'yyyy-MM-dd')}">
+                </p>
+            </div>
+        </div>
+
+
+        <div class="address-container">
+            <input type="text" name="road_address" id="sample6_address" placeholder="위치">
+            <button class="btn btn-sm btn-primary" type="button" onclick="sample6_execDaumPostcode()">검색</button>
+        </div>
+
+        <input type="hidden" name="locationX" id="sample6_latitude" th:value="${post.locationX}">
+        <input type="hidden" name="locationY" id="sample6_longitude" th:value="${post.locationY}">
+        <div id="map" style="width:500px;height:350px;"></div>
+        <button type="submit">글쓰기 완료</button>
+    </form>
+</div>
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/js/post/write.js}"></script>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f982e13e4f6fb5fa544e2ca4883ced76&libraries=services"></script>
+<script th:src="@{/js/post/mapFindLoc.js}"></script>
+<footer>
+    <div th:include="/include/footer.html"></div>
+</footer>
+</body>
+
+</html>
