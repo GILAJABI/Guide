@@ -1,15 +1,12 @@
 package com.guide.ex.controller.post;
 
-import com.guide.ex.domain.post.Carrot;
-import com.guide.ex.domain.post.Join;
-import com.guide.ex.domain.post.Post;
 import com.guide.ex.dto.PageRequestDTO;
 import com.guide.ex.dto.PageResponseDTO;
 import com.guide.ex.dto.post.*;
 import com.guide.ex.service.CommentService;
 import com.guide.ex.service.MemberService;
 import com.guide.ex.service.PostService;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -126,6 +123,7 @@ public class PostController {
 
     @PostMapping("/carrotModify")
     public String carrotModify(HttpSession session, CarrotDTO carrotDTO, @RequestParam("file") MultipartFile file) {
+        log.info("CarrotDTO received: {}", carrotDTO);
         postService.carrotModify(carrotDTO, file, session);
         memberService.updateBoardCount(session);
         return "redirect:/post/carrotMain";
@@ -167,10 +165,10 @@ public class PostController {
         try {
             if (postService.deletePost(postId, memberId)) {
                 redirectAttributes.addFlashAttribute("successMessage", "게시글이 성공적으로 삭제되었습니다.");
-                return "redirect:/post/carrotMain";
+                return "redirect:/post/joinMain";
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "게시글 삭제에 실패하였습니다.");
-                return "redirect:/post/carrotMain";
+                return "redirect:/post/joinMain";
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "오류 발생: " + e.getMessage());

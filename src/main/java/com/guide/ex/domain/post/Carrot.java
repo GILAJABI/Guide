@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,10 +25,6 @@ public class Carrot extends Post{
 
     @Column(nullable = false)
     private final boolean status = false;
-
-    public void change(int price) {
-        this.price = price;
-    }
 
     public void change(String title, String content, int price) {
         this.title = title;

@@ -48,16 +48,19 @@ public class PostServiceImpl implements PostService {
     private final ImageRepository imageRepository;
     private final CommentRepository commentRepository;
 
+    // 세션 ID 확인
+    public Member loginCheck(HttpSession session) {
+        Long memberId = (Long) session.getAttribute("member_id");
+
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+    }
 
     // 거래 게시판 글 등록
     @Override
     public void carrotRegister(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
 
-        Long memberId = (Long) session.getAttribute("member_id");
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
-
+        Member member = loginCheck(session);
 
         Carrot carrot = modelMapper.map(carrotDTO, Carrot.class);
         carrot.setMember(member);
@@ -89,10 +92,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void joinRegister(JoinDTO joinDTO, MultipartFile file, HttpSession session) {
 
-        Long memberId = (Long) session.getAttribute("member_id");
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
+        Member member = loginCheck(session);
 
         Join join = modelMapper.map(joinDTO, Join.class);
         join.setMember(member);
@@ -123,12 +123,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void reviewRegister(ReviewDTO reviewDTO, MultipartFile file, HttpSession session) {
-        Long memberId = (Long) session.getAttribute("member_id");
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
-
-
+        Member member = loginCheck(session);
         Review review = modelMapper.map(reviewDTO, Review.class);
         review.setMember(member);
         reviewRepository.save(review); // Review 저장
@@ -161,12 +157,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public void carrotModify(CarrotDTO carrotDTO, MultipartFile file, HttpSession session) {
         Long memberId = (Long) session.getAttribute("member_id");
-        if (memberId == null) {
-            throw new RuntimeException("Member ID not found in session");
-        }
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
         // Carrot 엔티티 찾기
         Carrot carrot = carrotRepository.findById(carrotDTO.getPostId())
@@ -183,6 +173,7 @@ public class PostServiceImpl implements PostService {
                 carrotDTO.getContent(),
                 carrotDTO.getPrice()
         );
+        carrot.changeLocation(carrotDTO.getLocationX(), carrotDTO.getLocationY());
 
         // 엔티티의 수정 시간 현재 시간으로 업데이트
         LocalDateTime now = LocalDateTime.now();
@@ -221,7 +212,7 @@ public class PostServiceImpl implements PostService {
 
         carrotRepository.save(carrot);
         log.info("Updated Carrot Modification Date: {}", carrot.getModifyDate());
-        log.info("Updated Carrot Post ID: {}, by Member ID: {}", carrot.getPostId(), memberId);
+        log.info("Updated Carrot Post ID: {}, by Member ID: {}, by locationX : {}, by locationY : {}", carrot.getPostId(), memberId, carrotDTO.getLocationX(), carrotDTO.getLocationY());
     }
 
 
@@ -231,9 +222,6 @@ public class PostServiceImpl implements PostService {
         if (memberId == null) {
             throw new RuntimeException("Member ID not found in session");
         }
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
         Review review = reviewRepository.findById(reviewDTO.getPostId())
                 .orElseThrow(() -> new RuntimeException("Carrot not found with id: " + reviewDTO.getPostId()));
@@ -253,6 +241,7 @@ public class PostServiceImpl implements PostService {
                 reviewDTO.getStartTravelDate(),
                 reviewDTO.getEndTravelDate()
         );
+        review.changeLocation(reviewDTO.getLocationX(), reviewDTO.getLocationY());
 
         // 엔티티의 수정 시간 현재 시간으로 업데이트
         LocalDateTime now = LocalDateTime.now();
@@ -305,13 +294,11 @@ public class PostServiceImpl implements PostService {
             throw new RuntimeException("Member ID not found in session");
         }
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
-
         Join join = joinRepository.findById(joinDTO.getPostId())
                 .orElseThrow(() -> new RuntimeException("Join not found with id: " + joinDTO.getPostId()));
 
         log.info("Before Join Post ID: {}, by StartDate: {}, by EndDate: {}\"", join.getPostId(), joinDTO.getStartTravelDate(), joinDTO.getEndTravelDate());
+        log.info("Get LocationX {} || LocationY{}", joinDTO.getLocationX(), joinDTO.getLocationY());
         // 게시글 소유자 확인
         if (!join.getMember().getMemberId().equals(memberId)) {
             throw new RuntimeException("Unauthorized attempt to modify a post not owned by memberId: " + memberId);
@@ -330,6 +317,8 @@ public class PostServiceImpl implements PostService {
         // 엔티티의 수정 시간 현재 시간으로 업데이트
         LocalDateTime now = LocalDateTime.now();
         join.changeDate(now);
+
+        join.changeLocation(joinDTO.getLocationX(), joinDTO.getLocationY());
 
         // 기존 이미지 삭제 처리
         if (join.getPostImages() != null && !join.getPostImages().isEmpty()) {
@@ -564,6 +553,8 @@ public class PostServiceImpl implements PostService {
         reviewDTO.setImageDTOs(imageDTOS);
         reviewDTO.setMemberId(post.getMember().getMemberId());
         reviewDTO.setMemberName(post.getMember().getName());
+        reviewDTO.getStartTravelDate();
+        reviewDTO.getEndTravelDate();
         log.info("reviewDTO Start : " + reviewDTO.getStartTravelDate());
         log.info("reviewDTO End : " + reviewDTO.getEndTravelDate());
         return reviewDTO;

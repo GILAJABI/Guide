@@ -79,9 +79,9 @@ public class Post {
         this.member = member;
     }
 
-    public void change(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void changeLocation(BigDecimal locationX, BigDecimal locationY) {
+        this.locationX = locationX;
+        this.locationY = locationY;
     }
 
     public void changeDate(LocalDateTime modifyDate) {

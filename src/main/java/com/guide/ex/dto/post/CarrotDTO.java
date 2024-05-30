@@ -14,4 +14,12 @@ public class CarrotDTO extends PostDTO {
     private boolean status;
     private List<ImageDTO> imageDTOs;
 
+    public List<ImageDTO> getImageDTOs() {
+        return imageDTOs;
+    }
+
+    // 이미지 리스트 설정 메서드
+    public void setImageDTOs(List<ImageDTO> imageDTOs) {
+        this.imageDTOs = imageDTOs;
+    }
 }
