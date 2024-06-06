@@ -49,6 +49,11 @@
 <br>
 <br>
 
+## 🧾 UseCase Diagram
+![스크린샷 2024-06-06 193958](https://github.com/GILAJABI/guide/assets/93421611/f1589d1f-cac2-47eb-8418-4c8083c40c73)
+![스크린샷 2024-06-06 193550](https://github.com/GILAJABI/guide/assets/93421611/d1855d1e-421d-47ee-a09b-acc0649be298)
+![스크린샷 2024-06-06 193721](https://github.com/GILAJABI/guide/assets/93421611/3b8dcbf3-78e3-48f4-8884-9b4ac8f78869)
+
 ## 🎨 피그마
 https://www.figma.com/design/nc1D7av1s0GGj9xY48Q5DH/TRAVELMAKER?node-id=0%3A1&t=89nA830d1BsoRpDI-1
 <br>
